@@ -1,5 +1,5 @@
 {
-  "name": "dompet-asisten-ai",
+  "name": "wallet-assistant",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,1 +1,1 @@
-export default function Page(){return <main style={{padding:40,fontFamily:'system-ui'}}><h1>Dompet Asisten AI</h1><h2>Wallet Assistant AI</h2><p style={{background:'#dcfce7',padding:12,borderRadius:8}}>Build Success! Next 14.2.35 LTS Patched</p></main>}
+export default function Page(){return <main style={{padding:40,fontFamily:'system-ui'}}><h1>Dompet Asisten AI</h1><p style={{background:'#dcfce7',padding:12,borderRadius:8}}>Build Success! Next 14.2.35 LTS Patched CVE Fixed!</p></main>}

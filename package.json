@@ -1,0 +1,27 @@
+{
+  "name": "dompet-asisten-ai-wallet-assistant-ai",
+  "displayName": "Dompet Asisten AI - Wallet Assistant AI",
+  "version": "20.0.0",
+  "description": "3 IN 1 - Lokal \ud83d\udcf1 + Global \ud83c\udf0d + Crypto \ud83d\udd10 - Dompet Asisten AI / Wallet Assistant AI - Friendly, Seed Phrase + 2FA, Notif Seblak Ceker",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "^18",
+    "react-dom": "^18",
+    "lucide-react": "^0.400.0",
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "tailwindcss": "^3.4.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8"
+  }
+}

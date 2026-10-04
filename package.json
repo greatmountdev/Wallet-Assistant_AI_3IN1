@@ -1,5 +1,5 @@
 {
-  "name": "wallet-assistant",
+  "name": "wallet-v23-fix",
   "private": true,
   "scripts": {
     "dev": "next dev",

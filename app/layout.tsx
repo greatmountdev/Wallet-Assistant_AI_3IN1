@@ -1,1 +1,1 @@
-export default function RootLayout({children}:{children:any}){return <html lang='en'><body style={{margin:0,fontFamily:'system-ui'}}>{children}</body></html>}
+export const metadata={title:'Dompet AI 3IN1 V20.1'};export default function RootLayout({children}:{children:any}){return <html lang='id'><body style={{margin:0,background:'#0a0a0b',color:'#fff',fontFamily:'system-ui'}}>{children}</body></html>}

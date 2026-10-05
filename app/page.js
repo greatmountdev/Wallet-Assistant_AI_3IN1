@@ -21,9 +21,7 @@ export default function Page(){
     {id:"1",name:"Tabungan",type:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,icon:"🏛️"},
     {id:"2",name:"E-wallet",type:"ewallet",color:"#10b981",bank:"GoPay",norek:"081234567890",balance:375000,icon:"📱"},
     {id:"3",name:"Saku Dompet",type:"cash",color:"#06b6d4",bank:"Cash",norek:"-",balance:1205000,icon:"👛"},
-    {id:"4",name:"Rekening",type:"tabungan",color:"#3b82f6",bank:"BRI",norek:"9876543210",balance:12315000,icon:"🏦"},
-    {id:"5",name:"Kartu Kredit",type:"cicilan",color:"#8b5cf6",bank:"Mandiri",norek:"4111111111111111",balance:0,platform:"Kredivo",dueDate:"2026-10-15",icon:"💳"},
-    {id:"6",name:"Cicilan Motor",type:"cicilan",color:"#8b5cf6",bank:"FIF",norek:"-",balance:1200000,platform:"FIF",dueDate:"2026-10-20",icon:"🏍️"},
+            {id:"6",name:"Cicilan Motor",type:"cicilan",color:"#8b5cf6",bank:"FIF",norek:"-",balance:1200000,platform:"FIF",dueDate:"2026-10-20",icon:"🏍️"},
     {id:"7",name:"Pengeluaran",type:"pengeluaran",color:"#ef4444",bank:"-",norek:"-",balance:0,icon:"💸"},
     {id:"8",name:"Dana Darurat",type:"darurat",color:"#f59e0b",bank:"BSI",norek:"1122334455",balance:5000000,icon:"🚨"},
   ])

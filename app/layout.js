@@ -1,1 +1,0 @@
-export const metadata={title:"Dompet AI 6 Grup FIX - Salah Satu Sumber - Build Fixed"}; export default function L({children}){return <html><head><link rel="manifest" href="/manifest.json"/></head><body style={{margin:0}}>{children}</body></html>}

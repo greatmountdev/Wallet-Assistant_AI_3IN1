@@ -1,10 +1,10 @@
 {
-  "name": "Dompet AI - Kelola uang dengan lebih tenang",
+  "name": "Dompet AI 3IN1 - ID GLOBAL BOTH",
   "short_name": "Dompet AI",
-  "description": "Dompet AI 6 Grup + Crypto + Chat AI - PWA",
+  "description": "Pilih ID/GLOBAL/BOTH Login Google/Facebook PIN 2x Seed 12 kata - 5 Menu - Crypto BSCScan 15 menit",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8fbff",
+  "background_color": "#f1f7ff",
   "theme_color": "#0ea5e9",
   "icons": [
     {

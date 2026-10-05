@@ -1,256 +1,202 @@
 
 "use client"
 import { useState, useEffect, useRef } from "react"
-const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b"]
+const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#ec4899","#14b8a6"]
+const BANKS_ID=["BCA","BNI","BRI","Mandiri","BSI","GoPay","OVO","DANA","LinkAja","ShopeePay"]
+const BANKS_GLOBAL=["Chase","DBS","OCBC","UOB","Citi","HSBC","Maybank"]
 export default function Page(){
   const [step,setStep]=useState("region")
   const [region,setRegion]=useState(null)
-  const [pin,setPin]=useState("")
-  const [pin2,setPin2]=useState("")
+  const [pin,setPin]=useState(""), [pin2,setPin2]=useState("")
   const [showSeed,setShowSeed]=useState(false)
   const [mode,setMode]=useState("Dompet")
-  const [btc,setBtc]=useState(86401)
-  const [font,setFont]=useState("Standar")
-  const [theme,setTheme]=useState("light")
-  const [hideTotal,setHideTotal]=useState(false)
-  const [hideNorek,setHideNorek]=useState({})
-  const [bottom,setBottom]=useState("beranda")
-  const [showMenu,setShowMenu]=useState(false)
+  const [btc,setBtc]=useState(86401), [eth,setEth]=useState(3200)
+  const [font,setFont]=useState("Standar"), [theme,setTheme]=useState("light")
+  const [hideTotal,setHideTotal]=useState(false), [hideNorek,setHideNorek]=useState({})
+  const [bottom,setBottom]=useState("beranda"), [showMenu,setShowMenu]=useState(false)
   const [userName,setUserName]=useState("Kawan")
+  const [cryptoAddr,setCryptoAddr]=useState("0x71C9...9A2F")
   const [wallets,setWallets]=useState([
-    {id:"1",name:"Tabungan",type:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,icon:"🏛️"},
-    {id:"2",name:"E-wallet",type:"ewallet",color:"#10b981",bank:"GoPay",norek:"081234567890",balance:375000,icon:"📱"},
-    {id:"3",name:"Saku Dompet",type:"cash",color:"#06b6d4",bank:"Cash",norek:"-",balance:1205000,icon:"👛"},
-            {id:"6",name:"Cicilan Motor",type:"cicilan",color:"#8b5cf6",bank:"FIF",norek:"-",balance:1200000,platform:"FIF",dueDate:"2026-10-20",icon:"🏍️"},
-    {id:"7",name:"Pengeluaran",type:"pengeluaran",color:"#ef4444",bank:"-",norek:"-",balance:0,icon:"💸"},
-    {id:"8",name:"Dana Darurat",type:"darurat",color:"#f59e0b",bank:"BSI",norek:"1122334455",balance:5000000,icon:"🚨"},
+    {id:"1",name:"Tabungan",type:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,currency:"IDR",icon:"🏦"},
+    {id:"2",name:"E-wallet",type:"ewallet",color:"#10b981",bank:"GoPay",norek:"081234567890",balance:375000,currency:"IDR",icon:"📱"},
+    {id:"3",name:"Saku Dompet",type:"cash",color:"#06b6d4",bank:"Cash",norek:"-",balance:1205000,currency:"IDR",icon:"👛"},
+    {id:"4",name:"Cicilan Motor",type:"cicilan",color:"#8b5cf6",bank:"FIF",norek:"-",balance:1200000,currency:"IDR",platform:"FIF",dueDate:"2026-10-20",icon:"🏍️"},
+    {id:"5",name:"Pengeluaran",type:"pengeluaran",color:"#ef4444",bank:"-",norek:"-",balance:0,currency:"IDR",icon:"💸"},
+    {id:"6",name:"Dana Darurat",type:"darurat",color:"#f59e0b",bank:"BSI",norek:"1122334455",balance:5000000,currency:"IDR",icon:"🚨"},
   ])
   const [txs,setTxs]=useState([
-    {id:"1",title:"Kopi dan makan siang",amount:45000,groupId:"3",jenis:"keluar",kategori:"Makanan",date:"3 Okt 2026"},
-    {id:"2",title:"Isi saldo transport",amount:75000,groupId:"2",jenis:"keluar",kategori:"Transport",date:"3 Okt 2026"},
-    {id:"3",title:"Belanja rumah",amount:185000,groupId:"1",jenis:"keluar",kategori:"Rumah",date:"2 Okt 2026"},
-    {id:"4",title:"Gaji Oktober",amount:8500000,groupId:"4",jenis:"masuk",kategori:"Gaji",date:"1 Okt 2026"},
+    {id:"1",title:"Kopi dan makan siang",amount:45000,groupId:"3",jenis:"keluar",kategori:"Makanan",date:"3 Okt 2026",foto:null,source:"Saku Dompet"},
+    {id:"2",title:"Isi saldo transport",amount:75000,groupId:"2",jenis:"keluar",kategori:"Transportasi",date:"3 Okt 2026",foto:null,source:"E-wallet"},
+    {id:"3",title:"Belanja kebutuhan rumah",amount:185000,groupId:"1",jenis:"keluar",kategori:"Makanan",date:"2 Okt 2026",foto:"struk.jpg",source:"Tabungan"},
+    {id:"4",title:"Gaji Oktober",amount:8500000,groupId:"1",jenis:"masuk",kategori:"Gaji",date:"1 Okt 2026",foto:null,source:"Tabungan"},
   ])
-  const [newWallet,setNewWallet]=useState({name:"",type:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:""})
-  const [showAddWallet,setShowAddWallet]=useState(false)
-  const [selectedSource,setSelectedSource]=useState(null)
-  const [newTx,setNewTx]=useState({title:"",amount:0,groupId:"1",jenis:"keluar",kategori:"Makanan",sourceId:"1"})
+  const [newWallet,setNewWallet]=useState({name:"",type:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:"",currency:"IDR"})
+  const [showAddWallet,setShowAddWallet]=useState(false), [selectedSource,setSelectedSource]=useState(null)
+  const [newTx,setNewTx]=useState({title:"",amount:0,groupId:"1",jenis:"keluar",kategori:"Makanan",sourceId:"1",foto:null})
   const [showAddTx,setShowAddTx]=useState(false)
   const [chat,setChat]=useState([{role:"ai",text:"Selamat datang di berandaku, selalu input biar disiplin keuangan 😊✨🐱🏍 - Arus kas masih positif. Pengeluaran terbesar ada di Makanan. Ingat, foto struk/bon/barang opsional agar riwayat lebih lengkap."}])
   const [chatInput,setChatInput]=useState("")
+  const [laporanTab,setLaporanTab]=useState("Bulanan"), [laporanView,setLaporanView]=useState("Sheet")
+  const [filterPeriode,setFilterPeriode]=useState("Semua periode"), [filterSumber,setFilterSumber]=useState("Semua sumber dana"), [filterKategori,setFilterKategori]=useState("Semua kategori"), [filterJenis,setFilterJenis]=useState("Semua jenis"), [filterFoto,setFilterFoto]=useState("Semua status foto")
+  const fileRef=useRef(null), fotoRef=useRef(null)
   useEffect(()=>{
     const r=localStorage.getItem("v25-region"); if(r) setRegion(r)
     const s=localStorage.getItem("v25-step"); if(s) setStep(s)
     const n=localStorage.getItem("v25-name"); if(n) setUserName(n)
-    fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd").then(x=>x.json()).then(d=>{if(d.bitcoin)setBtc(d.bitcoin.usd)}).catch(()=>{})
+    const fetchPrices=()=>{fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd").then(x=>x.json()).then(d=>{if(d.bitcoin)setBtc(d.bitcoin.usd); if(d.ethereum)setEth(d.ethereum.usd)}).catch(()=>{})}
+    fetchPrices()
+    const iv=setInterval(fetchPrices, 900000)
+    return ()=>clearInterval(iv)
   },[])
-  const total=wallets.filter(w=>w.type!=="cicilan" && w.type!=="pengeluaran").reduce((a,b)=>a+b.balance,0)
+  const total=wallets.filter(w=>w.type!=="cicilan"&&w.type!=="pengeluaran").reduce((a,b)=>a+b.balance,0)
   const masuk=txs.filter(t=>t.jenis==="masuk").reduce((a,b)=>a+b.amount,0)
   const keluar=txs.filter(t=>t.jenis==="keluar").reduce((a,b)=>a+b.amount,0)
+  const ordered=[...wallets.filter(w=>w.type==="tabungan"),...wallets.filter(w=>w.type==="ewallet"),...wallets.filter(w=>w.type==="cash"),...wallets.filter(w=>w.type==="cicilan"),...wallets.filter(w=>w.type==="pengeluaran"),...wallets.filter(w=>w.type==="darurat")]
+  const displayNorek=(norek,id)=>{ if(norek==="-") return "-"; if(hideNorek[id]) return norek; return norek.slice(0,3)+"****"+norek.slice(-3)}
   const fontFamily="Inter,sans-serif"
-  const ordered = [
-    ...wallets.filter(w=>w.type==="tabungan"),
-    ...wallets.filter(w=>w.type==="ewallet"),
-    ...wallets.filter(w=>w.type==="cash"),
-    ...wallets.filter(w=>w.type==="cicilan"),
-    ...wallets.filter(w=>w.type==="pengeluaran"),
-    ...wallets.filter(w=>w.type==="darurat"),
-  ]
-  const displayNorek=(norek, id)=>{
-    if(norek==="-") return "-"
-    if(hideNorek[id]) return norek.slice(0,3)+"****"+norek.slice(-3)
-    return norek
-  }
   if(step==="region"){
-    return <div style={{minHeight:"100vh",background:"linear-gradient(180deg,#0ea5e9,#a855f7)",fontFamily,display:"grid",placeItems:"center",padding:20}}>
-      <div style={{maxWidth:400,width:"100%",background:"#fff",borderRadius:24,padding:24}}>
-        <h2 style={{margin:0,textAlign:"center"}}>Dompet AI</h2>
-        <p style={{textAlign:"center",color:"#64748b",fontSize:13}}>Kelola uang dengan lebih tenang - 1 Project</p>
-        <input value={userName} onChange={e=>setUserName(e.target.value)} placeholder="Nama kamu" style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:12}}/>
-        <button onClick={()=>{setRegion("ID");localStorage.setItem("v25-region","ID");localStorage.setItem("v25-name",userName||"Kawan");setStep("login");localStorage.setItem("v25-step","login")}} style={{width:"100%",padding:18,borderRadius:14,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:800,marginTop:12}}>🇮🇩 INDONESIA - BCA BNI BRI GoPay</button>
-        <button onClick={()=>{setRegion("GLOBAL");localStorage.setItem("v25-region","GLOBAL");localStorage.setItem("v25-name",userName||"Kawan");setStep("login");localStorage.setItem("v25-step","login")}} style={{width:"100%",padding:18,borderRadius:14,background:"#fff",border:"1px solid #e2e8f0",fontWeight:800,marginTop:8}}>🌍 GLOBAL - USD EUR SGD</button>
-        <button onClick={()=>{setRegion("BOTH");localStorage.setItem("v25-region","BOTH");localStorage.setItem("v25-name",userName||"Kawan");setStep("login");localStorage.setItem("v25-step","login")}} style={{width:"100%",padding:18,borderRadius:14,background:"#18181b",color:"#fff",border:"none",fontWeight:800,marginTop:8}}>⚡ KEDUANYA</button>
+    return <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#06b6d4,#8b5cf6)",fontFamily,display:"grid",placeItems:"center",padding:20}}>
+      <div style={{maxWidth:400,width:"100%",background:"#fff",borderRadius:24,padding:24,boxShadow:"0 20px 40px rgba(0,0,0,.15)"}}>
+        <h2 style={{margin:0,textAlign:"center",fontWeight:900}}>Dompet AI 3IN1</h2>
+        <p style={{textAlign:"center",color:"#64748b",fontSize:13,marginTop:8}}>Pilih ID/GLOBAL/BOTH - 1 Project Supabase Vercel Netlify</p>
+        <input value={userName} onChange={e=>setUserName(e.target.value)} placeholder="Nama kamu (buat insight AI)" style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:12}}/>
+        <button onClick={()=>{setRegion("ID");localStorage.setItem("v25-region","ID");localStorage.setItem("v25-name",userName||"Kawan");setStep("login");localStorage.setItem("v25-step","login")}} style={{width:"100%",padding:18,borderRadius:14,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:800,marginTop:12}}>🇮🇩 INDONESIA - BCA BNI BRI GoPay OVO DANA</button>
+        <button onClick={()=>{setRegion("GLOBAL");localStorage.setItem("v25-region","GLOBAL");localStorage.setItem("v25-name",userName||"Kawan");setStep("login");localStorage.setItem("v25-step","login")}} style={{width:"100%",padding:18,borderRadius:14,background:"#fff",border:"1px solid #e2e8f0",fontWeight:800,marginTop:8}}>🌍 GLOBAL - Chase DBS + USD EUR SGD JPY</button>
+        <button onClick={()=>{setRegion("BOTH");localStorage.setItem("v25-region","BOTH");localStorage.setItem("v25-name",userName||"Kawan");setStep("login");localStorage.setItem("v25-step","login")}} style={{width:"100%",padding:18,borderRadius:14,background:"#18181b",color:"#fff",border:"none",fontWeight:800,marginTop:8}}>⚡ BOTH - ID + GLOBAL</button>
       </div>
     </div>
   }
   if(step==="login"){
-    return <div style={{minHeight:"100vh",background:"linear-gradient(180deg,#0ea5e9,#a855f7)",fontFamily,display:"grid",placeItems:"center",padding:20}}>
+    return <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#06b6d4,#8b5cf6)",fontFamily,display:"grid",placeItems:"center",padding:20}}>
       <div style={{maxWidth:360,width:"100%",background:"#fff",borderRadius:24,padding:24}}>
-        <h3>Login {userName}</h3>
-        <p style={{fontSize:12,color:"#64748b"}}>Icon asli Google/Facebook + izin Drive/Sheet/Kamera/Meta AI</p>
-        <button onClick={()=>{setStep("pin");localStorage.setItem("v25-step","pin")}} style={{width:"100%",padding:14,borderRadius:12,marginTop:16,background:"#fff",border:"1px solid #e2e8f0",fontWeight:700}}>G Continue with Google</button>
-        <button onClick={()=>{setStep("pin");localStorage.setItem("v25-step","pin")}} style={{width:"100%",padding:14,borderRadius:12,marginTop:10,background:"#1877F2",color:"#fff",border:"none",fontWeight:700}}>f Facebook</button>
+        <h3 style={{margin:0}}>Login Google/Facebook - {region}</h3>
+        <p style={{fontSize:12,color:"#64748b",marginTop:6}}>Icon asli + izin langsung Drive folder DompetAI + Sheet + Kamera + Meta AI Voice/Type</p>
+        <button onClick={()=>{localStorage.setItem("v25-auth","google");setStep("pin");localStorage.setItem("v25-step","pin")}} style={{width:"100%",padding:14,borderRadius:12,marginTop:16,background:"#fff",border:"1px solid #e2e8f0",fontWeight:700,display:"flex",justifyContent:"center",gap:8}}>🟢 Continue with Google - Drive/Sheet</button>
+        <button onClick={()=>{localStorage.setItem("v25-auth","facebook");setStep("pin");localStorage.setItem("v25-step","pin")}} style={{width:"100%",padding:14,borderRadius:12,marginTop:10,background:"#1877F2",color:"#fff",border:"none",fontWeight:700}}>f Continue with Facebook</button>
       </div>
     </div>
   }
   if(step==="pin"){
-    return <div style={{minHeight:"100vh",background:"#eef6ff",fontFamily,display:"grid",placeItems:"center",padding:20}}><div style={{maxWidth:340,width:"100%",background:"#fff",borderRadius:20,padding:22}}><h3>Buat PIN 2X</h3><input type="password" value={pin} onChange={e=>setPin(e.target.value)} placeholder="PIN 1" style={{width:"100%",padding:14,borderRadius:12,border:"1px solid #e2e8f0",marginTop:12}}/><button onClick={()=>{if(pin.length>=4){setStep("pin2");localStorage.setItem("v25-step","pin2")}}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800}}>Lanjut PIN 2</button></div></div>
+    return <div style={{minHeight:"100vh",background:"#eef6ff",fontFamily,display:"grid",placeItems:"center",padding:20}}><div style={{maxWidth:340,width:"100%",background:"#fff",borderRadius:20,padding:22}}><h3>PIN 2FA - 1/2</h3><input type="password" value={pin} onChange={e=>setPin(e.target.value)} placeholder="PIN 6 digit pertama" style={{width:"100%",padding:14,borderRadius:12,border:"1px solid #e2e8f0",marginTop:12}}/><button onClick={()=>{if(pin.length>=4){setStep("pin2");localStorage.setItem("v25-step","pin2")}}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800}}>Lanjut PIN 2X Kedua</button></div></div>
   }
   if(step==="pin2"){
-    return <div style={{minHeight:"100vh",background:"#eef6ff",fontFamily,display:"grid",placeItems:"center",padding:20}}><div style={{maxWidth:340,width:"100%",background:"#fff",borderRadius:20,padding:22}}><h3>Konfirmasi PIN 2X</h3><input type="password" value={pin2} onChange={e=>setPin2(e.target.value)} placeholder="PIN 2" style={{width:"100%",padding:14,borderRadius:12,border:"1px solid #e2e8f0",marginTop:12}}/><button onClick={()=>{if(pin===pin2){setStep("crypto2fa");localStorage.setItem("v25-step","crypto2fa")}else alert("beda")}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800}}>Simpan otorisasi Google/Facebook</button></div></div>
+    return <div style={{minHeight:"100vh",background:"#eef6ff",fontFamily,display:"grid",placeItems:"center",padding:20}}><div style={{maxWidth:340,width:"100%",background:"#fff",borderRadius:20,padding:22}}><h3>PIN 2FA - 2/2 Konfirmasi</h3><input type="password" value={pin2} onChange={e=>setPin2(e.target.value)} placeholder="Ulangi PIN 6 digit" style={{width:"100%",padding:14,borderRadius:12,border:"1px solid #e2e8f0",marginTop:12}}/><button onClick={()=>{if(pin===pin2){localStorage.setItem("v25-pin",pin);setStep("crypto2fa");localStorage.setItem("v25-step","crypto2fa")}else alert("PIN beda")}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800}}>Simpan & Lanjut Seed 12 Kata</button></div></div>
   }
   if(step==="crypto2fa"){
-    return <div style={{minHeight:"100vh",background:"#eef6ff",fontFamily,display:"grid",placeItems:"center",padding:20}}><div style={{maxWidth:380,width:"100%",background:"#fff",borderRadius:20,padding:22}}><h3>2FA + Seed Phrase Crypto</h3><div style={{background:"#f8fafc",border:"1px dashed #cbd5e1",borderRadius:12,padding:12,marginTop:12,display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>{"abandon ability able about above absent absorb abstract absurd abuse access accident".split(" ").map((w,i)=><div key={i} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,padding:"6px 4px",fontSize:11,textAlign:"center"}}>{i+1}. {w}</div>)}</div><label style={{display:"flex",gap:8,marginTop:12,fontSize:13}}><input type="checkbox" checked={showSeed} onChange={e=>setShowSeed(e.target.checked)}/> Simpan ke Drive folder sendiri + izinkan kamera + Sheet</label><button disabled={!showSeed} onClick={()=>{setStep("main");localStorage.setItem("v25-step","main")}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:showSeed?"#0f172a":"#94a3b8",color:"#fff",border:"none",fontWeight:800}}>Masuk</button></div></div>
+    return <div style={{minHeight:"100vh",background:"#eef6ff",fontFamily,display:"grid",placeItems:"center",padding:20}}><div style={{maxWidth:400,width:"100%",background:"#fff",borderRadius:20,padding:22}}><h3 style={{margin:0}}>Crypto Wallet - Seed 12 Kata Wajib</h3><p style={{fontSize:11,color:"#64748b",marginTop:8}}>Wajib simpan + QR barcode + TrustWallet/Metamask + BSCScan harga 15 menit + scan + 2FA restore</p><div style={{background:"#f8fafc",border:"1px dashed #cbd5e1",borderRadius:12,padding:12,marginTop:12,display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>{"abandon ability able about above absent absorb abstract absurd abuse access accident".split(" ").map((w,i)=><div key={i} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,padding:"6px 4px",fontSize:11,textAlign:"center",fontWeight:700}}>{i+1}. {w}</div>)}</div><div style={{marginTop:12,background:"#0f172a",color:"#fff",borderRadius:12,padding:12,textAlign:"center"}}><div style={{fontSize:10}}>QR Seed Phrase</div><div style={{fontSize:24,letterSpacing:4}}>▦▦▦▦ QR</div><div style={{fontSize:10,marginTop:4}}>TrustWallet / Metamask Import</div></div><label style={{display:"flex",gap:8,marginTop:12,fontSize:12}}><input type="checkbox" checked={showSeed} onChange={e=>setShowSeed(e.target.checked)}/> Saya sudah simpan di Drive folder DompetAI + izinkan Kamera</label><button disabled={!showSeed} onClick={()=>{setStep("main");localStorage.setItem("v25-step","main")}} style={{width:"100%",marginTop:12,padding:14,borderRadius:12,background:showSeed?"#0f172a":"#94a3b8",color:"#fff",border:"none",fontWeight:800}}>Masuk Dompet AI 3IN1 - Top Toggle Dompet/Crypto</button></div></div>
   }
-  return <div style={{maxWidth:440,margin:"0 auto",minHeight:"100vh",background:"#f8fbff",fontFamily,paddingBottom:84,position:"relative"}}>
-    <div style={{background:"linear-gradient(90deg,#0bc5ea,#8b5cf6)",padding:"14px 14px 18px",color:"#fff",position:"sticky",top:0,zIndex:10}}>
+  return <div style={{maxWidth:440,margin:"0 auto",minHeight:"100vh",background:theme==="light"?"#f1f7ff":"#0a0a0b",color:theme==="light"?"#0f172a":"#fff",fontFamily,paddingBottom:88,position:"relative"}}>
+    <div style={{background:"linear-gradient(90deg,#06b6d4,#8b5cf6)",padding:"12px 14px 14px",color:"#fff",position:"sticky",top:0,zIndex:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
-          <button onClick={()=>setShowMenu(true)} style={{width:44,height:44,borderRadius:14,background:"#fff",border:"none",display:"grid",placeItems:"center",fontSize:20}}>☰</button>
-          <div><div style={{fontWeight:900,fontSize:20,color:"#fff"}}>Dompet AI</div><div style={{fontSize:12,opacity:.9}}>Kelola uang dengan lebih tenang</div></div>
+          <button onClick={()=>setShowMenu(true)} style={{width:44,height:44,borderRadius:14,background:"#fff",border:"none",display:"grid",placeItems:"center",fontSize:20,color:"#0f172a"}}>☰</button>
+          <div><div style={{fontWeight:900,fontSize:19}}>Dompet AI</div><div style={{fontSize:11,opacity:.9}}>Kelola uang dengan lebih tenang - {region}</div></div>
         </div>
-        <button onClick={()=>setTheme(theme==="light"?"dark":"light")} style={{width:44,height:44,borderRadius:14,background:"rgba(255,255,255,.9)",border:"none",fontSize:18}}>{theme==="light"?"🌙":"☀️"}</button>
+        <div style={{display:"flex",gap:8}}>
+          <button onClick={()=>setHideTotal(!hideTotal)} style={{width:36,height:36,borderRadius:10,background:"rgba(255,255,255,.9)",border:"none"}}>👁️</button>
+          <button onClick={()=>setTheme(theme==="light"?"dark":"light")} style={{width:36,height:36,borderRadius:10,background:"rgba(255,255,255,.9)",border:"none"}}>{theme==="light"?"🌙":"☀️"}</button>
+        </div>
+      </div>
+      <div style={{display:"flex",justifyContent:"center",marginTop:12}}>
+        <div style={{display:"flex",background:"rgba(255,255,255,.25)",borderRadius:14,padding:4,gap:4,backdropFilter:"blur(8px)"}}>
+          <button onClick={()=>setMode("Dompet")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Dompet"?"#fff":"transparent",color:mode==="Dompet"?"#0f172a":"#fff",transition:"all .3s"}}>Dompet</button>
+          <button onClick={()=>setMode("Crypto")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Crypto"?"#fff":"transparent",color:mode==="Crypto"?"#0f172a":"#fff",transition:"all .3s"}}>Crypto</button>
+        </div>
       </div>
     </div>
 
     {showMenu && <div style={{position:"fixed",inset:0,zIndex:80,display:"flex"}}>
-      <div style={{width:"92%",maxWidth:360,background:"#f8fbff",height:"100%",padding:16,overflowY:"auto"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <h2 style={{margin:0}}>Sumber dana</h2>
-          <button onClick={()=>setShowMenu(false)} style={{width:44,height:44,borderRadius:12,background:"#fff",border:"1px solid #e2e8f0",fontSize:18}}>✕</button>
-        </div>
-        <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
-          {ordered.map(w=>{
-            const isHidden = hideNorek[w.id]
-            return <div key={w.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:20,padding:12,display:"flex",alignItems:"center",gap:12}}>
-              <div style={{width:52,height:52,borderRadius:16,background:"#e0f2fe",display:"grid",placeItems:"center",fontSize:22}}>{w.icon}</div>
-              <div style={{flex:1}}>
-                <div style={{fontWeight:800}}>{w.name}</div>
-                <div style={{fontSize:12,color:"#64748b",display:"flex",gap:6,alignItems:"center"}}>
-                  <span>{w.bank} • Rp {w.balance.toLocaleString("id-ID")}</span>
-                </div>
-                <div style={{fontSize:11,color:"#64748b",display:"flex",gap:6,alignItems:"center",marginTop:4}}>
-                  <span>{displayNorek(w.norek,w.id)}</span>
-                  {w.norek!=="-" && <>
-                    <button onClick={()=>setHideNorek({...hideNorek,[w.id]:!hideNorek[w.id]})} style={{border:"none",background:"#f1f5f9",borderRadius:6,padding:"2px 6px",fontSize:11}}>{isHidden?"👁️":"🙈"}</button>
-                    <button onClick={()=>{navigator.clipboard?.writeText(w.norek)}} style={{border:"none",background:"#f1f5f9",borderRadius:6,padding:"2px 6px",fontSize:11}}>📋</button>
-                  </>}
-                </div>
-                {w.type==="cicilan" && <div style={{fontSize:10,marginTop:4,background:"#fef3c7",borderRadius:6,padding:"2px 6px",display:"inline-block"}}>{w.platform} jatuh {w.dueDate} • Notif ON</div>}
-              </div>
-              <button onClick={()=>{setSelectedSource(w); setShowAddWallet(true)}} style={{width:44,height:44,borderRadius:12,background:"#fff",border:"1px solid #e2e8f0",fontSize:20,fontWeight:900}}>+</button>
+      <div style={{width:"92%",maxWidth:360,background:"#f8fbff",height:"100%",overflowY:"auto",padding:16}}>
+        <div style={{display:"flex",justifyContent:"space-between"}}><h2 style={{margin:0}}>Sumber dana</h2><button onClick={()=>setShowMenu(false)} style={{width:40,height:40,borderRadius:12,background:"#fff",border:"1px solid #e2e8f0"}}>✕</button></div>
+        <div style={{marginTop:12,display:"flex",flexDirection:"column",gap:10}}>
+          {ordered.map(w=><div key={w.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:12,display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:48,height:48,borderRadius:14,background:w.color+"22",display:"grid",placeItems:"center",fontSize:20}}>{w.icon}</div>
+            <div style={{flex:1}}>
+              <div style={{fontWeight:800,fontSize:13}}>{w.name}</div>
+              <div style={{fontSize:11,color:"#64748b"}}>{w.bank} • {w.currency} • Rp {w.balance.toLocaleString("id-ID")}</div>
+              <div style={{fontSize:10,color:"#64748b",display:"flex",gap:4,marginTop:2}}><span>{displayNorek(w.norek,w.id)}</span>{w.norek!=="-"&&<><button onClick={()=>setHideNorek({...hideNorek,[w.id]:!hideNorek[w.id]})} style={{border:"none",background:"#f1f5f9",borderRadius:4,padding:"0 4px",fontSize:10}}>{hideNorek[w.id]?"👁️":"🙈"}</button><button onClick={()=>navigator.clipboard?.writeText(w.norek)} style={{border:"none",background:"#f1f5f9",borderRadius:4,padding:"0 4px",fontSize:10}}>📋 Copy</button></>}</div>
+              {w.type==="cicilan"&&<div style={{fontSize:9,marginTop:4,background:"#fef3c7",borderRadius:6,padding:"2px 6px",display:"inline-block"}}>{w.platform} jatuh {w.dueDate} Notif ON</div>}
             </div>
-          })}
+            <button onClick={()=>{setSelectedSource(w); setNewWallet({name:w.name,type:w.type,bank:w.bank,norek:w.norek,color:w.color,balance:w.balance,platform:w.platform||"",dueDate:w.dueDate||"",currency:w.currency}); setShowAddWallet(true)}} style={{width:40,height:40,borderRadius:10,background:"#fff",border:"1px solid #e2e8f0",fontWeight:900}}>+</button>
+          </div>)}
         </div>
-        <div style={{marginTop:16,background:"#fff",borderRadius:16,padding:12}}>
-          <div style={{fontSize:11,color:"#64748b"}}>Urutan grup: 1.1 Tabungan 1.2 E-wallet 1.3 Cash dompet 1.4 Cicilan 1.5 Pengeluaran 1.6 Dana Darurat. Warna bisa pilih. Algoritma: Pengeluaran & Cicilan mengurangi dana dari Tabungan/E-wallet/Cash/Darurat.</div>
-          <button onClick={()=>{setShowMenu(false);setBottom("beranda")}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:700}}>Ke Beranda</button>
-        </div>
+        <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:10,fontSize:10,color:"#64748b"}}>6 Tipe warna bisa pilih: 1.1 Tabungan BCA BNI BRI + e-wallet + norek show/hidden + warna | 1.2 E-wallet | 1.3 Cash Dompet 1 tab | 1.4 Cicilan platform + tgl jatuh tempo notif | 1.5 Pengeluaran 1 tab | 1.6 Dana Darurat Wajib pisah. Global: {BANKS_GLOBAL.join(" ")} + USD EUR SGD JPY. Algoritma auto nambah/kurang saldo tujuan AI hitung.</div>
+        <button onClick={()=>{setShowMenu(false);setBottom("beranda")}} style={{width:"100%",marginTop:10,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:700}}>Ke Beranda</button>
       </div>
       <div style={{flex:1,background:"rgba(0,0,0,.25)"}} onClick={()=>setShowMenu(false)}></div>
     </div>}
 
-    {bottom==="beranda" && <>
+    {mode==="Crypto" && <div style={{padding:14}}>
+      <div style={{background:"#fff",borderRadius:20,padding:16,border:"1px solid #e2e8f0"}}>
+        <div style={{display:"flex",justifyContent:"space-between"}}><b>Crypto Wallet 2FA + Seed + QR</b><span style={{fontSize:11,background:"#e0f2fe",padding:"4px 8px",borderRadius:8}}>BSCScan 15 menit</span></div>
+        <div style={{marginTop:12,background:"#0f172a",color:"#fff",borderRadius:16,padding:16}}>
+          <div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:10,opacity:.7}}>BTC LIVE</div><div style={{fontSize:22,fontWeight:900}}>${btc.toLocaleString()}</div></div><div><div style={{fontSize:10,opacity:.7}}>ETH</div><div style={{fontSize:18,fontWeight:800}}>${eth.toLocaleString()}</div></div></div>
+          <div style={{marginTop:12,fontSize:11,background:"rgba(255,255,255,.1)",padding:8,borderRadius:8,display:"flex",justifyContent:"space-between"}}><span>{cryptoAddr}</span><button onClick={()=>navigator.clipboard?.writeText(cryptoAddr)} style={{border:"none",background:"#fff",borderRadius:6,padding:"2px 8px",fontSize:10}}>Copy</button></div>
+          <div style={{marginTop:12,display:"grid",placeItems:"center"}}><div style={{width:100,height:100,background:"#fff",borderRadius:12,display:"grid",placeItems:"center",color:"#000",fontWeight:900}}>QR<br/>SCAN</div></div>
+          <div style={{marginTop:12,display:"flex",gap:8}}><button style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#fff",color:"#0f172a",fontWeight:700}}>TrustWallet</button><button style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#f59e0b",color:"#fff",fontWeight:700}}>Metamask + PIN 2FA</button></div>
+        </div>
+      </div>
+    </div>}
+
+    {mode==="Dompet" && bottom==="beranda" && <>
       <div style={{padding:14}}>
-        <div style={{background:"linear-gradient(135deg,#2a8bff,#0ea5e9)",borderRadius:24,padding:20,color:"#fff",position:"relative",boxShadow:"0 10px 24px rgba(14,165,233,.3)"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div style={{fontSize:13,opacity:.9}}>Total Saldo</div>
-            <button onClick={()=>setHideTotal(!hideTotal)} style={{background:"rgba(255,255,255,.2)",border:"none",borderRadius:20,padding:"6px 12px",color:"#fff"}}>{hideTotal?"🙈":"👁️"}</button>
-          </div>
-          <div style={{fontSize:32,fontWeight:900,marginTop:8}}>{hideTotal?"Rp ••••••":`Rp ${total.toLocaleString("id-ID")}`}</div>
-          <div style={{display:"flex",gap:10,marginTop:16}}>
-            <div style={{flex:1,background:"rgba(255,255,255,.22)",borderRadius:14,padding:12}}><div style={{fontSize:11,opacity:.9}}>Pemasukan</div><div style={{fontWeight:800,marginTop:4}}>Rp {masuk.toLocaleString("id-ID")}</div></div>
-            <div style={{flex:1,background:"rgba(255,255,255,.22)",borderRadius:14,padding:12}}><div style={{fontSize:11,opacity:.9}}>Pengeluaran</div><div style={{fontWeight:800,marginTop:4}}>Rp {keluar.toLocaleString("id-ID")}</div></div>
+        <div style={{background:"linear-gradient(135deg,#2563eb,#0ea5e9)",borderRadius:22,padding:18,color:"#fff",boxShadow:"0 12px 24px rgba(37,99,235,.3)"}}>
+          <div style={{display:"flex",justifyContent:"space-between"}}><div style={{fontSize:12,opacity:.9}}>Total Saldo - {region}</div><span style={{fontSize:11,background:"rgba(255,255,255,.2)",padding:"4px 8px",borderRadius:12}}>{userName}</span></div>
+          <div style={{fontSize:30,fontWeight:900,marginTop:6}}>{hideTotal?"Rp ••••••":`Rp ${total.toLocaleString("id-ID")}`}</div>
+          <div style={{display:"flex",gap:10,marginTop:14}}>
+            <div style={{flex:1,background:"rgba(255,255,255,.2)",borderRadius:12,padding:10}}><div style={{fontSize:10,opacity:.9}}>Pemasukan</div><div style={{fontWeight:800,fontSize:13}}>Rp {masuk.toLocaleString("id-ID")}</div></div>
+            <div style={{flex:1,background:"rgba(255,255,255,.2)",borderRadius:12,padding:10}}><div style={{fontSize:10,opacity:.9}}>Pengeluaran</div><div style={{fontWeight:800,fontSize:13}}>Rp {keluar.toLocaleString("id-ID")}</div></div>
           </div>
         </div>
-        <div style={{background:"#fff",borderRadius:20,padding:14,marginTop:14,border:"1px solid #e2e8f0",display:"flex",gap:12}}>
-          <div style={{width:48,height:48,borderRadius:14,background:"#dbeafe",display:"grid",placeItems:"center",fontSize:20}}>✨</div>
-          <div style={{flex:1}}>
-            <div style={{fontWeight:800,fontSize:13}}>Insight singkat dari Chat AI</div>
-            <div style={{fontSize:12,color:"#475569",marginTop:4,lineHeight:"18px"}}>Selamat datang {userName} di berandaku, selalu input biar disiplin keuangan 😊✨🐱🏍<br/>Arus kas masih positif. Pengeluaran terbesar ada di Makanan. Ingat, foto struk/bon/barang opsional agar riwayat lebih lengkap.</div>
-          </div>
+        <div style={{background:"#fff",borderRadius:18,padding:14,marginTop:12,border:"1px solid #e2e8f0",display:"flex",gap:10}}>
+          <div style={{width:44,height:44,borderRadius:12,background:"#dbeafe",display:"grid",placeItems:"center"}}>✨</div>
+          <div style={{flex:1}}><div style={{fontWeight:800,fontSize:13}}>Insight singkat dari Chat AI</div><div style={{fontSize:11,color:"#475569",marginTop:4,lineHeight:"16px"}}>Selamat datang {userName} di berandaku, selalu input biar disiplin keuangan 😊✨🐱🏍<br/>Arus kas {masuk>keluar?"masih positif":"perlu perhatian"}. Pengeluaran terbesar {txs[0]?.kategori}. Ingat, foto struk/bon/barang opsional agar riwayat lebih lengkap. Ajakan: Input transaksi hari ini!</div></div>
         </div>
       </div>
-      <div style={{padding:"0 14px"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><b>Transaksi terbaru</b><button onClick={()=>setBottom("riwayat")} style={{border:"none",background:"transparent",color:"#0ea5e9",fontWeight:700}}>Lihat semua</button></div>
-        <div style={{marginTop:10,display:"flex",flexDirection:"column",gap:10}}>
-          {txs.slice(0,4).map(t=>{
-            const src=wallets.find(w=>w.id===t.groupId)
-            return <div key={t.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:12,display:"flex",gap:12,alignItems:"center"}}>
-              <div style={{width:48,height:48,borderRadius:14,background:"#e0f2fe",display:"grid",placeItems:"center",fontSize:18}}>🧾</div>
-              <div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{t.title}</div><div style={{fontSize:11,color:"#64748b"}}>{t.date} • {src?.name} • {t.kategori}</div></div>
-              <div style={{textAlign:"right"}}><div style={{fontSize:10,background:t.jenis==="masuk"?"#dcfce7":"#e0f2fe",display:"inline-block",padding:"2px 8px",borderRadius:12,color:t.jenis==="masuk"?"#166534":"#0369a1"}}>{t.jenis.toUpperCase()}</div><div style={{fontWeight:800,fontSize:13,color:t.jenis==="keluar"?"#ef4444":"#10b981"}}>{t.jenis==="keluar"?"-":"+"} Rp {t.amount.toLocaleString("id-ID")}</div></div>
-            </div>
-          })}
-        </div>
-      </div>
+      <div style={{padding:"0 14px"}}><div style={{display:"flex",justifyContent:"space-between"}}><b>Transaksi terbaru</b><button onClick={()=>setBottom("riwayat")} style={{border:"none",background:"transparent",color:"#0ea5e9",fontWeight:700,fontSize:13}}>Lihat semua</button></div><div style={{marginTop:10,display:"flex",flexDirection:"column",gap:8}}>{txs.slice(0,4).map(t=><div key={t.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,padding:12,display:"flex",gap:10,alignItems:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#e0f2fe",display:"grid",placeItems:"center"}}>🧾</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{t.title}</div><div style={{fontSize:10,color:"#64748b"}}>{t.date} • {t.source} • {t.kategori} {t.foto?"• 📸 Foto":""}</div></div><div style={{textAlign:"right"}}><div style={{fontSize:9,background:t.jenis==="masuk"?"#dcfce7":"#e0f2fe",display:"inline-block",padding:"2px 6px",borderRadius:10}}>{t.jenis.toUpperCase()}</div><div style={{fontWeight:800,fontSize:12,color:t.jenis==="keluar"?"#ef4444":"#10b981"}}>{t.jenis==="keluar"?"-":"+"} Rp {t.amount.toLocaleString("id-ID")}</div></div></div>)}</div></div>
     </>}
+    {mode==="Dompet" && bottom==="riwayat" && <div style={{padding:14}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:20}}>Riwayat transaksi</h2><button onClick={()=>setShowAddTx(true)} style={{background:"#0ea5e9",color:"#fff",border:"none",borderRadius:10,padding:"8px 14px",fontWeight:700}}>+ Tambah</button></div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:12}}><select value={filterPeriode} onChange={e=>setFilterPeriode(e.target.value)} style={{padding:10,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontSize:12}}><option>Semua periode</option><option>Hari ini</option><option>Minggu ini</option><option>Bulan ini</option></select><select value={filterSumber} onChange={e=>setFilterSumber(e.target.value)} style={{padding:10,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontSize:12}}><option>Semua sumber dana</option>{wallets.map(w=><option key={w.id}>{w.name}</option>)}</select><select value={filterKategori} onChange={e=>setFilterKategori(e.target.value)} style={{padding:10,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontSize:12}}><option>Semua kategori</option><option>Makanan</option><option>Transportasi</option><option>Rumah</option><option>Gaji</option></select><select value={filterJenis} onChange={e=>setFilterJenis(e.target.value)} style={{padding:10,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontSize:12}}><option>Semua jenis</option><option>Masuk</option><option>Keluar</option></select></div><select value={filterFoto} onChange={e=>setFilterFoto(e.target.value)} style={{width:"100%",padding:10,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontSize:12,marginTop:8}}><option>Semua status foto</option><option>Ada foto</option><option>Tanpa foto</option></select><div style={{marginTop:12,display:"flex",flexDirection:"column",gap:8}}>{txs.map(t=><div key={t.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,padding:12,display:"flex",gap:10,alignItems:"center"}}><div style={{width:48,height:48,borderRadius:12,background:"#e0f2fe",display:"grid",placeItems:"center",fontSize:20}}>🧾</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{t.title}</div><div style={{fontSize:10,color:"#64748b"}}>{t.date} • {t.source} • {t.kategori} {t.foto?"• 📸":"• Tanpa foto"}</div></div><div style={{textAlign:"right"}}><div style={{fontSize:9,background:t.jenis==="masuk"?"#dcfce7":"#e0f2fe",padding:"2px 6px",borderRadius:8,display:"inline-block"}}>{t.jenis.toUpperCase()}</div><div style={{fontWeight:800,fontSize:12,color:t.jenis==="keluar"?"#ef4444":"#10b981"}}>{t.jenis==="keluar"?"-":"+"} Rp {t.amount.toLocaleString("id-ID")}</div></div></div>)}</div></div>}
+    {bottom==="chat" && <div style={{padding:14}}><h2 style={{margin:0}}>Chat AI</h2><p style={{fontSize:11,color:"#64748b",marginTop:4}}>Voice/type + integrasi Gemini + saran catat pemasukan/pengeluaran</p><div style={{background:"#fff",borderRadius:20,padding:14,marginTop:12,minHeight:420,display:"flex",flexDirection:"column",border:"1px solid #e2e8f0"}}><div style={{flex:1,display:"flex",flexDirection:"column",gap:10,maxHeight:320,overflowY:"auto"}}>{chat.map((c,i)=><div key={i} style={{alignSelf:c.role==="ai"?"flex-start":"flex-end",maxWidth:"85%",background:c.role==="ai"?"#f8fafc":"#0ea5e9",color:c.role==="ai"?"#0f172a":"#fff",borderRadius:16,padding:10,fontSize:12,border:c.role==="ai"?"1px solid #e2e8f0":"none"}}>{c.text}</div>)}</div><div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:12}}>{["Catat pemasukan","Catat pengeluaran","Pengeluaran terbesar","Saldo Saku Dompet","Apakah aku hemat?","Transaksi tanpa foto","Buat anggaran"].map(b=><button key={b} onClick={()=>setChat([...chat,{role:"user",text:b},{role:"ai",text:`Baik ${userName}, ${b} - Total Rp ${total.toLocaleString("id-ID")}. ${b.includes("masuk")?"Pilih sumber dana Tabungan/E-wallet/Cash":b.includes("keluar")?"Pengeluaran akan mengurangi dana dari Tabungan/E-wallet/Cash/Darurat":"Foto struk opsional bisa upload via kamera"}. Selalu input biar disiplin 😊`}])} style={{padding:"6px 10px",borderRadius:16,border:"1px solid #bae6fd",background:"#f0f9ff",color:"#0369a1",fontSize:10,fontWeight:600}}>{b}</button>)}</div><div style={{display:"flex",gap:8,marginTop:12}}><input value={chatInput} onChange={e=>setChatInput(e.target.value)} placeholder="Tanyakan tentang keuanganmu... + voice" style={{flex:1,padding:12,borderRadius:20,border:"1px solid #e2e8f0",background:"#f8fafc",fontSize:12}}/><button onClick={()=>{if(!chatInput) return; setChat([...chat,{role:"user",text:chatInput},{role:"ai",text:`Meta AI Gemini: Hai ${userName}! Saldo Rp ${total.toLocaleString("id-ID")}. Saran sisihkan 20% ke Dana Darurat. Tetap semangat!`} ]); setChatInput("")}} style={{width:44,height:44,borderRadius:12,background:"#0ea5e9",border:"none",color:"#fff"}}>➤</button></div></div></div>}
+    {bottom==="laporan" && <div style={{padding:14}}><div style={{display:"flex",justifyContent:"space-between"}}><h2 style={{margin:0}}>Laporan</h2><button onClick={()=>{const csv=`Tanggal,Judul,Jenis,Jumlah,Sumber,Kategori,Foto\n${txs.map(t=>`${t.date},${t.title},${t.jenis},${t.amount},${t.source},${t.kategori},${t.foto||"tanpa"}`).join("\n")}`; const blob=new Blob([csv],{type:"text/csv"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="laporan-dompet-ai.csv"; a.click()}} style={{border:"none",background:"transparent",color:"#0ea5e9",fontWeight:700}}>Export Google Sheet CSV</button></div><div style={{display:"flex",background:"#fff",borderRadius:14,padding:4,gap:4,marginTop:12,border:"1px solid #e2e8f0"}}>{["Harian","Mingguan","Bulanan"].map(t=><button key={t} onClick={()=>setLaporanTab(t)} style={{flex:1,padding:10,borderRadius:10,border:"none",fontWeight:700,background:laporanTab===t?"#0ea5e9":"transparent",color:laporanTab===t?"#fff":"#64748b",fontSize:12}}>{t}</button>)}</div><div style={{display:"flex",background:"#fff",borderRadius:14,padding:4,gap:4,marginTop:8,border:"1px solid #e2e8f0"}}>{["Sheet","Grafik"].map(t=><button key={t} onClick={()=>setLaporanView(t)} style={{flex:1,padding:10,borderRadius:10,border:"none",fontWeight:700,background:laporanView===t?"#0f172a":"transparent",color:laporanView===t?"#fff":"#64748b",fontSize:12}}>{t}</button>)}</div><div style={{background:"#fff",borderRadius:20,padding:14,marginTop:12,border:"1px solid #e2e8f0"}}>{laporanView==="Sheet"?<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Pemasukan</div><div style={{fontWeight:800,fontSize:13}}>Rp {masuk.toLocaleString("id-ID")}</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Pengeluaran</div><div style={{fontWeight:800,fontSize:13}}>Rp {keluar.toLocaleString("id-ID")}</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Saldo bersih</div><div style={{fontWeight:800,fontSize:13}}>Rp {(masuk-keluar).toLocaleString("id-ID")}</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Transaksi</div><div style={{fontWeight:800,fontSize:13}}>{txs.length}</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Sumber aktif</div><div style={{fontWeight:800,fontSize:12}}>{wallets[0]?.name}</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Kategori terbesar</div><div style={{fontWeight:800,fontSize:12}}>Makanan</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Foto bukti</div><div style={{fontWeight:800}}>50%</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:12,padding:10}}><div style={{fontSize:10,color:"#64748b"}}>Anggaran</div><div style={{fontWeight:800}}>6%</div></div></div>:<div style={{height:160,display:"flex",alignItems:"end",gap:6,marginTop:10}}>{[40,70,30,90,60,45,80].map((h,i)=><div key={i} style={{flex:1,height:h+"%",background:i===3?"#0ea5e9":"#e0f2fe",borderRadius:8}}></div>)}</div>}<div style={{marginTop:10,fontSize:10,color:"#64748b"}}>{laporanTab} • Oktober 2026 • Data demo • Export CSV ke Google Sheet user</div></div></div>}
+    {bottom==="profil" && <div style={{padding:14}}><h2 style={{margin:0}}>Setting - {userName}</h2><div style={{background:"#fff",borderRadius:20,padding:14,marginTop:12,border:"1px solid #e2e8f0"}}><div style={{display:"flex",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid #f1f5f9"}}><div><div style={{fontWeight:700,fontSize:13}}>Mode gelap</div><div style={{fontSize:11,color:"#64748b"}}>Lebih nyaman untuk malam hari</div></div><button onClick={()=>setTheme(theme==="light"?"dark":"light")} style={{width:48,height:28,borderRadius:14,border:"none",background:theme==="dark"?"#0ea5e9":"#cbd5e1",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:theme==="dark"?24:4,transition:"all .2s"}}/></button></div><div style={{display:"flex",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid #f1f5f9"}}><div><div style={{fontWeight:700,fontSize:13}}>Notifikasi keuangan</div><div style={{fontSize:11,color:"#64748b"}}>Pengingat tagihan dan target tabungan</div></div><div style={{width:48,height:28,borderRadius:14,background:"#0ea5e9",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:24}}/></div></div><div style={{display:"flex",justifyContent:"space-between",padding:"12px 0"}}><div><div style={{fontWeight:700,fontSize:13}}>Insight AI</div><div style={{fontSize:11,color:"#64748b"}}>Saran singkat berdasarkan aktivitasmu</div></div><div style={{width:48,height:28,borderRadius:14,background:"#0ea5e9",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:24}}/></div></div></div><h3 style={{marginTop:16,fontSize:16}}>Gaya font - 4 pilihan Bold</h3><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:8}}>{["Standar","Elegan","SANTAi","Tegas"].map(f=><button key={f} onClick={()=>setFont(f)} style={{padding:12,borderRadius:12,border:font===f?"2px solid #0ea5e9":"1px solid #e2e8f0",background:"#fff",fontWeight:700,fontSize:13}}>{f}</button>)}</div><div style={{marginTop:16,background:"#f8fafc",borderRadius:12,padding:10,fontSize:10,color:"#64748b"}}>Izin: Drive Folder DompetAI sendiri - Sheet Export - Kamera Upload foto struk/bon/barang opsional - Meta AI Voice/Type - Supabase 1 Project - Vercel/Netlify 1 - Region {region} - Global bank {BANKS_GLOBAL.join(", ")} + {wallets[0]?.currency} - Crypto 2FA Seed QR TrustWallet/Metamask BSCScan 15 menit real-time</div><button onClick={()=>{localStorage.clear();location.reload()}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:"#fee2e2",color:"#ef4444",border:"none",fontWeight:700}}>Reset & Logout - Hapus PIN 2X + Seed</button></div></div>}
 
-    {bottom==="riwayat" && <div style={{padding:14}}><div style={{display:"flex",justifyContent:"space-between"}}><h2 style={{margin:0}}>Riwayat</h2><button onClick={()=>setShowAddTx(true)} style={{background:"#0ea5e9",color:"#fff",border:"none",borderRadius:10,padding:"8px 14px",fontWeight:700}}>+ Input</button></div><div style={{marginTop:12,display:"flex",flexDirection:"column",gap:8}}>{txs.map(t=><div key={t.id} style={{background:"#fff",borderRadius:16,padding:12,display:"flex",gap:12,border:"1px solid #e2e8f0"}}><div style={{width:48,height:48,borderRadius:12,background:"#f1f5f9",display:"grid",placeItems:"center"}}>🧾</div><div style={{flex:1}}><div style={{fontWeight:700}}>{t.title}</div><div style={{fontSize:11,color:"#64748b"}}>{t.date}</div></div><div style={{fontWeight:800}}>Rp {t.amount.toLocaleString("id-ID")}</div></div>)}</div></div>}
-    {bottom==="chat" && <div style={{padding:14}}><h2 style={{margin:0}}>Chat AI</h2><div style={{background:"#fff",borderRadius:20,padding:16,marginTop:12,minHeight:400,display:"flex",flexDirection:"column"}}><div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>{chat.map((c,i)=><div key={i} style={{alignSelf:c.role==="ai"?"flex-start":"flex-end",maxWidth:"85%",background:c.role==="ai"?"#f8fafc":"#0ea5e9",color:c.role==="ai"?"#0f172a":"#fff",borderRadius:16,padding:12,fontSize:13}}>{c.text}</div>)}</div><div style={{display:"flex",gap:8,marginTop:14}}><input value={chatInput} onChange={e=>setChatInput(e.target.value)} placeholder="Tanya keuangan..." style={{flex:1,padding:14,borderRadius:24,border:"1px solid #e2e8f0"}}/><button onClick={()=>{if(!chatInput) return; setChat([...chat,{role:"user",text:chatInput},{role:"ai",text:"Hai "+userName+"! Saldo Rp "+total.toLocaleString("id-ID")+" - tetap disiplin ya 😊"}]); setChatInput("")}} style={{width:48,height:48,borderRadius:14,background:"#0ea5e9",border:"none",color:"#fff"}}>➤</button></div></div></div>}
-    {bottom==="laporan" && <div style={{padding:14}}><h2 style={{margin:0}}>Laporan</h2><div style={{background:"#fff",borderRadius:20,padding:14,marginTop:12}}><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><div style={{border:"1px solid #e2e8f0",borderRadius:14,padding:12}}><div style={{fontSize:11}}>Pemasukan</div><div style={{fontWeight:800}}>Rp {masuk.toLocaleString("id-ID")}</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:14,padding:12}}><div style={{fontSize:11}}>Pengeluaran</div><div style={{fontWeight:800}}>Rp {keluar.toLocaleString("id-ID")}</div></div></div></div></div>}
-    {bottom==="profil" && <div style={{padding:14}}><h2 style={{margin:0}}>Profil - {userName}</h2><div style={{background:"#fff",borderRadius:20,padding:16,marginTop:12}}><div style={{fontSize:12,color:"#64748b"}}>Dark/day, font Standar Elegan SANTAi Tegas, izin Drive folder sendiri, kamera, Sheet, Meta AI voice/type, Google Sheet user. Crypto 2FA seed phrase, BSCScan 15 menit.</div><button onClick={()=>{localStorage.clear();location.reload()}} style={{width:"100%",marginTop:12,padding:12,borderRadius:10,background:"#fee2e2",color:"#ef4444",border:"none",fontWeight:700}}>Reset</button></div></div>}
-
-    {showAddWallet && <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",display:"grid",placeItems:"center",zIndex:90,padding:20}}><div style={{background:"#fff",borderRadius:20,padding:18,width:"100%",maxWidth:360,maxHeight:"90vh",overflowY:"auto"}}>
-      <h3 style={{margin:0}}>Edit Sumber Dana - {selectedSource?.name}</h3>
-      <p style={{fontSize:11,color:"#64748b"}}>Nama bank + input nomor rekening hide/show + copy + jumlah uang - Warna bisa pilih</p>
+    {showAddWallet && <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",display:"grid",placeItems:"center",zIndex:90,padding:16}}><div style={{background:"#fff",borderRadius:20,padding:16,width:"100%",maxWidth:360,maxHeight:"92vh",overflowY:"auto"}}>
+      <h3 style={{margin:0,fontSize:16}}>Edit Sumber Dana - {selectedSource?.name}</h3>
+      <p style={{fontSize:10,color:"#64748b",marginTop:4}}>Nama bank + input norek hide/show + copy + jumlah + warna bisa pilih + platform + tgl jatuh tempo notif</p>
       <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
-        <input value={newWallet.name||selectedSource?.name||""} onChange={e=>setNewWallet({...newWallet,name:e.target.value})} placeholder="Nama bank / Grup" style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/>
-        <select value={newWallet.type||selectedSource?.type||"tabungan"} onChange={e=>setNewWallet({...newWallet,type:e.target.value})} style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}>
-          <option value="tabungan">1.1 Tabungan (list bank+e-wallet)</option>
-          <option value="ewallet">1.2 E-wallet</option>
-          <option value="cash">1.3 Cash dompet (1 tab)</option>
-          <option value="cicilan">1.4 Cicilan - platform + tgl jatuh tempo + notif</option>
-          <option value="pengeluaran">1.5 Pengeluaran (1 tab)</option>
-          <option value="darurat">1.6 Dana Darurat wajib pisah</option>
-        </select>
-        <input value={newWallet.bank||selectedSource?.bank||""} onChange={e=>setNewWallet({...newWallet,bank:e.target.value})} placeholder="Bank BCA BNI BRI GoPay OVO DANA" style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/>
-        <div style={{display:"flex",gap:6}}>
-          <input value={newWallet.norek||selectedSource?.norek||""} onChange={e=>setNewWallet({...newWallet,norek:e.target.value})} placeholder="No rekening - hide/show - copy" style={{flex:1,padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/>
-          <button onClick={()=>navigator.clipboard?.writeText(newWallet.norek||selectedSource?.norek||"")} style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0",background:"#f1f5f9"}}>📋</button>
-        </div>
-        <input type="number" value={newWallet.balance||selectedSource?.balance||0} onChange={e=>setNewWallet({...newWallet,balance:Number(e.target.value)})} placeholder="Jumlah uang" style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/>
-        {(newWallet.type==="cicilan"||selectedSource?.type==="cicilan") && <><input value={newWallet.platform||selectedSource?.platform||""} onChange={e=>setNewWallet({...newWallet,platform:e.target.value})} placeholder="Platform FIF Kredivo" style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/><input type="date" value={newWallet.dueDate||selectedSource?.dueDate||""} onChange={e=>setNewWallet({...newWallet,dueDate:e.target.value})} style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/></>}
-        <div><div style={{fontSize:11}}>Warna bisa pilih</div><div style={{display:"flex",gap:6,marginTop:6,flexWrap:"wrap"}}>{COLORS.map(c=><button key={c} onClick={()=>setNewWallet({...newWallet,color:c})} style={{width:32,height:32,borderRadius:8,background:c,border:(newWallet.color||selectedSource?.color)===c?"3px solid #000":"1px solid #e2e8f0"}}/>)}</div></div>
-        <div style={{display:"flex",gap:8,marginTop:8}}>
-          <button onClick={()=>setShowAddWallet(false)} style={{flex:1,padding:12,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff"}}>Batal</button>
-          <button onClick={()=>{
-            if(selectedSource){
-              setWallets(wallets.map(w=>w.id===selectedSource.id?{...w,name:newWallet.name||w.name,type:newWallet.type||w.type,bank:newWallet.bank||w.bank,norek:newWallet.norek||w.norek,balance:newWallet.balance||w.balance,color:newWallet.color||w.color,platform:newWallet.platform||w.platform,dueDate:newWallet.dueDate||w.dueDate}:w))
-            }else{
-              setWallets([...wallets,{id:Date.now().toString(),name:newWallet.name||"Baru",type:newWallet.type||"tabungan",color:newWallet.color||COLORS[0],bank:newWallet.bank||"BCA",norek:newWallet.norek||"-",balance:newWallet.balance||0,icon:"🏦"}])
-            }
-            setShowAddWallet(false); setSelectedSource(null); setNewWallet({name:"",type:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:""})
-          }} style={{flex:1,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800}}>Simpan - AI hitung saldo tujuan</button>
-        </div>
+        <input value={newWallet.name} onChange={e=>setNewWallet({...newWallet,name:e.target.value})} placeholder="Nama bank / Grup - Tabungan/E-wallet/Cash/Cicilan/Pengeluaran/Darurat" style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/>
+        <select value={newWallet.type} onChange={e=>setNewWallet({...newWallet,type:e.target.value})} style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}><option value="tabungan">1.1 Tabungan - List bank BCA BNI BRI + e-wallet + norek show/hidden + warna</option><option value="ewallet">1.2 E-wallet - GoPay OVO DANA LinkAja</option><option value="cash">1.3 Cash Dompet - Hanya 1 tab + warna</option><option value="cicilan">1.4 Cicilan - Custom platform + tgl jatuh tempo notif + warna</option><option value="pengeluaran">1.5 Pengeluaran - Hanya 1 tab + custom warna</option><option value="darurat">1.6 Dana Darurat Wajib - Pisah gak boleh campur + warna</option></select>
+        <select value={newWallet.bank} onChange={e=>setNewWallet({...newWallet,bank:e.target.value})} style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}><optgroup label="ID">{BANKS_ID.map(b=><option key={b}>{b}</option>)}</optgroup><optgroup label="GLOBAL">{BANKS_GLOBAL.map(b=><option key={b}>{b}</option>)}</optgroup></select>
+        <div style={{display:"flex",gap:6}}><input value={newWallet.norek} onChange={e=>setNewWallet({...newWallet,norek:e.target.value})} placeholder="No rekening - hide/show - copy" style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/><button onClick={()=>navigator.clipboard?.writeText(newWallet.norek)} style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#f1f5f9",fontSize:12}}>📋</button></div>
+        <div style={{display:"flex",gap:6}}><input type="number" value={newWallet.balance} onChange={e=>setNewWallet({...newWallet,balance:Number(e.target.value)})} placeholder="Jumlah uang" style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/><select value={newWallet.currency} onChange={e=>setNewWallet({...newWallet,currency:e.target.value})} style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}><option>IDR</option><option>USD</option><option>EUR</option><option>SGD</option><option>JPY</option></select></div>
+        {(newWallet.type==="cicilan")&&<><input value={newWallet.platform} onChange={e=>setNewWallet({...newWallet,platform:e.target.value})} placeholder="Platform FIF Adira Kredivo" style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/><input type="date" value={newWallet.dueDate} onChange={e=>setNewWallet({...newWallet,dueDate:e.target.value})} style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/></>}
+        <div><div style={{fontSize:10}}>Warna bisa pilih</div><div style={{display:"flex",gap:6,marginTop:6,flexWrap:"wrap"}}>{COLORS.map(c=><button key={c} onClick={()=>setNewWallet({...newWallet,color:c})} style={{width:28,height:28,borderRadius:8,background:c,border:newWallet.color===c?"3px solid #000":"1px solid #e2e8f0"}}/>)}</div></div>
+        <div style={{display:"flex",gap:8,marginTop:8}}><button onClick={()=>{setShowAddWallet(false);setSelectedSource(null)}} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:12}}>Batal</button><button onClick={()=>{if(selectedSource){setWallets(wallets.map(w=>w.id===selectedSource.id?{...w,name:newWallet.name||w.name,type:newWallet.type,bank:newWallet.bank,norek:newWallet.norek,balance:newWallet.balance,color:newWallet.color,platform:newWallet.platform,dueDate:newWallet.dueDate,currency:newWallet.currency}:w))}else{setWallets([...wallets,{id:Date.now().toString(),name:newWallet.name||"Baru",type:newWallet.type,color:newWallet.color,bank:newWallet.bank,norek:newWallet.norek||"-",balance:newWallet.balance||0,currency:newWallet.currency,icon:"🏦"}])} setShowAddWallet(false);setSelectedSource(null)}} style={{flex:1,padding:10,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:12}}>Simpan - AI hitung saldo tujuan</button></div>
       </div>
     </div></div>}
 
-    {showAddTx && <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",display:"grid",placeItems:"center",zIndex:90,padding:20}}><div style={{background:"#fff",borderRadius:20,padding:18,width:"100%",maxWidth:360}}>
-      <h3 style={{margin:0}}>Input Masuk/Keluar - Sumber Dana</h3>
-      <p style={{fontSize:11,color:"#64748b"}}>Algoritma: Pengeluaran & Cicilan mengurangi dana dari Tabungan/E-wallet/Cash/Darurat</p>
+    {showAddTx && <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",display:"grid",placeItems:"center",zIndex:90,padding:16}}><div style={{background:"#fff",borderRadius:20,padding:16,width:"100%",maxWidth:360}}>
+      <h3 style={{margin:0,fontSize:16}}>Input Masuk/Keluar + Foto Kamera</h3>
+      <p style={{fontSize:10,color:"#64748b",marginTop:4}}>Algoritma: Pengeluaran & Cicilan mengurangi dana bisa dari Tabungan/E-wallet/Cash/Darurat. Foto struk/bon/barang opsional</p>
       <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
-        <input value={newTx.title} onChange={e=>setNewTx({...newTx,title:e.target.value})} placeholder="Judul transaksi" style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/>
-        <input type="number" value={newTx.amount||""} onChange={e=>setNewTx({...newTx,amount:Number(e.target.value)})} placeholder="Jumlah" style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}/>
-        <select value={newTx.sourceId} onChange={e=>setNewTx({...newTx,sourceId:e.target.value,groupId:e.target.value})} style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}>{wallets.map(w=><option key={w.id} value={w.id}>{w.name} - {w.bank} - Rp {w.balance.toLocaleString("id-ID")}</option>)}</select>
-        <select value={newTx.jenis} onChange={e=>setNewTx({...newTx,jenis:e.target.value})} style={{padding:12,borderRadius:10,border:"1px solid #e2e8f0"}}><option value="masuk">Masuk Dana (+)</option><option value="keluar">Keluar Dana (-) - Kurangi sumber</option></select>
-        <div style={{display:"flex",gap:8}}><button onClick={()=>setShowAddTx(false)} style={{flex:1,padding:12,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff"}}>Batal</button><button onClick={()=>{
-          if(!newTx.title||!newTx.amount) return;
-          const src = wallets.find(w=>w.id===newTx.sourceId)
-          const isPengeluaran = src?.type==="pengeluaran" || src?.type==="cicilan" || newTx.jenis==="keluar"
-          setTxs([{id:Date.now().toString(),title:newTx.title,amount:newTx.amount,groupId:newTx.sourceId,jenis:newTx.jenis,kategori:newTx.kategori,date:new Date().toLocaleDateString("id-ID")},...txs])
-          setWallets(wallets.map(w=>{
-            if(w.id===newTx.sourceId){
-              if(newTx.jenis==="masuk"){
-                return {...w,balance:w.balance+newTx.amount}
-              }else{
-                // pengeluaran & cicilan mengurangi dana
-                return {...w,balance:Math.max(0,w.balance-newTx.amount)}
-              }
-            }
-            return w
-          }))
-          setShowAddTx(false)
-        }} style={{flex:1,padding:12,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800}}>Simpan - AI hitung</button></div>
+        <input value={newTx.title} onChange={e=>setNewTx({...newTx,title:e.target.value})} placeholder="Judul transaksi - Kopi, Gaji, Cicilan Motor" style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/>
+        <input type="number" value={newTx.amount||""} onChange={e=>setNewTx({...newTx,amount:Number(e.target.value)})} placeholder="Jumlah Rp / USD / EUR" style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/>
+        <select value={newTx.sourceId} onChange={e=>setNewTx({...newTx,sourceId:e.target.value,groupId:e.target.value})} style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}>{wallets.map(w=><option key={w.id} value={w.id}>{w.name} - {w.bank} - {w.currency} - Rp {w.balance.toLocaleString("id-ID")}</option>)}</select>
+        <select value={newTx.jenis} onChange={e=>setNewTx({...newTx,jenis:e.target.value})} style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}><option value="masuk">Masuk Dana (+) - Nambah saldo tujuan</option><option value="keluar">Keluar Dana (-) - Kurangi sumber Tabungan/E-wallet/Cash/Darurat</option></select>
+        <input value={newTx.kategori} onChange={e=>setNewTx({...newTx,kategori:e.target.value})} placeholder="Kategori - Makanan, Transport, Gaji" style={{padding:10,borderRadius:10,border:"1px solid #e2e8f0",fontSize:12}}/>
+        <input ref={fotoRef} type="file" accept="image/*" capture="environment" style={{display:"none"}} onChange={e=>{const f=e.target.files?.[0]; if(f){const r=new FileReader(); r.onload=()=>setNewTx({...newTx,foto:r.result}); r.readAsDataURL(f)}}}/>
+        <button onClick={()=>fotoRef.current?.click()} style={{padding:10,borderRadius:10,border:"1px dashed #0ea5e9",background:"#f0f9ff",color:"#0ea5e9",fontWeight:700,fontSize:12}}>📷 Upload Foto Kamera - Struk/Bon/Barang Opsional</button>
+        {newTx.foto && <div style={{fontSize:10,color:"#10b981"}}>Foto terupload - akan simpan ke Drive folder DompetAI</div>}
+        <div style={{display:"flex",gap:8}}><button onClick={()=>setShowAddTx(false)} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:12}}>Batal</button><button onClick={()=>{if(!newTx.title||!newTx.amount) return; const src=wallets.find(w=>w.id===newTx.sourceId); setTxs([{id:Date.now().toString(),title:newTx.title,amount:newTx.amount,groupId:newTx.sourceId,jenis:newTx.jenis,kategori:newTx.kategori||"Lainnya",date:new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"}),foto:newTx.foto,source:src?.name||"Tabungan"},...txs]); setWallets(wallets.map(w=>{if(w.id===newTx.sourceId){ if(newTx.jenis==="masuk") return {...w,balance:w.balance+newTx.amount}; else return {...w,balance:Math.max(0,w.balance-newTx.amount)} } return w})); setShowAddTx(false); setNewTx({title:"",amount:0,groupId:"1",jenis:"keluar",kategori:"Makanan",sourceId:"1",foto:null})}} style={{flex:1,padding:10,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:12}}>Simpan - AI Hitung</button></div>
       </div>
     </div></div>}
 
-    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:440,background:"#fff",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-around",padding:"8px 0 18px",zIndex:20}}>
-      <button onClick={()=>setBottom("beranda")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>🏠</div><div style={{fontSize:10,fontWeight:700}}>Beranda</div></button>
-      <button onClick={()=>setBottom("riwayat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>🧾</div><div style={{fontSize:10,fontWeight:700}}>Input</div></button>
-      <button onClick={()=>setBottom("chat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>💬</div><div style={{fontSize:10,fontWeight:700}}>Chat AI</div></button>
-      <button onClick={()=>setBottom("laporan")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>📊</div><div style={{fontSize:10,fontWeight:700}}>Laporan</div></button>
-      <button onClick={()=>setBottom("profil")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>⚙️</div><div style={{fontSize:10,fontWeight:700}}>Profil</div></button>
+    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:440,background:"#fff",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-around",padding:"8px 0 14px",zIndex:30}}>
+      <button onClick={()=>setBottom("beranda")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>🏠</div><div style={{fontSize:9,fontWeight:700}}>Beranda</div></button>
+      <button onClick={()=>setBottom("riwayat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>🧾</div><div style={{fontSize:9,fontWeight:700}}>Input</div></button>
+      <button onClick={()=>setBottom("chat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>💬</div><div style={{fontSize:9,fontWeight:700}}>Chat AI</div></button>
+      <button onClick={()=>setBottom("laporan")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>📊</div><div style={{fontSize:9,fontWeight:700}}>Laporan</div></button>
+      <button onClick={()=>setBottom("profil")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:22}}>⚙️</div><div style={{fontSize:9,fontWeight:700}}>Profil</div></button>
     </div>
   </div>
 }

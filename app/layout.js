@@ -1,0 +1,1 @@
+export const metadata={title:"Dompet AI V25 JS"}; export default function L({children}){return <html><head><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/></head><body style={{margin:0,background:"#eef6ff"}}>{children}</body></html>}

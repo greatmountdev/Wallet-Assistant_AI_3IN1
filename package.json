@@ -1,5 +1,5 @@
 {
-  "name": "dompet-v29-permit",
+  "name": "dompet-i18n-full",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,5 +1,5 @@
 {
-  "name": "dompet-ai-v25-js",
+  "name": "dompet-ai-burger",
   "private": true,
   "scripts": {
     "dev": "next dev",

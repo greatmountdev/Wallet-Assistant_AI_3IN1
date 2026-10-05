@@ -1,15 +1,1 @@
-{
-  "name": "Dompet AI V27 Final Grafik Font",
-  "short_name": "Dompet AI",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#f1f7ff",
-  "theme_color": "#0ea5e9",
-  "icons": [
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ]
-}
+{"name":"Dompet AI Universal","short_name":"Dompet AI","start_url":"/","display":"standalone","theme_color":"#0ea5e9","icons":[{"src":"/icon-192.png","sizes":"192x192","type":"image/png"}]}

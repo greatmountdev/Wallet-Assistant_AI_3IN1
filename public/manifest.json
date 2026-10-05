@@ -1,7 +1,6 @@
 {
-  "name": "Dompet AI 3IN1 - ID GLOBAL BOTH",
+  "name": "Dompet AI V27",
   "short_name": "Dompet AI",
-  "description": "Pilih ID/GLOBAL/BOTH Login Google/Facebook PIN 2x Seed 12 kata - 5 Menu - Crypto BSCScan 15 menit",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f1f7ff",
@@ -10,11 +9,6 @@
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
       "type": "image/png"
     }
   ]

@@ -1,1 +1,1 @@
-export default function L({children}:{children:any}){return <html><body style={{margin:0,fontFamily:'Inter,sans-serif'}}>{children}</body></html>}
+export default function L({children}:{children:any}){return <html><body style={{margin:0}}>{children}</body></html>}

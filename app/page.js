@@ -105,7 +105,7 @@ export default function Page(){
     </div>
   }
   // MAIN
-  return <div style={{maxWidth:440,margin:"0 auto",minHeight:"100vh",background:theme==="light"?"#f1f7ff":"#0a0a0b",color:theme==="light"?"#0f172a":"#fff",fontFamily:"Inter,sans-serif",paddingBottom:88}}>
+  return <div style={{maxWidth:440,margin:"0 auto",minHeight:"100vh",background:theme==="light"?"#f1f7ff":"#0a0a0b",color:theme==="light"?"#0f172a":"#fff",fontFamily:fontCfg.family,fontSize:fontCfg.size,fontWeight:fontCfg.weight,lineHeight:fontCfg.lineHeight,letterSpacing:fontCfg.letterSpacing,paddingBottom:88}}>
     {/* HEADER GRADASI */}
     <div style={{background:"linear-gradient(90deg,#06b6d4,#8b5cf6)",padding:"12px 14px 0",color:"#fff",position:"sticky",top:0,zIndex:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -172,7 +172,12 @@ export default function Page(){
         <div style={{display:"flex",justifyContent:"space-between",padding:"12px 0"}}><div><div style={{fontWeight:700,fontSize:13}}>Insight AI</div><div style={{fontSize:11,color:"#64748b"}}>Saran singkat berdasarkan aktivitasmu</div></div><button onClick={()=>setInsightOn(!insightOn)} style={{width:52,height:30,borderRadius:15,border:"none",background:insightOn?"#0ea5e9":"#cbd5e1",position:"relative"}}><div style={{width:22,height:22,borderRadius:11,background:"#fff",position:"absolute",top:4,left:insightOn?26:4}}/></button></div>
       </div>
       <h3 style={{marginTop:16,fontSize:16}}>Gaya font</h3>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:8}}>{["Standar","Elegan","SANTAi","Tegas"].map(f=><button key={f} onClick={()=>setFont(f)} style={{padding:12,borderRadius:12,border:font===f?"2px solid #0ea5e9":"1px solid #e2e8f0",background:"#fff",fontWeight:700,fontSize:13}}>{f}</button>)}</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:8}}>{[
+          {k:"Standar",desc:"Inter normal - sehari-hari"},
+          {k:"Elegan",desc:"Serif mewah - elegan"},
+          {k:"SANTAi",desc:"Comic playful - santai"},
+          {k:"Tegas",desc:"BESAR BOLD - manula 👓 mudah baca"},
+        ].map(f=><button key={f.k} onClick={()=>setFont(f.k)} style={{padding:10,borderRadius:12,border:font===f.k?"2px solid #0ea5e9":"1px solid #e2e8f0",background:font===f.k?"#e0f2fe":"#fff",fontWeight:font===f.k?"900":"700",fontSize:font===f.k&&f.k==="Tegas"?"14px":"12px",textAlign:"left"}}><div>{f.k} {font===f.k?"✓":""}</div><div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:2}}>{f.desc}</div></button>)}</div>
       <div style={{background:"#fff",borderRadius:16,padding:12,marginTop:16,border:"1px solid #e2e8f0"}}>
         <div style={{fontWeight:700,fontSize:13}}>Akun Terhubung</div>
         <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6,fontSize:12}}>

@@ -1,5 +1,5 @@
 {
-  "name": "dompet-v27",
+  "name": "dompet-v27-final",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,0 +1,1 @@
+export const metadata={title:"Dompet AI 6 Grup FIX - Salah Satu Sumber - Build Success V36"}; export default function RootLayout({children}){return <html lang="id"><head><link rel="manifest" href="/manifest.json"/><meta name="viewport" content="width=device-width, initial-scale=1"/></head><body style={{margin:0}}>{children}</body></html>}

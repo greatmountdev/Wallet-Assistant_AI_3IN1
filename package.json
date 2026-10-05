@@ -1,5 +1,5 @@
 {
-  "name": "dompet-6grup",
+  "name": "dompet-6grup-fix-build",
   "private": true,
   "scripts": {
     "dev": "next dev",

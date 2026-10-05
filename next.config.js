@@ -1,1 +1,3 @@
-module.exports={eslint:{ignoreDuringBuilds:true},typescript:{ignoreBuildErrors:true},images:{unallowedHeaders:[]}}
+/** @type {import('next').NextConfig} */
+const nextConfig={eslint:{ignoreDuringBuilds:true},typescript:{ignoreBuildErrors:true}};
+module.exports=nextConfig;

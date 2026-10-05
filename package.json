@@ -1,5 +1,5 @@
 {
-  "name": "dompet-universal",
+  "name": "dompet-v29-permit",
   "private": true,
   "scripts": {
     "dev": "next dev",

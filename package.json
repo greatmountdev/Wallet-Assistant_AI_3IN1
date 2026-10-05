@@ -1,5 +1,5 @@
 {
-  "name": "dompet-ai-final",
+  "name": "dompet-pwa",
   "private": true,
   "scripts": {
     "dev": "next dev",

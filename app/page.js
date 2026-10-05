@@ -169,7 +169,7 @@ export default function Page(){
             return <div key={t.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:12,display:"flex",gap:12,alignItems:"center"}}>
               <div style={{width:48,height:48,borderRadius:14,background:"#e0f2fe",display:"grid",placeItems:"center",fontSize:18}}>🧾</div>
               <div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{t.title}</div><div style={{fontSize:11,color:"#64748b"}}>{t.date} • {src?.name} • {t.kategori}</div></div>
-              <div style={{textAlign:"right"}}><div style={{fontSize:10,background:"#e0f2fe",display:"inline-block",padding:"2px 8px",borderRadius:12,color:"#0369a1"}}>{t.jenis.toUpperCase()}</div><div style={{fontWeight:800,fontSize:13,color:t.jenis==="keluar"?"#ef4444":"#10b981"}}>- Rp {t.amount.toLocaleString("id-ID")}</div></div>
+              <div style={{textAlign:"right"}}><div style={{fontSize:10,background:t.jenis==="masuk"?"#dcfce7":"#e0f2fe",display:"inline-block",padding:"2px 8px",borderRadius:12,color:t.jenis==="masuk"?"#166534":"#0369a1"}}>{t.jenis.toUpperCase()}</div><div style={{fontWeight:800,fontSize:13,color:t.jenis==="keluar"?"#ef4444":"#10b981"}}>{t.jenis==="keluar"?"-":"+"} Rp {t.amount.toLocaleString("id-ID")}</div></div>
             </div>
           })}
         </div>

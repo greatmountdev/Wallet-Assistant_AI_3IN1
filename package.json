@@ -1,5 +1,5 @@
 {
-  "name": "dompet-i18n-full",
+  "name": "dompet-v31-full",
   "private": true,
   "scripts": {
     "dev": "next dev",

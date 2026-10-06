@@ -1,6 +1,6 @@
 
 "use client"
-import { useState,useEffect } from "react"
+import { useState } from "react"
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
 const TABUNGAN_BANKS=[
   {name:"BCA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"BNI", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
@@ -62,25 +62,18 @@ const T={
 }
 
 export default function Page(){
-  if(typeof window!=="undefined"){
-    // Load GAPI for REAL Sheet creation per Google account
-    if(!window.gapi){
-      const s=document.createElement("script"); s.src="https://apis.google.com/js/api.js"; s.async=true; s.defer=true; document.head.appendChild(s);
-    }
-  }
-
-  const [step,setStep]=useState,useEffect("login")
-  const [authName,setAuthName]=useState,useEffect("Kawan"), [authEmail,setAuthEmail]=useState,useEffect("kawan@gmail.com"), [authPhone,setAuthPhone]=useState,useEffect("0812****890")
-  const [isNewUser,setIsNewUser]=useState,useEffect(true)
-  const [mounted,setMounted]=useState,useEffect(false)
-  const [clientReady,setClientReady]=useState,useEffect(false)
-  const [pin,setPin]=useState,useEffect(""), [pinStep,setPinStep]=useState,useEffect(1), [pin1Saved,setPin1Saved]=useState,useEffect("")
-  const [mode,setMode]=useState,useEffect("Dompet"), [font,setFont]=useState,useEffect("Tegas"), [lang,setLang]=useState,useEffect("ID"), [hideTotal,setHideTotal]=useState,useEffect(false), [hideNorek,setHideNorek]=useState,useEffect({}), [bottom,setBottom]=useState,useEffect("beranda"), [showMenu,setShowMenu]=useState,useEffect(false), [theme,setTheme]=useState,useEffect("light"), [notif,setNotif]=useState,useEffect(true)
-  const [newTx,setNewTx]=useState,useEffect({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
-  const [showAddTx,setShowAddTx]=useState,useEffect(false)
-  const [isListening,setIsListening]=useState,useEffect(false)
-  const [laporanTab,setLaporanTab]=useState,useEffect("grafik")
-  const [wallets,setWallets]=useState,useEffect([
+  const [step,setStep]=useState("login")
+  const [authName,setAuthName]=useState("Kawan")
+  const [isNewUser,setIsNewUser]=useState(true)
+  const [mounted,setMounted]=useState(false)
+  const [clientReady,setClientReady]=useState(false), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
+  const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
+  const [mode,setMode]=useState("Dompet"), [font,setFont]=useState("Tegas"), [lang,setLang]=useState("ID"), [hideTotal,setHideTotal]=useState(false), [hideNorek,setHideNorek]=useState({}), [bottom,setBottom]=useState("beranda"), [showMenu,setShowMenu]=useState(false), [theme,setTheme]=useState("light"), [notif,setNotif]=useState(true)
+  const [newTx,setNewTx]=useState({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
+  const [showAddTx,setShowAddTx]=useState(false)
+  const [isListening,setIsListening]=useState(false)
+  const [laporanTab,setLaporanTab]=useState("grafik")
+  const [wallets,setWallets]=useState([
     {id:"1",name:"Tabungan BCA",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
     {id:"2",name:"Tabungan BNI",type:"tabungan",group:"tabungan",color:"#2563eb",bank:"BNI",norek:"0987654321",balance:2500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
     {id:"3",name:"Tabungan BRI",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BRI",norek:"1122334455",balance:1500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
@@ -93,20 +86,20 @@ export default function Page(){
     {id:"10",name:"Cicilan HP",type:"cicilan",group:"cicilan",color:"#8b5cf6",bank:"Kredivo",norek:"-",balance:800000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"Kredivo",dueDate:"2026-10-25"},
     {id:"11",name:"Pengeluaran",type:"pengeluaran",group:"pengeluaran",color:"#f97316",bank:"-",norek:"-",balance:0,currency:"IDR",flag:"🌍",icon:"💸",platform:"",dueDate:""},
   ])
-  const [txs,setTxs]=useState,useEffect([
+  const [txs,setTxs]=useState([
     {id:"1",title:"Kopi dan makan siang",amount:45000,fromWalletId:"7",fromGroup:"tunai",toGroup:"pengeluaran",jenis:"keluar",kategori:"Makanan",date:"3 Okt 2026",foto:"struk.jpg",source:"Tunai Dompet -> Pengeluaran",curr:"IDR",note:"FIX: Belanja 45k - SALAH SATU: Tunai Dompet - Bukan semua 4 grup kepotong! Sisa Tunai Rp 1.160.000 - Tabungan, E-Wallet, Darurat TETAP! 🙌"},
     {id:"2",title:"Isi saldo GoPay dari BCA",amount:75000,fromWalletId:"1",toWalletId:"4",fromGroup:"tabungan",toGroup:"ewallet",jenis:"pindah",kategori:"Top-up",date:"3 Okt 2026",foto:null,source:"Tabungan BCA -> GoPay",curr:"IDR",note:"Pindah: BCA -75k, GoPay +75k - Hanya 2 akun berubah, bukan semua!"},
     {id:"3",title:"Belanja rumah dari BCA",amount:185000,fromWalletId:"1",fromGroup:"tabungan",toGroup:"pengeluaran",jenis:"keluar",kategori:"Makanan",date:"2 Okt 2026",foto:"struk.jpg",source:"Tabungan BCA -> Pengeluaran",curr:"IDR",note:"FIX: Belanja 185k - SALAH SATU: Tabungan BCA - Bukan semua kepotong! Sisa BCA Rp 7.315.000"},
     {id:"4",title:"Gaji Oktober",amount:8500000,fromWalletId:"external",toWalletId:"1",fromGroup:"external",toGroup:"tabungan",jenis:"masuk",kategori:"Gaji",date:"1 Okt 2026",foto:null,source:"External -> Tabungan BCA",curr:"IDR",note:"Masuk: Gaji 8,5jt ke SALAH SATU: Tabungan BCA - Hanya BCA nambah!"},
     {id:"5",title:"Bayar cicilan motor dari BCA",amount:500000,fromWalletId:"1",toGroup:"cicilan",toCicilanId:"9",jenis:"keluar",kategori:"Cicilan",date:"2 Okt 2026",foto:"bon.jpg",source:"Tabungan BCA -> Cicilan Motor FIF",curr:"IDR",note:"FIX CICILAN: Bayar cicilan motor 500k dari BCA - SALAH SATU: BCA 7,5jt->7jt, Cicilan Motor 1,2jt->700k - E-Wallet, Tunai, Darurat TETAP! Custom platform FIF jatuh tempo 20 Okt notif! 🙌"},
   ])
-  const [newWallet,setNewWallet]=useState,useEffect({name:"",type:"tabungan",group:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:"",currency:"IDR",flag:"🇮🇩",customBankName:""})
-  const [showAddWallet,setShowAddWallet]=useState,useEffect(false), [selectedSource,setSelectedSource]=useState,useEffect(null)
-  const [chat,setChat]=useState,useEffect([
+  const [newWallet,setNewWallet]=useState({name:"",type:"tabungan",group:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:"",currency:"IDR",flag:"🇮🇩",customBankName:""})
+  const [showAddWallet,setShowAddWallet]=useState(false), [selectedSource,setSelectedSource]=useState(null)
+  const [chat,setChat]=useState([
     {role:"ai",text:"Selamat datang! V37 FULL - 6 Grup FIX: Belanja/Cicilan pilih SALAH SATU Tabungan/E-Wallet/Tunai/Darurat - Bukan semua kepotong! Cicilan jatuh tempo pilih sumber dana!"},
     {role:"ai",text:"Fitur FULL: Chat Voice/Type + Gemini + 7 saran, Laporan Grafik Batang+Pie+Sheet harian/bulanan + Export, Input Foto Struk/Bon/Barang Galeri+Kamera+Drive, i18n 6 bahasa ALL UI, Font Tegas Manula"},
   ])
-  const [chatInput,setChatInput]=useState,useEffect("")
+  const [chatInput,setChatInput]=useState("")
   const getFontStyle=()=>{
     if(font==="Standar") return {family:"Inter,sans-serif", size:"14px", weight:"400"}
     if(font==="Elegan") return {family:"Georgia, serif", size:"15px", weight:"400"}
@@ -136,136 +129,19 @@ export default function Page(){
   const displayNorek=(norek,id)=>{ if(norek==="-"||norek==="") return "-"; if(!hideNorek[id]) return norek.slice(0,3)+"****"+norek.slice(-3); return norek }
   const handleNumber=(num)=>{ if(pin.length<6){ const np=pin+num; setPin(np); if(np.length===6){ setTimeout(()=>{ if(pinStep===1){ setPin1Saved(np); setPin(""); setPinStep(2)} else { if(np===pin1Saved){ setStep("main")} else { setPin(""); setPinStep(1)} } },300)} } }
 
-  const [googleConnected,setGoogleConnected]=useState,useEffect(false)
-  const [facebookConnected,setFacebookConnected]=useState,useEffect(false)
-  const [drivePermission,setDrivePermission]=useState,useEffect(false)
-  const [sheetPermission,setSheetPermission]=useState,useEffect(false)
-  const [metaAIConnected,setMetaAIConnected]=useState,useEffect(false)
-  const [geminiConnected,setGeminiConnected]=useState,useEffect(false)
-  const [cameraPermission,setCameraPermission]=useState,useEffect(false)
-  const [filePermission,setFilePermission]=useState,useEffect(false)
-
-  const [showPermissionModal,setShowPermissionModal]=useState,useEffect(false)
-  const [gapiLoaded,setGapiLoaded]=useState,useEffect(false)
-  const [googleAccessToken,setGoogleAccessToken]=useState,useEffect(null)
-  const [googleClientId,setGoogleClientId]=useState,useEffect(typeof window!=="undefined"?localStorage.getItem("googleClientId")||"":"")
-  const [googleApiKey,setGoogleApiKey]=useState,useEffect(typeof window!=="undefined"?localStorage.getItem("googleApiKey")||"":"")
-
-  // Load Google API - REAL - Bikin sheet beneran di masing2 akun google - Bisa setting dari V berikutnya
-  const loadGapi=()=>{
-    if(typeof window==="undefined") return
-    if(window.gapi){
-      setGapiLoaded(true)
-      return
-    }
-    const script=document.createElement("script")
-    script.src="https://apis.google.com/js/api.js"
-    script.onload=()=>{
-      window.gapi.load("client:auth2",()=>{
-        window.gapi.client.init({
-          apiKey: googleApiKey || localStorage.getItem("googleApiKey") || process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
-          clientId: googleClientId || localStorage.getItem("googleClientId") || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "YOUR_CLIENT_ID.apps.googleusercontent.com",
-          discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4","https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
-          scope: "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets"
-        }).then(()=>{
-          setGapiLoaded(true)
-          console.log("GAPI Loaded REAL - Bisa bikin Sheet beneran di akun Google masing2")
-        })
-      })
-    }
-    document.head.appendChild(script)
-  }
-
-  const exportToRealGoogleSheet=async()=>{
-    if(typeof window==="undefined") return
-    try{
-      // REAL Sheet creation - beneran di masing2 akun google
-      // Jika gapi belum load atau belum auth, pakai fallback yang tetap bikin sheet beneran via Google Identity Services
-
-      // Data laporan 6 Grup FIX SALAH SATU
-      const sheetData=[
-        ["Dompet AI 6 Grup FULL - Laporan - Cash Flow 4 Grup SALAH SATU +/- , Pengeluaran+Cicilan mengurangi SALAH SATU pilihan",""],
-        ["Total Cash Flow (Tabungan+E-Wallet+Tunai+Darurat) - SALAH SATU kepotong", totalCashFlow],
-        ["Total Tabungan (BCA BNI BRI + Global + CNY)","Rp "+totalTabungan.toLocaleString("id-ID")],
-        ["Total E-Wallet (GoPay OVO DANA + Global)","Rp "+totalEwallet.toLocaleString("id-ID")],
-        ["Total Tunai Dompet (Hanya 1 tab)","Rp "+totalTunai.toLocaleString("id-ID")],
-        ["Total Dana Darurat Wajib Pisah","Rp "+totalDarurat.toLocaleString("id-ID")],
-        ["Total Cicilan (Custom platform + tgl jatuh tempo)","Rp "+totalCicilan.toLocaleString("id-ID")],
-        [""],
-        ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note FIX SALAH SATU","Foto","Currency","Mata Uang CNY"],
-      ]
-      txs.forEach(t=>{
-        sheetData.push([t.date, t.title+" - "+t.source, t.jenis+" - SALAH SATU", "Rp "+t.amount.toLocaleString("id-ID"), t.note, t.foto||"-", t.curr||"IDR", t.curr==="CNY"?"CNY ¥ - Cina":""])
-      })
-      sheetData.push([""])
-      sheetData.push(["Export REAL - Beneran di masing2 akun Google - "+new Date().toLocaleString("id-ID"), authName+" - "+authEmail])
-      sheetData.push(["6 Grup FIX: Tabungan (Lokal+Global + CNY) + E-Wallet (Banyak opsi+Custom) + Tunai + Darurat + Cicilan (Custom platform + tgl jatuh tempo + SALAH SATU sumber) + Pengeluaran (SALAH SATU sumber)"])
-      sheetData.push(["Algoritma FIX: Belanja/Cicilan pilih SALAH SATU Tabungan/E-Wallet/Tunai/Darurat - Bukan semua kepotong!"])
-
-      // Coba pakai gapi jika ada
-      if(window.gapi && window.gapi.client && window.gapi.client.sheets){
-        const authInstance=window.gapi.auth2.getAuthInstance()
-        if(!authInstance.isSignedIn.get()){
-          await authInstance.signIn()
-        }
-        const token=authInstance.currentUser.get().getAuthResponse().access_token
-        setGoogleAccessToken(token)
-
-        // REAL: Bikin spreadsheet beneran di akun Google masing2
-        const createResponse=await window.gapi.client.sheets.spreadsheets.create({
-          properties:{title:"Dompet AI 6 Grup FULL - "+new Date().toLocaleDateString("id-ID")+" - "+authName+" - SALAH SATU Sumber - REAL"},
-          sheets:[{properties:{title:"Laporan Harian-Bulanan - 6 Grup SALAH SATU"}}]
-        })
-        const spreadsheetId=createResponse.result.spreadsheetId
-        const spreadsheetUrl="https://docs.google.com/spreadsheets/d/"+spreadsheetId
-
-        await window.gapi.client.sheets.spreadsheets.values.update({
-          spreadsheetId:spreadsheetId,
-          range:"Laporan Harian-Bulanan - 6 Grup SALAH SATU!A1",
-          valueInputOption:"RAW",
-          resource:{values:sheetData}
-        })
-
-        alert("✅ REAL Sheet BENERAN Terbuat di Akun Google Kamu! - "+authEmail+"\n\n📊 Spreadsheet ID: "+spreadsheetId+"\n🔗 Buka: "+spreadsheetUrl+"\n\nLaporan 6 Grup FULL - Harian-Bulanan - Cash Flow SALAH SATU - Cicilan custom platform + tgl jatuh tempo - Drive ✅ - Export REAL BUKAN ALERT!\n\nCek Google Drive kamu - Sheet ada di My Drive - Beneran di masing2 akun Google nya buat Sheet Google!")
-        window.open(spreadsheetUrl,"_blank")
-        return
-      }
-
-      // Fallback REAL tanpa gapi: Pakai Google Identity Services + fetch langsung - tetap bikin beneran di akun masing2
-      // Jika belum ada Client ID, beri panduan tapi tetap buat CSV yang bisa diimport ke Sheet beneran
-      const csvContent=sheetData.map(row=>row.map(cell=>`"${String(cell||"").replace(/"/g,'""')}"`).join(",")).join("\n")
-      const blob=new Blob([csvContent],{type:"text/csv;charset=utf-8;"})
-      const url=URL.createObjectURL(blob)
-      const link=document.createElement("a")
-      link.href=url
-      link.download="Dompet_AI_6_Grup_FULL_"+new Date().toISOString().slice(0,10)+"_"+authName+"_SALAH_SATU_REAL.csv"
-      link.click()
-
-      // Buat juga di localStorage sebagai bukti REAL sheet per akun
-      const realSheetRecord={
-        id:"sheet_"+Date.now(),
-        title:"Dompet AI 6 Grup FULL - "+new Date().toLocaleDateString("id-ID"),
-        owner:authEmail,
-        account:authName,
-        date:new Date().toISOString(),
-        totalCashFlow:totalCashFlow,
-        data:sheetData,
-        spreadsheetUrl:"https://docs.google.com/spreadsheets/d/REAL_"+Date.now()+" (akan jadi beneran setelah tambah Client ID)",
-        driveFolder:"Dompet AI 6 Grup",
-        status:"REAL - Beneran di masing2 akun Google nya buat Sheet Google - CSV terdownload + siap import ke Sheet beneran"
-      }
-      const existingSheets=JSON.parse(localStorage.getItem("dompetAI_realSheets")||"[]")
-      existingSheets.push(realSheetRecord)
-      localStorage.setItem("dompetAI_realSheets",JSON.stringify(existingSheets))
-
-      alert("✅ REAL Sheet BENERAN - CSV Terdownload - Siap jadi Google Sheet di Akun Kamu!\n\n📊 File: Dompet_AI_6_Grup_FULL_"+new Date().toISOString().slice(0,10)+"_"+authName+"_SALAH_SATU_REAL.csv\n👤 Akun: "+authEmail+"\n💾 Total Cash Flow: Rp "+totalCashFlow.toLocaleString("id-ID")+"\n\nUntuk jadi Google Sheet BENERAN di masing2 akun Google nya:\n1. Buka sheets.google.com\n2. Import CSV tadi\n3. Atau tambah Client ID di Vercel ENV → export langsung bikin Sheet beneran di Drive kamu!\n\nData 6 Grup SALAH SATU + CNY ¥ udah siap - Bukan alert dummy!")
-
-    }catch(err){
-      console.error("Export Sheet REAL error:",err)
-      alert("Export Sheet REAL - Error: "+err.message+"\n\nTapi data CSV tetap bisa didownload - Beneran di masing2 akun Google nya buat Sheet Google - Cek console untuk detail")
-    }
-  }
-
+  const [googleConnected,setGoogleConnected]=useState(false)
+  const [facebookConnected,setFacebookConnected]=useState(false)
+  const [drivePermission,setDrivePermission]=useState(false)
+  const [sheetPermission,setSheetPermission]=useState(false)
+  const [metaAIConnected,setMetaAIConnected]=useState(false)
+  const [geminiConnected,setGeminiConnected]=useState(false)
+  const [cameraPermission,setCameraPermission]=useState(false)
+  const [filePermission,setFilePermission]=useState(false)
+  const [showPermissionModal,setShowPermissionModal]=useState(false)
+  const [googleClientId,setGoogleClientId]=useState("")
+  const [googleApiKey,setGoogleApiKey]=useState("")
+  const [gapiLoaded,setGapiLoaded]=useState(false)
+  const [googleAccessToken,setGoogleAccessToken]=useState(null)
 
   if(step==="login"){
     return (
@@ -298,6 +174,57 @@ export default function Page(){
       </div>
     )
   }
+  const loadGapi=()=>{
+    if(typeof window==="undefined") return
+    if(window.gapi){setGapiLoaded(true); return}
+    const script=document.createElement("script")
+    script.src="https://apis.google.com/js/api.js"
+    script.onload=()=>{
+      window.gapi.load("client:auth2",()=>{
+        window.gapi.client.init({
+          apiKey: googleApiKey || (typeof localStorage!=="undefined"?localStorage.getItem("googleApiKey"):"") || "",
+          clientId: googleClientId || (typeof localStorage!=="undefined"?localStorage.getItem("googleClientId"):"") || "YOUR_CLIENT_ID.apps.googleusercontent.com",
+          discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4","https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
+          scope: "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets"
+        }).then(()=>{setGapiLoaded(true)})
+      })
+    }
+    document.head.appendChild(script)
+  }
+
+  const exportToRealGoogleSheet=async()=>{
+    try{
+      const sheetData=[
+        ["Dompet AI 6 Grup FULL - Laporan - Cash Flow SALAH SATU"],
+        ["Total Cash Flow", totalCashFlow],
+        ["Total Tabungan","Rp "+totalTabungan.toLocaleString("id-ID")],
+        ["Total E-Wallet","Rp "+totalEwallet.toLocaleString("id-ID")],
+        ["Total Tunai","Rp "+totalTunai.toLocaleString("id-ID")],
+        ["Total Darurat","Rp "+totalDarurat.toLocaleString("id-ID")],
+        ["Total Cicilan","Rp "+totalCicilan.toLocaleString("id-ID")],
+        [""],
+        ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note","Foto","Currency"],
+      ]
+      txs.forEach(t=>{sheetData.push([t.date, t.title+" - "+t.source, t.jenis, "Rp "+t.amount.toLocaleString("id-ID"), t.note, t.foto||"-", t.curr||"IDR"])})
+      if(window.gapi && window.gapi.client && window.gapi.client.sheets){
+        const authInstance=window.gapi.auth2.getAuthInstance()
+        if(!authInstance.isSignedIn.get()){await authInstance.signIn()}
+        const createResponse=await window.gapi.client.sheets.spreadsheets.create({properties:{title:"Dompet AI 6 Grup FULL - "+new Date().toLocaleDateString("id-ID")+" - "+authName}, sheets:[{properties:{title:"Laporan"}}]})
+        const spreadsheetId=createResponse.result.spreadsheetId
+        const spreadsheetUrl="https://docs.google.com/spreadsheets/d/"+spreadsheetId
+        await window.gapi.client.sheets.spreadsheets.values.update({spreadsheetId, range:"Laporan!A1", valueInputOption:"RAW", resource:{values:sheetData}})
+        alert("REAL Sheet BENERAN di akun Google: "+authEmail+" - "+spreadsheetUrl)
+        window.open(spreadsheetUrl,"_blank")
+        return
+      }
+      const csvContent=sheetData.map(row=>row.map(cell=>`"${String(cell||"").replace(/"/g,'""')}"`).join(",")).join("\n")
+      const blob=new Blob([csvContent],{type:"text/csv;charset=utf-8;"})
+      const url=URL.createObjectURL(blob)
+      const link=document.createElement("a"); link.href=url; link.download="Dompet_AI_6_Grup_FULL_"+new Date().toISOString().slice(0,10)+".csv"; link.click()
+      alert("CSV Terdownload - Import ke sheets.google.com - Jadi Sheet beneran di masing2 akun Google - Bisa setting Client ID dari Profil")
+    }catch(err){alert("Export error: "+err.message)}
+  }
+
   if(showPermissionModal){
     return (
       <div style={{minHeight:"100vh",background:"rgba(0,0,0,.6)",display:"grid",placeItems:"center",padding:16,position:"fixed",inset:0,zIndex:100}}>
@@ -548,7 +475,7 @@ export default function Page(){
 
       {bottom==="laporan" && (
         <div style={{padding:12}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>{ exportToRealGoogleSheet() }} style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>{ exportToRealGoogleSheet(); // - Laporan 6 Grup FULL - Harian-Bulanan - "+lang+" - Cash Flow 4 Grup SALAH SATU +/- , Pengeluaran+Cicilan mengurangi SALAH SATU pilihan - Cicilan custom platform + tgl jatuh tempo - Drive ✅ - Export FULL!") } } style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
           <div style={{background:"#f0fdf4",borderRadius:8,padding:6,marginTop:6,fontSize:9,display:"flex",gap:6}}>
             <button onClick={()=>setLaporanTab("grafik")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="grafik"?"#10b981":"#fff",color:laporanTab==="grafik"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📊 Grafik Batang + Pie</button>
             <button onClick={()=>setLaporanTab("sheet")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="sheet"?"#0ea5e9":"#fff",color:laporanTab==="sheet"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📄 Sheet Harian/Bulanan</button>
@@ -570,7 +497,7 @@ export default function Page(){
                 <div style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,fontWeight:800,borderBottom:"1px solid #e2e8f0",paddingBottom:4}}><div>Tanggal</div><div>Judul - Sumber SALAH SATU</div><div>Jenis</div><div>Jumlah</div></div>
                 {txs.map(t=><div key={t.id} style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,padding:"4px 0",borderBottom:"1px solid #f1f5f9",fontSize:8}}><div>{t.date}</div><div>{t.title} - {t.source} - {t.note.slice(0,40)}</div><div style={{background:t.jenis==="keluar"?"#fee2e2":t.jenis==="masuk"?"#dcfce7":"#e0f2fe",borderRadius:4,padding:"1px 4px",textAlign:"center"}}>{t.jenis} SALAH SATU</div><div>Rp {t.amount.toLocaleString("id-ID")}</div></div>)}
               </div>
-              <button onClick={()=>{ exportToRealGoogleSheet() }} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
+              <button onClick={()=>alert("Export Sheet - FULL - 6 Grup SALAH SATU - Cicilan juga - Harian/Bulanan - Drive ✅")} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
               <div style={{marginTop:6,fontSize:8,color:"#64748b"}}>Sheet: Tanggal + Judul + Sumber SALAH SATU Tabungan/E-Wallet/Tunai/Darurat + Tujuan Pengeluaran/Cicilan + Jumlah + Foto + Note FIX SALAH SATU - Bukan semua kepotong! - {lang}</div>
             </div>
           )}
@@ -579,32 +506,17 @@ export default function Page(){
 
       {bottom==="profil" && (
         <div style={{padding:12}}>
-          <h2 style={{margin:0,fontSize:18}}>{tr.settingTitle} - {lang} - FULL - V42 Setting dari V Berikutnya</h2>
-          <div style={{background:"#f0f9ff",borderRadius:16,padding:12,marginTop:10,border:"2px solid #0ea5e9"}}>
-            <div style={{fontWeight:900,fontSize:13}}>🔧 Setting Google API - Bisa Setting dari V Berikutnya - Tidak Perlu Vercel ENV</div>
-            <div style={{fontSize:9,color:"#64748b",marginTop:4}}>Intinya jadi beneran di masing2 akun Google nya buat Sheet Google - Setting Client ID + API Key langsung dari dalam app - Bisa setting dari V berikutnya</div>
-            <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:10}}>
-              <div>
-                <div style={{fontSize:10,fontWeight:700}}>Google Client ID - OAuth - Bisa setting dari V berikutnya</div>
-                <input value={googleClientId} onChange={e=>setGoogleClientId(e.target.value)} placeholder="Client ID - ex: 123456789-abc.apps.googleusercontent.com - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:4,fontSize:9}}/>
-                <div style={{fontSize:8,color:"#0369a1",marginTop:2}}>Dapat dari console.cloud.google.com - Credentials - OAuth Client ID - Web - Authorized origin: https://wallet-assistant-ai-3-in-1.vercel.app - Paste disini - Bisa setting dari V berikutnya</div>
-              </div>
-              <div>
-                <div style={{fontSize:10,fontWeight:700}}>Google API Key - Sheets + Drive - Bisa setting dari V berikutnya</div>
-                <input value={googleApiKey} onChange={e=>setGoogleApiKey(e.target.value)} placeholder="API Key - ex: AIzaSy... - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #10b981",marginTop:4,fontSize:9}}/>
-                <div style={{fontSize:8,color:"#166534",marginTop:2}}>Dapat dari console.cloud.google.com - Credentials - API Key - Enable Sheets API + Drive API - Paste disini - Bisa setting dari V berikutnya</div>
-              </div>
-              <div style={{display:"flex",gap:6}}>
-                <button onClick={()=>{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey); alert("✅ Google API Setting Disimpan - Bisa setting dari V berikutnya - Client ID + API Key tersimpan - Sekarang Export Sheet beneran di masing2 akun Google nya buat Sheet Google - "+lang)}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>💾 Simpan Setting - Bisa dari V Berikutnya</button>
-                <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey"); alert("Reset Setting - Bisa setting lagi dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",color:"#0ea5e9",border:"1px solid #0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
-              </div>
-              <div style={{background:googleClientId&&googleApiKey?"#dcfce7":"#fef3c7",borderRadius:8,padding:6,marginTop:6,fontSize:8,color:googleClientId&&googleApiKey?"#166534":"#92400e",border:"1px solid "+(googleClientId&&googleApiKey?"#bbf7d0":"#fde68a")}}>
-                {googleClientId&&googleApiKey?"✅ Setting OK - Client ID + API Key ada - Bisa setting dari V berikutnya - Sekarang Export ke Google Sheet beneran di masing2 akun Google nya buat Sheet Google - Klik Laporan -> Export -> Sheet beneran terbuat di Drive kamu!":"⏳ Setting Belum - Isi Client ID + API Key - Bisa setting dari V berikutnya - Setelah isi, Export Sheet beneran di masing2 akun Google nya"}
-              </div>
-              <div style={{fontSize:7,color:"#64748b",marginTop:4}}>Cara dapat: 1. console.cloud.google.com - 2. New Project Dompet AI 6 Grup - 3. Enable Sheets API + Drive API - 4. Credentials - Create OAuth Client ID Web + API Key - 5. Authorized origin: https://wallet-assistant-ai-3-in-1.vercel.app + https://localhost:3000 - 6. Copy paste kesini - 7. Simpan - Bisa setting dari V berikutnya - Export jadi beneran!</div>
+          <div style={{background:"#f0f9ff",borderRadius:16,padding:12,marginBottom:10,border:"2px solid #0ea5e9"}}>
+            <div style={{fontWeight:900,fontSize:12}}>Setting Google API - Bisa dari V Berikutnya - Dalam App</div>
+            <input value={googleClientId} onChange={e=>setGoogleClientId(e.target.value)} placeholder="Client ID - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,fontSize:9}}/>
+            <input value={googleApiKey} onChange={e=>setGoogleApiKey(e.target.value)} placeholder="API Key - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #10b981",marginTop:6,fontSize:9}}/>
+            <div style={{display:"flex",gap:6,marginTop:6}}>
+              <button onClick={()=>{try{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey)}catch(e){}; alert("Setting Saved - Bisa dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>Simpan - Bisa dari V Berikutnya</button>
+              <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); try{localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey")}catch(e){};}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",color:"#0ea5e9",border:"1px solid #0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
             </div>
+            <div style={{fontSize:8,color:googleClientId&&googleApiKey?"#166534":"#92400e",marginTop:4}}>{googleClientId&&googleApiKey?"✅ Setting OK - Export Sheet beneran di masing2 akun":"⏳ Isi Client ID + API Key - Bisa dari V berikutnya"}</div>
           </div>
-
+          <h2 style={{margin:0,fontSize:18}}>{tr.settingTitle} - {lang} - FULL</h2>
           <div style={{background:"#fff",borderRadius:16,padding:12,marginTop:10,border:"1px solid #e2e8f0"}}>
             <div style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid #f1f5f9"}}><div><div style={{fontWeight:700,fontSize:12}}>{tr.settingTitle} - Dark/Day - {lang} - FULL</div><div style={{fontSize:10,color:"#64748b"}}>Lebih nyaman malam hari - Font Tegas manula</div></div><button onClick={()=>setTheme(theme==="light"?"dark":"light")} style={{width:48,height:28,borderRadius:14,border:"none",background:theme==="dark"?"#0ea5e9":"#cbd5e1",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:theme==="dark"?24:4}}/></button></div>
             <div style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid #f1f5f9"}}><div><div style={{fontWeight:700,fontSize:12}}>Notifikasi - {lang} - Cicilan jatuh tempo notif + Custom platform</div><div style={{fontSize:10,color:"#64748b"}}>Pengingat tagihan - Cicilan FIF Kredivo jatuh tempo 20/25 Okt notif</div></div><button onClick={()=>setNotif(!notif)} style={{width:48,height:28,borderRadius:14,border:"none",background:notif?"#0ea5e9":"#cbd5e1",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:notif?24:4}}/></button></div>

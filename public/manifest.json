@@ -1,1 +1,30 @@
-{"name":"Dompet AI 6 Grup FULL V37","short_name":"Dompet AI FULL","start_url":"/","display":"standalone","background_color":"#f1f7ff","theme_color":"#0ea5e9","icons":[{"src":"/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"/icon-512.png","sizes":"512x512","type":"image/png"}]}
+{
+  "name": "Dompet AI 6 Grup FULL - SALAH SATU Sumber - REAL",
+  "short_name": "Dompet AI 6 Grup",
+  "description": "Dompet AI Universal 6 Grup FIX FULL - Tabungan Lokal+Global+CNY \u00a5 + E-Wallet Banyak Opsi+Custom + Cash + Darurat + Cicilan + Pengeluaran - Cash Flow SALAH SATU - REAL Google Facebook Drive Sheet META AI Gemini Kamera File - ALL UI Bahasa - Font Tegas Manula",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "finance",
+    "productivity",
+    "business"
+  ],
+  "lang": "id"
+}

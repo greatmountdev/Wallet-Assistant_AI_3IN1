@@ -62,6 +62,15 @@ const T={
 }
 
 export default function Page(){
+  // PWA Install - FINAL OTW PWA
+  if(typeof window!=="undefined"){
+    if(!window.gapi){
+      const s=document.createElement("script"); s.src="https://apis.google.com/js/api.js"; s.async=true; s.defer=true; document.head.appendChild(s);
+    }
+    // PWA install prompt
+    window.addEventListener("beforeinstallprompt",(e)=>{e.preventDefault(); window.deferredPrompt=e; console.log("PWA Install Prompt Ready - FINAL")});
+  }
+
   if(typeof window!=="undefined"){
     // Load GAPI for REAL Sheet creation per Google account
     if(!window.gapi){
@@ -338,7 +347,77 @@ export default function Page(){
       </div>
     )
   }
+
+  const [isNewUser,setIsNewUser]=useState(typeof window!=="undefined" ? !localStorage.getItem("dompetAI_pin") : true)
+  const savedPinRef=typeof window!=="undefined" ? localStorage.getItem("dompetAI_pin") : null
+
   if(step==="pin"){
+    const savedPin=typeof window!=="undefined" ? localStorage.getItem("dompetAI_pin") : null
+    const isSignUp=!savedPin
+
+    if(isSignUp){
+      // Sign Up - PIN 2X setting pas sign up aja langsung save
+      return (
+        <div style={{minHeight:"100vh",background:"#f8fafc",display:"grid",placeItems:"center",padding:16}}>
+          <div style={{maxWidth:320,width:"100%",background:"#fff",borderRadius:24,padding:20,textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,.08)"}}>
+            <h3 style={{margin:0,fontWeight:900}}>{pinStep===1?"Buat PIN 2X - 1/2 - "+lang:"Buat PIN 2X - 2/2 - "+lang}</h3>
+            <p style={{fontSize:9,color:"#64748b",marginTop:4}}>{pinStep===1?"Buat PIN 6 digit - Sign Up - 2X setting pas sign up aja langsung save":"Konfirmasi PIN 6 digit - Sign Up - 2X langsung save ke akun"}</p>
+            <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>{[0,1,2,3,4,5].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:pinInput.length>i?"#0f172a":"#e2e8f0"}}/>)}</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:16}}>
+              {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+String(n))}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>{n}</button>)}
+              <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
+              <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>0</button>
+              <button onClick={()=>{
+                if(pinStep===1){
+                  if(pinInput.length!==6){alert("PIN harus 6 digit - "+lang); return}
+                  setPin1Saved(pinInput); setPinInput(""); setPinStep(2)
+                }else{
+                  if(pinInput!==pin1Saved){alert("PIN tidak sama - Ulangi 2X - "+lang); setPinInput(""); setPinStep(1); setPin1Saved(""); return}
+                  // PIN 2X setting pas sign up aja langsung save - FINAL
+                  localStorage.setItem("dompetAI_pin",pinInput)
+                  localStorage.setItem("dompetAI_pin_created",new Date().toISOString())
+                  localStorage.setItem("dompetAI_authName",authName)
+                  localStorage.setItem("dompetAI_authEmail",authEmail)
+                  setSavedPin(pinInput)
+                  setIsNewUser(false)
+                  alert("✅ PIN 2X Berhasil - Langsung Save - "+pinInput+" - Tersimpan di akun - Berikutnya hanya PIN 1X untuk login - FINAL PWA!")
+                  setStep("main")
+                }
+              }} style={{padding:14,borderRadius:12,border:"none",background:"#0f172a",color:"#fff",fontWeight:800}}>✓</button>
+            </div>
+            <div style={{marginTop:10,fontSize:8,color:"#64748b",background:"#f0fdf4",borderRadius:8,padding:6,border:"1px solid #bbf7d0"}}>✅ PIN 2X setting pas sign up aja langsung save - Berikutnya hanya tampil PIN sekali untuk login - Cara kerjanya gitu - FINAL PWA - {lang}</div>
+          </div>
+        </div>
+      )
+    }else{
+      // Login - PIN 1X only
+      return (
+        <div style={{minHeight:"100vh",background:"#f8fafc",display:"grid",placeItems:"center",padding:16}}>
+          <div style={{maxWidth:320,width:"100%",background:"#fff",borderRadius:24,padding:20,textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,.08)"}}>
+            <h3 style={{margin:0,fontWeight:900}}>Masukkan PIN - Login 1X - {lang} - FINAL</h3>
+            <p style={{fontSize:9,color:"#64748b",marginTop:4}}>PIN sekali untuk login - Tidak 2X lagi - Cara kerjanya gitu - Harusnya begitu - FINAL PWA</p>
+            <div style={{fontSize:10,fontWeight:700,marginTop:6,color:"#0ea5e9"}}>👤 {authName || localStorage.getItem("dompetAI_authName") || "Kawan"} - {authEmail || localStorage.getItem("dompetAI_authEmail") || ""}</div>
+            <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>{[0,1,2,3,4,5].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:pinInput.length>i?"#0f172a":"#e2e8f0"}}/>)}</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:16}}>
+              {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+String(n))}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>{n}</button>)}
+              <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
+              <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>0</button>
+              <button onClick={()=>{
+                const saved=localStorage.getItem("dompetAI_pin")
+                if(pinInput!==saved){alert("PIN salah - Coba lagi - PIN sekali untuk login - "+lang); setPinInput(""); return}
+                alert("✅ Login PIN 1X Berhasil - Masuk Beranda - FINAL PWA - "+lang)
+                setStep("main")
+              }} style={{padding:14,borderRadius:12,border:"none",background:"#0f172a",color:"#fff",fontWeight:800}}>✓</button>
+            </div>
+            <button onClick={()=>{if(confirm("Reset PIN? Akan buat PIN 2X lagi - Sign Up")){localStorage.removeItem("dompetAI_pin"); setPinInput(""); setPinStep(1); setPin1Saved(""); setIsNewUser(true);}}} style={{marginTop:10,padding:6,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:9}}>Reset PIN - Buat 2X lagi - Sign Up</button>
+            <div style={{marginTop:8,fontSize:8,color:"#64748b",background:"#f0f9ff",borderRadius:8,padding:6,border:"1px solid #bae6fd"}}>✅ PIN 2X setting pas sign up aja langsung save, berikutnya hanya tampil PIN sekali untuk login - Cara kerjanya gitu - Harusnya begitu - FINAL PWA - {lang}</div>
+          </div>
+        </div>
+      )
+    }
+  }
+  if(step==="pin_old_unused"){
+
 
     return (
       <div style={{minHeight:"100vh",background:"#f8fbff",display:"grid",placeItems:"center",padding:20}}>

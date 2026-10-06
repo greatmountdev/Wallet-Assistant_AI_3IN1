@@ -143,7 +143,7 @@ export default function Page(){
       var blob=new Blob([csv],{type:"text/csv"})
       var url=URL.createObjectURL(blob)
       var a=document.createElement("a"); a.href=url; a.download="Dompet_AI_6_Grup_FULL.csv"; a.click()
-      if(window.gapi && window.gapi.client && window.gapi.client.sheets){
+      if(typeof window!=="undefined" && window.gapi && window.gapi.client && window.gapi.client.sheets){
         window.gapi.client.sheets.spreadsheets.create({properties:{title:"Dompet AI 6 Grup - "+new Date().toLocaleDateString()}}).then(function(resp){
           var sid=resp.result.spreadsheetId
           var sUrl="https://docs.google.com/spreadsheets/d/"+sid
@@ -156,6 +156,10 @@ export default function Page(){
   }
 
   if(step==="login"){
+    if(mounted===false && typeof window!=="undefined"){
+      // still allow login render
+    }
+
     return (
       <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#06b6d4,#8b5cf6)",display:"grid",placeItems:"center",padding:16,fontFamily:"Inter,sans-serif"}}>
         <div style={{maxWidth:420,width:"100%",background:"#fff",borderRadius:24,padding:20,maxHeight:"98vh",overflowY:"auto"}}>
@@ -216,8 +220,12 @@ export default function Page(){
     )
   }
   if(step==="pin"){
+    if(!mounted){
+      return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",background:"#f8fafc"}}><div style={{padding:20,background:"#fff",borderRadius:16}}>Loading - V54 FINAL...</div></div>
+    }
     let savedPinLocal=null
-    try{savedPinLocal=localStorage.getItem("dompetAI_pin")}catch(e){}
+    try{if(typeof window!=="undefined"){savedPinLocal=localStorage.getItem("dompetAI_pin")}}catch(e){savedPinLocal=savedPin}
+    if(!savedPinLocal){savedPinLocal=savedPin}
     const isSignUp=!savedPinLocal
     if(isSignUp){
       return (
@@ -235,7 +243,7 @@ export default function Page(){
                   setPin1Saved(pinInput); setPinInput(""); setPinStep(2)
                 }else{
                   if(pinInput!==pin1Saved){alert("PIN tidak sama"); setPinInput(""); setPinStep(1); setPin1Saved(""); return}
-                  try{localStorage.setItem("dompetAI_pin",pinInput)}catch(e){}
+                  try{if(typeof window!=="undefined"){localStorage.setItem("dompetAI_pin",pinInput)}}catch(e){}
                   setSavedPin(pinInput); setIsNewUser(false)
                   setStep("main")
                 }
@@ -255,12 +263,12 @@ export default function Page(){
               <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
               <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800}}>0</button>
               <button onClick={()=>{
-                let saved=null; try{saved=localStorage.getItem("dompetAI_pin")}catch(e){}
+                let saved=null; try{if(typeof window!=="undefined"){saved=localStorage.getItem("dompetAI_pin")}}catch(e){}
                 if(pinInput!==saved){alert("PIN salah"); setPinInput(""); return}
                 setStep("main")
               }} style={{padding:14,borderRadius:12,border:"none",background:"#0f172a",color:"#fff",fontWeight:800}}>✓</button>
             </div>
-            <button onClick={()=>{if(confirm("Reset PIN?")){try{localStorage.removeItem("dompetAI_pin")}catch(e){}; setPinInput(""); setPinStep(1); setPin1Saved(""); setIsNewUser(true);}}} style={{marginTop:10,padding:6,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:9}}>Reset PIN</button>
+            <button onClick={()=>{if(confirm("Reset PIN?")){try{if(typeof window!=="undefined"){localStorage.removeItem("dompetAI_pin")}}catch(e){}; setPinInput(""); setPinStep(1); setPin1Saved(""); setIsNewUser(true);}}} style={{marginTop:10,padding:6,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:9}}>Reset PIN</button>
           </div>
         </div>
       )
@@ -502,7 +510,7 @@ export default function Page(){
             <input value={googleClientId} onChange={e=>setGoogleClientId(e.target.value)} placeholder="Client ID - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,fontSize:9}}/>
             <input value={googleApiKey} onChange={e=>setGoogleApiKey(e.target.value)} placeholder="API Key - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #10b981",marginTop:6,fontSize:9}}/>
             <div style={{display:"flex",gap:6,marginTop:6}}>
-              <button onClick={()=>{try{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey)}catch(e){}; alert("Saved - Bisa dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>Simpan</button>
+              <button onClick={()=>{try{if(typeof window!=="undefined"){localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey)}}catch(e){}; alert("Saved - Bisa dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>Simpan</button>
               <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); try{localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey")}catch(e){}}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",border:"1px solid #0ea5e9",color:"#0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
             </div>
           </div>

@@ -62,21 +62,6 @@ const T={
 }
 
 export default function Page(){
-  // Fix client-side error - load localStorage after mount - FINAL STABLE
-  const [mounted,setMounted]=useState,useEffect(false)
-  // Safe localStorage loading - fix Application error client-side exception
-  if(typeof window!=="undefined" && !mounted){
-    // will be set in useEffect below via state
-  }
-  // PWA Install - FINAL OTW PWA
-  if(typeof window!=="undefined"){
-    if(!window.gapi){
-      const s=document.createElement("script"); s.src="https://apis.google.com/js/api.js"; s.async=true; s.defer=true; document.head.appendChild(s);
-    }
-    // PWA install prompt
-    window.addEventListener("beforeinstallprompt",(e)=>{e.preventDefault(); window.deferredPrompt=e; console.log("PWA Install Prompt Ready - FINAL")});
-  }
-
   if(typeof window!=="undefined"){
     // Load GAPI for REAL Sheet creation per Google account
     if(!window.gapi){
@@ -86,6 +71,9 @@ export default function Page(){
 
   const [step,setStep]=useState,useEffect("login")
   const [authName,setAuthName]=useState,useEffect("Kawan"), [authEmail,setAuthEmail]=useState,useEffect("kawan@gmail.com"), [authPhone,setAuthPhone]=useState,useEffect("0812****890")
+  const [isNewUser,setIsNewUser]=useState,useEffect(true)
+  const [mounted,setMounted]=useState,useEffect(false)
+  const [clientReady,setClientReady]=useState,useEffect(false)
   const [pin,setPin]=useState,useEffect(""), [pinStep,setPinStep]=useState,useEffect(1), [pin1Saved,setPin1Saved]=useState,useEffect("")
   const [mode,setMode]=useState,useEffect("Dompet"), [font,setFont]=useState,useEffect("Tegas"), [lang,setLang]=useState,useEffect("ID"), [hideTotal,setHideTotal]=useState,useEffect(false), [hideNorek,setHideNorek]=useState,useEffect({}), [bottom,setBottom]=useState,useEffect("beranda"), [showMenu,setShowMenu]=useState,useEffect(false), [theme,setTheme]=useState,useEffect("light"), [notif,setNotif]=useState,useEffect(true)
   const [newTx,setNewTx]=useState,useEffect({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
@@ -160,9 +148,8 @@ export default function Page(){
   const [showPermissionModal,setShowPermissionModal]=useState,useEffect(false)
   const [gapiLoaded,setGapiLoaded]=useState,useEffect(false)
   const [googleAccessToken,setGoogleAccessToken]=useState,useEffect(null)
-  const [googleClientId,setGoogleClientId]=useState,useEffect("")
-  const [googleApiKey,setGoogleApiKey]=useState,useEffect("")
-  const [clientReady,setClientReady]=useState,useEffect(false)
+  const [googleClientId,setGoogleClientId]=useState,useEffect(typeof window!=="undefined"?localStorage.getItem("googleClientId")||"":"")
+  const [googleApiKey,setGoogleApiKey]=useState,useEffect(typeof window!=="undefined"?localStorage.getItem("googleApiKey")||"":"")
 
   // Load Google API - REAL - Bikin sheet beneran di masing2 akun google - Bisa setting dari V berikutnya
   const loadGapi=()=>{
@@ -354,74 +341,7 @@ export default function Page(){
       </div>
     )
   }
-
-  const [isNewUser,setIsNewUser]=useState,useEffect(true)
-
   if(step==="pin"){
-    let savedPin=null
-    try{savedPin=typeof window!=="undefined" ? localStorage.getItem("dompetAI_pin") : null}catch(e){savedPin=null}
-    const isSignUp=!savedPin
-
-    if(isSignUp){
-      // Sign Up - PIN 2X setting pas sign up aja langsung save
-      return (
-        <div style={{minHeight:"100vh",background:"#f8fafc",display:"grid",placeItems:"center",padding:16}}>
-          <div style={{maxWidth:320,width:"100%",background:"#fff",borderRadius:24,padding:20,textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,.08)"}}>
-            <h3 style={{margin:0,fontWeight:900}}>{pinStep===1?"Buat PIN 2X - 1/2 - "+lang:"Buat PIN 2X - 2/2 - "+lang}</h3>
-            <p style={{fontSize:9,color:"#64748b",marginTop:4}}>{pinStep===1?"Buat PIN 6 digit - Sign Up - 2X setting pas sign up aja langsung save":"Konfirmasi PIN 6 digit - Sign Up - 2X langsung save ke akun"}</p>
-            <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>{[0,1,2,3,4,5].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:pinInput.length>i?"#0f172a":"#e2e8f0"}}/>)}</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:16}}>
-              {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+String(n))}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>{n}</button>)}
-              <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
-              <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>0</button>
-              <button onClick={()=>{
-                if(pinStep===1){
-                  if(pinInput.length!==6){alert("PIN harus 6 digit - "+lang); return}
-                  setPin1Saved(pinInput); setPinInput(""); setPinStep(2)
-                }else{
-                  if(pinInput!==pin1Saved){alert("PIN tidak sama - Ulangi 2X - "+lang); setPinInput(""); setPinStep(1); setPin1Saved(""); return}
-                  // PIN 2X setting pas sign up aja langsung save - FINAL
-                  try{localStorage.setItem("dompetAI_pin",pinInput); localStorage.setItem("dompetAI_pin_created",new Date().toISOString()); localStorage.setItem("dompetAI_authName",authName); localStorage.setItem("dompetAI_authEmail",authEmail)}catch(e){console.log(e)}
-                  setSavedPin(pinInput)
-                  setIsNewUser(false)
-                  alert("✅ PIN 2X Berhasil - Langsung Save - "+pinInput+" - Tersimpan di akun - Berikutnya hanya PIN 1X untuk login - FINAL PWA!")
-                  setStep("main")
-                }
-              }} style={{padding:14,borderRadius:12,border:"none",background:"#0f172a",color:"#fff",fontWeight:800}}>✓</button>
-            </div>
-            <div style={{marginTop:10,fontSize:8,color:"#64748b",background:"#f0fdf4",borderRadius:8,padding:6,border:"1px solid #bbf7d0"}}>✅ PIN 2X setting pas sign up aja langsung save - Berikutnya hanya tampil PIN sekali untuk login - Cara kerjanya gitu - FINAL PWA - {lang}</div>
-          </div>
-        </div>
-      )
-    }else{
-      // Login - PIN 1X only
-      return (
-        <div style={{minHeight:"100vh",background:"#f8fafc",display:"grid",placeItems:"center",padding:16}}>
-          <div style={{maxWidth:320,width:"100%",background:"#fff",borderRadius:24,padding:20,textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,.08)"}}>
-            <h3 style={{margin:0,fontWeight:900}}>Masukkan PIN - Login 1X - {lang} - FINAL</h3>
-            <p style={{fontSize:9,color:"#64748b",marginTop:4}}>PIN sekali untuk login - Tidak 2X lagi - Cara kerjanya gitu - Harusnya begitu - FINAL PWA</p>
-            <div style={{fontSize:10,fontWeight:700,marginTop:6,color:"#0ea5e9"}}>👤 {authName || "Kawan"} - {authEmail || ""}</div>
-            <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>{[0,1,2,3,4,5].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:pinInput.length>i?"#0f172a":"#e2e8f0"}}/>)}</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:16}}>
-              {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+String(n))}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>{n}</button>)}
-              <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
-              <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>0</button>
-              <button onClick={()=>{
-                let saved=null; try{saved=localStorage.getItem("dompetAI_pin")}catch(e){saved=null}
-                if(pinInput!==saved){alert("PIN salah - Coba lagi - PIN sekali untuk login - "+lang); setPinInput(""); return}
-                alert("✅ Login PIN 1X Berhasil - Masuk Beranda - FINAL PWA - "+lang)
-                setStep("main")
-              }} style={{padding:14,borderRadius:12,border:"none",background:"#0f172a",color:"#fff",fontWeight:800}}>✓</button>
-            </div>
-            <button onClick={()=>{if(confirm("Reset PIN? Akan buat PIN 2X lagi - Sign Up")){localStorage.removeItem("dompetAI_pin"); setPinInput(""); setPinStep(1); setPin1Saved(""); setIsNewUser(true);}}} style={{marginTop:10,padding:6,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:9}}>Reset PIN - Buat 2X lagi - Sign Up</button>
-            <div style={{marginTop:8,fontSize:8,color:"#64748b",background:"#f0f9ff",borderRadius:8,padding:6,border:"1px solid #bae6fd"}}>✅ PIN 2X setting pas sign up aja langsung save, berikutnya hanya tampil PIN sekali untuk login - Cara kerjanya gitu - Harusnya begitu - FINAL PWA - {lang}</div>
-          </div>
-        </div>
-      )
-    }
-  }
-  if(step==="pin_old_unused"){
-
 
     return (
       <div style={{minHeight:"100vh",background:"#f8fbff",display:"grid",placeItems:"center",padding:20}}>
@@ -675,8 +595,8 @@ export default function Page(){
                 <div style={{fontSize:8,color:"#166534",marginTop:2}}>Dapat dari console.cloud.google.com - Credentials - API Key - Enable Sheets API + Drive API - Paste disini - Bisa setting dari V berikutnya</div>
               </div>
               <div style={{display:"flex",gap:6}}>
-                <button onClick={()=>{try{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey)}catch(e){}; alert("✅ Google API Setting Disimpan - Bisa setting dari V berikutnya - Client ID + API Key tersimpan - Sekarang Export Sheet beneran di masing2 akun Google nya buat Sheet Google - "+lang)}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>💾 Simpan Setting - Bisa dari V Berikutnya</button>
-                <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); try{localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey")}catch(e){}; alert("Reset Setting - Bisa setting lagi dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",color:"#0ea5e9",border:"1px solid #0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
+                <button onClick={()=>{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey); alert("✅ Google API Setting Disimpan - Bisa setting dari V berikutnya - Client ID + API Key tersimpan - Sekarang Export Sheet beneran di masing2 akun Google nya buat Sheet Google - "+lang)}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>💾 Simpan Setting - Bisa dari V Berikutnya</button>
+                <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey"); alert("Reset Setting - Bisa setting lagi dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",color:"#0ea5e9",border:"1px solid #0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
               </div>
               <div style={{background:googleClientId&&googleApiKey?"#dcfce7":"#fef3c7",borderRadius:8,padding:6,marginTop:6,fontSize:8,color:googleClientId&&googleApiKey?"#166534":"#92400e",border:"1px solid "+(googleClientId&&googleApiKey?"#bbf7d0":"#fde68a")}}>
                 {googleClientId&&googleApiKey?"✅ Setting OK - Client ID + API Key ada - Bisa setting dari V berikutnya - Sekarang Export ke Google Sheet beneran di masing2 akun Google nya buat Sheet Google - Klik Laporan -> Export -> Sheet beneran terbuat di Drive kamu!":"⏳ Setting Belum - Isi Client ID + API Key - Bisa setting dari V berikutnya - Setelah isi, Export Sheet beneran di masing2 akun Google nya"}

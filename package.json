@@ -1,6 +1,5 @@
 {
-  "name": "dompet-ai-v69-final-pwa-pin2x-once",
-  "version": "0.1.0",
+  "name": "dompet-6grup-full-checklist-v37",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,8 +7,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "14.2.5",
-    "react": "18",
-    "react-dom": "18"
+    "next": "14.2.33",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   }
 }

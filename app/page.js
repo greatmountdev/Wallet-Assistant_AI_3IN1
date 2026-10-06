@@ -145,8 +145,10 @@ export default function Page(){
   const [showPermissionModal,setShowPermissionModal]=useState(false)
   const [gapiLoaded,setGapiLoaded]=useState(false)
   const [googleAccessToken,setGoogleAccessToken]=useState(null)
+  const [googleClientId,setGoogleClientId]=useState(typeof window!=="undefined"?localStorage.getItem("googleClientId")||"":"")
+  const [googleApiKey,setGoogleApiKey]=useState(typeof window!=="undefined"?localStorage.getItem("googleApiKey")||"":"")
 
-  // Load Google API - REAL - Bikin sheet beneran di masing2 akun google
+  // Load Google API - REAL - Bikin sheet beneran di masing2 akun google - Bisa setting dari V berikutnya
   const loadGapi=()=>{
     if(typeof window==="undefined") return
     if(window.gapi){
@@ -158,8 +160,8 @@ export default function Page(){
     script.onload=()=>{
       window.gapi.load("client:auth2",()=>{
         window.gapi.client.init({
-          apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
-          clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "YOUR_CLIENT_ID.apps.googleusercontent.com",
+          apiKey: googleApiKey || localStorage.getItem("googleApiKey") || process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
+          clientId: googleClientId || localStorage.getItem("googleClientId") || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "YOUR_CLIENT_ID.apps.googleusercontent.com",
           discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4","https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
           scope: "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets"
         }).then(()=>{
@@ -574,7 +576,32 @@ export default function Page(){
 
       {bottom==="profil" && (
         <div style={{padding:12}}>
-          <h2 style={{margin:0,fontSize:18}}>{tr.settingTitle} - {lang} - FULL</h2>
+          <h2 style={{margin:0,fontSize:18}}>{tr.settingTitle} - {lang} - FULL - V42 Setting dari V Berikutnya</h2>
+          <div style={{background:"#f0f9ff",borderRadius:16,padding:12,marginTop:10,border:"2px solid #0ea5e9"}}>
+            <div style={{fontWeight:900,fontSize:13}}>🔧 Setting Google API - Bisa Setting dari V Berikutnya - Tidak Perlu Vercel ENV</div>
+            <div style={{fontSize:9,color:"#64748b",marginTop:4}}>Intinya jadi beneran di masing2 akun Google nya buat Sheet Google - Setting Client ID + API Key langsung dari dalam app - Bisa setting dari V berikutnya</div>
+            <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:10}}>
+              <div>
+                <div style={{fontSize:10,fontWeight:700}}>Google Client ID - OAuth - Bisa setting dari V berikutnya</div>
+                <input value={googleClientId} onChange={e=>setGoogleClientId(e.target.value)} placeholder="Client ID - ex: 123456789-abc.apps.googleusercontent.com - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:4,fontSize:9}}/>
+                <div style={{fontSize:8,color:"#0369a1",marginTop:2}}>Dapat dari console.cloud.google.com - Credentials - OAuth Client ID - Web - Authorized origin: https://wallet-assistant-ai-3-in-1.vercel.app - Paste disini - Bisa setting dari V berikutnya</div>
+              </div>
+              <div>
+                <div style={{fontSize:10,fontWeight:700}}>Google API Key - Sheets + Drive - Bisa setting dari V berikutnya</div>
+                <input value={googleApiKey} onChange={e=>setGoogleApiKey(e.target.value)} placeholder="API Key - ex: AIzaSy... - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #10b981",marginTop:4,fontSize:9}}/>
+                <div style={{fontSize:8,color:"#166534",marginTop:2}}>Dapat dari console.cloud.google.com - Credentials - API Key - Enable Sheets API + Drive API - Paste disini - Bisa setting dari V berikutnya</div>
+              </div>
+              <div style={{display:"flex",gap:6}}>
+                <button onClick={()=>{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey); alert("✅ Google API Setting Disimpan - Bisa setting dari V berikutnya - Client ID + API Key tersimpan - Sekarang Export Sheet beneran di masing2 akun Google nya buat Sheet Google - "+lang)}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>💾 Simpan Setting - Bisa dari V Berikutnya</button>
+                <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey"); alert("Reset Setting - Bisa setting lagi dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",color:"#0ea5e9",border:"1px solid #0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
+              </div>
+              <div style={{background:googleClientId&&googleApiKey?"#dcfce7":"#fef3c7",borderRadius:8,padding:6,marginTop:6,fontSize:8,color:googleClientId&&googleApiKey?"#166534":"#92400e",border:"1px solid "+(googleClientId&&googleApiKey?"#bbf7d0":"#fde68a")}}>
+                {googleClientId&&googleApiKey?"✅ Setting OK - Client ID + API Key ada - Bisa setting dari V berikutnya - Sekarang Export ke Google Sheet beneran di masing2 akun Google nya buat Sheet Google - Klik Laporan -> Export -> Sheet beneran terbuat di Drive kamu!":"⏳ Setting Belum - Isi Client ID + API Key - Bisa setting dari V berikutnya - Setelah isi, Export Sheet beneran di masing2 akun Google nya"}
+              </div>
+              <div style={{fontSize:7,color:"#64748b",marginTop:4}}>Cara dapat: 1. console.cloud.google.com - 2. New Project Dompet AI 6 Grup - 3. Enable Sheets API + Drive API - 4. Credentials - Create OAuth Client ID Web + API Key - 5. Authorized origin: https://wallet-assistant-ai-3-in-1.vercel.app + https://localhost:3000 - 6. Copy paste kesini - 7. Simpan - Bisa setting dari V berikutnya - Export jadi beneran!</div>
+            </div>
+          </div>
+
           <div style={{background:"#fff",borderRadius:16,padding:12,marginTop:10,border:"1px solid #e2e8f0"}}>
             <div style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid #f1f5f9"}}><div><div style={{fontWeight:700,fontSize:12}}>{tr.settingTitle} - Dark/Day - {lang} - FULL</div><div style={{fontSize:10,color:"#64748b"}}>Lebih nyaman malam hari - Font Tegas manula</div></div><button onClick={()=>setTheme(theme==="light"?"dark":"light")} style={{width:48,height:28,borderRadius:14,border:"none",background:theme==="dark"?"#0ea5e9":"#cbd5e1",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:theme==="dark"?24:4}}/></button></div>
             <div style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid #f1f5f9"}}><div><div style={{fontWeight:700,fontSize:12}}>Notifikasi - {lang} - Cicilan jatuh tempo notif + Custom platform</div><div style={{fontSize:10,color:"#64748b"}}>Pengingat tagihan - Cicilan FIF Kredivo jatuh tempo 20/25 Okt notif</div></div><button onClick={()=>setNotif(!notif)} style={{width:48,height:28,borderRadius:14,border:"none",background:notif?"#0ea5e9":"#cbd5e1",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:notif?24:4}}/></button></div>

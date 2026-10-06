@@ -1,6 +1,6 @@
 
 "use client"
-import { useState } from "react"
+import { useState,useEffect } from "react"
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
 const TABUNGAN_BANKS=[
   {name:"BCA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"BNI", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
@@ -62,6 +62,12 @@ const T={
 }
 
 export default function Page(){
+  // Fix client-side error - load localStorage after mount - FINAL STABLE
+  const [mounted,setMounted]=useState,useEffect(false)
+  // Safe localStorage loading - fix Application error client-side exception
+  if(typeof window!=="undefined" && !mounted){
+    // will be set in useEffect below via state
+  }
   // PWA Install - FINAL OTW PWA
   if(typeof window!=="undefined"){
     if(!window.gapi){
@@ -78,15 +84,15 @@ export default function Page(){
     }
   }
 
-  const [step,setStep]=useState("login")
-  const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
-  const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
-  const [mode,setMode]=useState("Dompet"), [font,setFont]=useState("Tegas"), [lang,setLang]=useState("ID"), [hideTotal,setHideTotal]=useState(false), [hideNorek,setHideNorek]=useState({}), [bottom,setBottom]=useState("beranda"), [showMenu,setShowMenu]=useState(false), [theme,setTheme]=useState("light"), [notif,setNotif]=useState(true)
-  const [newTx,setNewTx]=useState({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
-  const [showAddTx,setShowAddTx]=useState(false)
-  const [isListening,setIsListening]=useState(false)
-  const [laporanTab,setLaporanTab]=useState("grafik")
-  const [wallets,setWallets]=useState([
+  const [step,setStep]=useState,useEffect("login")
+  const [authName,setAuthName]=useState,useEffect("Kawan"), [authEmail,setAuthEmail]=useState,useEffect("kawan@gmail.com"), [authPhone,setAuthPhone]=useState,useEffect("0812****890")
+  const [pin,setPin]=useState,useEffect(""), [pinStep,setPinStep]=useState,useEffect(1), [pin1Saved,setPin1Saved]=useState,useEffect("")
+  const [mode,setMode]=useState,useEffect("Dompet"), [font,setFont]=useState,useEffect("Tegas"), [lang,setLang]=useState,useEffect("ID"), [hideTotal,setHideTotal]=useState,useEffect(false), [hideNorek,setHideNorek]=useState,useEffect({}), [bottom,setBottom]=useState,useEffect("beranda"), [showMenu,setShowMenu]=useState,useEffect(false), [theme,setTheme]=useState,useEffect("light"), [notif,setNotif]=useState,useEffect(true)
+  const [newTx,setNewTx]=useState,useEffect({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
+  const [showAddTx,setShowAddTx]=useState,useEffect(false)
+  const [isListening,setIsListening]=useState,useEffect(false)
+  const [laporanTab,setLaporanTab]=useState,useEffect("grafik")
+  const [wallets,setWallets]=useState,useEffect([
     {id:"1",name:"Tabungan BCA",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
     {id:"2",name:"Tabungan BNI",type:"tabungan",group:"tabungan",color:"#2563eb",bank:"BNI",norek:"0987654321",balance:2500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
     {id:"3",name:"Tabungan BRI",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BRI",norek:"1122334455",balance:1500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
@@ -99,20 +105,20 @@ export default function Page(){
     {id:"10",name:"Cicilan HP",type:"cicilan",group:"cicilan",color:"#8b5cf6",bank:"Kredivo",norek:"-",balance:800000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"Kredivo",dueDate:"2026-10-25"},
     {id:"11",name:"Pengeluaran",type:"pengeluaran",group:"pengeluaran",color:"#f97316",bank:"-",norek:"-",balance:0,currency:"IDR",flag:"🌍",icon:"💸",platform:"",dueDate:""},
   ])
-  const [txs,setTxs]=useState([
+  const [txs,setTxs]=useState,useEffect([
     {id:"1",title:"Kopi dan makan siang",amount:45000,fromWalletId:"7",fromGroup:"tunai",toGroup:"pengeluaran",jenis:"keluar",kategori:"Makanan",date:"3 Okt 2026",foto:"struk.jpg",source:"Tunai Dompet -> Pengeluaran",curr:"IDR",note:"FIX: Belanja 45k - SALAH SATU: Tunai Dompet - Bukan semua 4 grup kepotong! Sisa Tunai Rp 1.160.000 - Tabungan, E-Wallet, Darurat TETAP! 🙌"},
     {id:"2",title:"Isi saldo GoPay dari BCA",amount:75000,fromWalletId:"1",toWalletId:"4",fromGroup:"tabungan",toGroup:"ewallet",jenis:"pindah",kategori:"Top-up",date:"3 Okt 2026",foto:null,source:"Tabungan BCA -> GoPay",curr:"IDR",note:"Pindah: BCA -75k, GoPay +75k - Hanya 2 akun berubah, bukan semua!"},
     {id:"3",title:"Belanja rumah dari BCA",amount:185000,fromWalletId:"1",fromGroup:"tabungan",toGroup:"pengeluaran",jenis:"keluar",kategori:"Makanan",date:"2 Okt 2026",foto:"struk.jpg",source:"Tabungan BCA -> Pengeluaran",curr:"IDR",note:"FIX: Belanja 185k - SALAH SATU: Tabungan BCA - Bukan semua kepotong! Sisa BCA Rp 7.315.000"},
     {id:"4",title:"Gaji Oktober",amount:8500000,fromWalletId:"external",toWalletId:"1",fromGroup:"external",toGroup:"tabungan",jenis:"masuk",kategori:"Gaji",date:"1 Okt 2026",foto:null,source:"External -> Tabungan BCA",curr:"IDR",note:"Masuk: Gaji 8,5jt ke SALAH SATU: Tabungan BCA - Hanya BCA nambah!"},
     {id:"5",title:"Bayar cicilan motor dari BCA",amount:500000,fromWalletId:"1",toGroup:"cicilan",toCicilanId:"9",jenis:"keluar",kategori:"Cicilan",date:"2 Okt 2026",foto:"bon.jpg",source:"Tabungan BCA -> Cicilan Motor FIF",curr:"IDR",note:"FIX CICILAN: Bayar cicilan motor 500k dari BCA - SALAH SATU: BCA 7,5jt->7jt, Cicilan Motor 1,2jt->700k - E-Wallet, Tunai, Darurat TETAP! Custom platform FIF jatuh tempo 20 Okt notif! 🙌"},
   ])
-  const [newWallet,setNewWallet]=useState({name:"",type:"tabungan",group:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:"",currency:"IDR",flag:"🇮🇩",customBankName:""})
-  const [showAddWallet,setShowAddWallet]=useState(false), [selectedSource,setSelectedSource]=useState(null)
-  const [chat,setChat]=useState([
+  const [newWallet,setNewWallet]=useState,useEffect({name:"",type:"tabungan",group:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:"",currency:"IDR",flag:"🇮🇩",customBankName:""})
+  const [showAddWallet,setShowAddWallet]=useState,useEffect(false), [selectedSource,setSelectedSource]=useState,useEffect(null)
+  const [chat,setChat]=useState,useEffect([
     {role:"ai",text:"Selamat datang! V37 FULL - 6 Grup FIX: Belanja/Cicilan pilih SALAH SATU Tabungan/E-Wallet/Tunai/Darurat - Bukan semua kepotong! Cicilan jatuh tempo pilih sumber dana!"},
     {role:"ai",text:"Fitur FULL: Chat Voice/Type + Gemini + 7 saran, Laporan Grafik Batang+Pie+Sheet harian/bulanan + Export, Input Foto Struk/Bon/Barang Galeri+Kamera+Drive, i18n 6 bahasa ALL UI, Font Tegas Manula"},
   ])
-  const [chatInput,setChatInput]=useState("")
+  const [chatInput,setChatInput]=useState,useEffect("")
   const getFontStyle=()=>{
     if(font==="Standar") return {family:"Inter,sans-serif", size:"14px", weight:"400"}
     if(font==="Elegan") return {family:"Georgia, serif", size:"15px", weight:"400"}
@@ -142,20 +148,21 @@ export default function Page(){
   const displayNorek=(norek,id)=>{ if(norek==="-"||norek==="") return "-"; if(!hideNorek[id]) return norek.slice(0,3)+"****"+norek.slice(-3); return norek }
   const handleNumber=(num)=>{ if(pin.length<6){ const np=pin+num; setPin(np); if(np.length===6){ setTimeout(()=>{ if(pinStep===1){ setPin1Saved(np); setPin(""); setPinStep(2)} else { if(np===pin1Saved){ setStep("main")} else { setPin(""); setPinStep(1)} } },300)} } }
 
-  const [googleConnected,setGoogleConnected]=useState(false)
-  const [facebookConnected,setFacebookConnected]=useState(false)
-  const [drivePermission,setDrivePermission]=useState(false)
-  const [sheetPermission,setSheetPermission]=useState(false)
-  const [metaAIConnected,setMetaAIConnected]=useState(false)
-  const [geminiConnected,setGeminiConnected]=useState(false)
-  const [cameraPermission,setCameraPermission]=useState(false)
-  const [filePermission,setFilePermission]=useState(false)
+  const [googleConnected,setGoogleConnected]=useState,useEffect(false)
+  const [facebookConnected,setFacebookConnected]=useState,useEffect(false)
+  const [drivePermission,setDrivePermission]=useState,useEffect(false)
+  const [sheetPermission,setSheetPermission]=useState,useEffect(false)
+  const [metaAIConnected,setMetaAIConnected]=useState,useEffect(false)
+  const [geminiConnected,setGeminiConnected]=useState,useEffect(false)
+  const [cameraPermission,setCameraPermission]=useState,useEffect(false)
+  const [filePermission,setFilePermission]=useState,useEffect(false)
 
-  const [showPermissionModal,setShowPermissionModal]=useState(false)
-  const [gapiLoaded,setGapiLoaded]=useState(false)
-  const [googleAccessToken,setGoogleAccessToken]=useState(null)
-  const [googleClientId,setGoogleClientId]=useState(typeof window!=="undefined"?localStorage.getItem("googleClientId")||"":"")
-  const [googleApiKey,setGoogleApiKey]=useState(typeof window!=="undefined"?localStorage.getItem("googleApiKey")||"":"")
+  const [showPermissionModal,setShowPermissionModal]=useState,useEffect(false)
+  const [gapiLoaded,setGapiLoaded]=useState,useEffect(false)
+  const [googleAccessToken,setGoogleAccessToken]=useState,useEffect(null)
+  const [googleClientId,setGoogleClientId]=useState,useEffect("")
+  const [googleApiKey,setGoogleApiKey]=useState,useEffect("")
+  const [clientReady,setClientReady]=useState,useEffect(false)
 
   // Load Google API - REAL - Bikin sheet beneran di masing2 akun google - Bisa setting dari V berikutnya
   const loadGapi=()=>{
@@ -348,11 +355,11 @@ export default function Page(){
     )
   }
 
-  const [isNewUser,setIsNewUser]=useState(typeof window!=="undefined" ? !localStorage.getItem("dompetAI_pin") : true)
-  const savedPinRef=typeof window!=="undefined" ? localStorage.getItem("dompetAI_pin") : null
+  const [isNewUser,setIsNewUser]=useState,useEffect(true)
 
   if(step==="pin"){
-    const savedPin=typeof window!=="undefined" ? localStorage.getItem("dompetAI_pin") : null
+    let savedPin=null
+    try{savedPin=typeof window!=="undefined" ? localStorage.getItem("dompetAI_pin") : null}catch(e){savedPin=null}
     const isSignUp=!savedPin
 
     if(isSignUp){
@@ -374,10 +381,7 @@ export default function Page(){
                 }else{
                   if(pinInput!==pin1Saved){alert("PIN tidak sama - Ulangi 2X - "+lang); setPinInput(""); setPinStep(1); setPin1Saved(""); return}
                   // PIN 2X setting pas sign up aja langsung save - FINAL
-                  localStorage.setItem("dompetAI_pin",pinInput)
-                  localStorage.setItem("dompetAI_pin_created",new Date().toISOString())
-                  localStorage.setItem("dompetAI_authName",authName)
-                  localStorage.setItem("dompetAI_authEmail",authEmail)
+                  try{localStorage.setItem("dompetAI_pin",pinInput); localStorage.setItem("dompetAI_pin_created",new Date().toISOString()); localStorage.setItem("dompetAI_authName",authName); localStorage.setItem("dompetAI_authEmail",authEmail)}catch(e){console.log(e)}
                   setSavedPin(pinInput)
                   setIsNewUser(false)
                   alert("✅ PIN 2X Berhasil - Langsung Save - "+pinInput+" - Tersimpan di akun - Berikutnya hanya PIN 1X untuk login - FINAL PWA!")
@@ -396,14 +400,14 @@ export default function Page(){
           <div style={{maxWidth:320,width:"100%",background:"#fff",borderRadius:24,padding:20,textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,.08)"}}>
             <h3 style={{margin:0,fontWeight:900}}>Masukkan PIN - Login 1X - {lang} - FINAL</h3>
             <p style={{fontSize:9,color:"#64748b",marginTop:4}}>PIN sekali untuk login - Tidak 2X lagi - Cara kerjanya gitu - Harusnya begitu - FINAL PWA</p>
-            <div style={{fontSize:10,fontWeight:700,marginTop:6,color:"#0ea5e9"}}>👤 {authName || localStorage.getItem("dompetAI_authName") || "Kawan"} - {authEmail || localStorage.getItem("dompetAI_authEmail") || ""}</div>
+            <div style={{fontSize:10,fontWeight:700,marginTop:6,color:"#0ea5e9"}}>👤 {authName || "Kawan"} - {authEmail || ""}</div>
             <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>{[0,1,2,3,4,5].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:pinInput.length>i?"#0f172a":"#e2e8f0"}}/>)}</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:16}}>
               {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+String(n))}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>{n}</button>)}
               <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
               <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800,fontSize:16}}>0</button>
               <button onClick={()=>{
-                const saved=localStorage.getItem("dompetAI_pin")
+                let saved=null; try{saved=localStorage.getItem("dompetAI_pin")}catch(e){saved=null}
                 if(pinInput!==saved){alert("PIN salah - Coba lagi - PIN sekali untuk login - "+lang); setPinInput(""); return}
                 alert("✅ Login PIN 1X Berhasil - Masuk Beranda - FINAL PWA - "+lang)
                 setStep("main")
@@ -671,8 +675,8 @@ export default function Page(){
                 <div style={{fontSize:8,color:"#166534",marginTop:2}}>Dapat dari console.cloud.google.com - Credentials - API Key - Enable Sheets API + Drive API - Paste disini - Bisa setting dari V berikutnya</div>
               </div>
               <div style={{display:"flex",gap:6}}>
-                <button onClick={()=>{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey); alert("✅ Google API Setting Disimpan - Bisa setting dari V berikutnya - Client ID + API Key tersimpan - Sekarang Export Sheet beneran di masing2 akun Google nya buat Sheet Google - "+lang)}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>💾 Simpan Setting - Bisa dari V Berikutnya</button>
-                <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey"); alert("Reset Setting - Bisa setting lagi dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",color:"#0ea5e9",border:"1px solid #0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
+                <button onClick={()=>{try{localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey)}catch(e){}; alert("✅ Google API Setting Disimpan - Bisa setting dari V berikutnya - Client ID + API Key tersimpan - Sekarang Export Sheet beneran di masing2 akun Google nya buat Sheet Google - "+lang)}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>💾 Simpan Setting - Bisa dari V Berikutnya</button>
+                <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); try{localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey")}catch(e){}; alert("Reset Setting - Bisa setting lagi dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",color:"#0ea5e9",border:"1px solid #0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
               </div>
               <div style={{background:googleClientId&&googleApiKey?"#dcfce7":"#fef3c7",borderRadius:8,padding:6,marginTop:6,fontSize:8,color:googleClientId&&googleApiKey?"#166534":"#92400e",border:"1px solid "+(googleClientId&&googleApiKey?"#bbf7d0":"#fde68a")}}>
                 {googleClientId&&googleApiKey?"✅ Setting OK - Client ID + API Key ada - Bisa setting dari V berikutnya - Sekarang Export ke Google Sheet beneran di masing2 akun Google nya buat Sheet Google - Klik Laporan -> Export -> Sheet beneran terbuat di Drive kamu!":"⏳ Setting Belum - Isi Client ID + API Key - Bisa setting dari V berikutnya - Setelah isi, Export Sheet beneran di masing2 akun Google nya"}

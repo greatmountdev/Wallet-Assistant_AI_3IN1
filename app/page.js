@@ -138,8 +138,9 @@ export default function Page(){
         [""],
         ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note","Foto","Currency"],
       ]
-      txs.forEach(t=>{data.push([t.date, t.title+" - "+t.source, t.jenis, "Rp "+t.amount.toLocaleString("id-ID"), t.note, t.foto||"-", t.curr||"IDR"])})
-      const csv=data.map(r=>r.map(c=>`"${String(c||"").replace(/"/g,'""')}"`).join(",")).join("
+      txs.forEach(function(t){data.push([t.date, t.title+" - "+t.source, t.jenis, "Rp "+t.amount.toLocaleString("id-ID"), t.note, t.foto||"-", t.curr||"IDR"])})
+            const csv=data.map(r=>r.join(",")).join("
+")
 ")
       const blob=new Blob([csv],{type:"text/csv"})
       const url=URL.createObjectURL(blob)

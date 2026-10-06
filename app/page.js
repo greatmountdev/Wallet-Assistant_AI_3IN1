@@ -127,32 +127,30 @@ export default function Page(){
   const handleNumber=(num)=>{ if(pin.length<6){ const np=pin+num; setPin(np); if(np.length===6){ setTimeout(()=>{ if(pinStep===1){ setPin1Saved(np); setPin(""); setPinStep(2)} else { if(np===pin1Saved){ setStep("main")} else { setPin(""); setPinStep(1)} } },300)} } }
   const exportToRealSheet=()=>{
     try{
-      const data=[
+      var data=[
         ["Dompet AI 6 Grup FULL - SALAH SATU"],
         ["Total Cash Flow", totalCashFlow],
-        ["Total Tabungan","Rp "+totalTabungan.toLocaleString("id-ID")],
-        ["Total E-Wallet","Rp "+totalEwallet.toLocaleString("id-ID")],
-        ["Total Tunai","Rp "+totalTunai.toLocaleString("id-ID")],
-        ["Total Darurat","Rp "+totalDarurat.toLocaleString("id-ID")],
-        ["Total Cicilan","Rp "+totalCicilan.toLocaleString("id-ID")],
+        ["Total Tabungan", totalTabungan],
+        ["Total E-Wallet", totalEwallet],
+        ["Total Tunai", totalTunai],
+        ["Total Darurat", totalDarurat],
+        ["Total Cicilan", totalCicilan],
         [""],
-        ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note","Foto","Currency"],
+        ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note","Foto","Currency"]
       ]
-      txs.forEach(function(t){data.push([t.date, t.title+" - "+t.source, t.jenis, "Rp "+t.amount.toLocaleString("id-ID"), t.note, t.foto||"-", t.curr||"IDR"])})
-            const csv=data.map(r=>r.join(",")).join("
-")
-")
-      const blob=new Blob([csv],{type:"text/csv"})
-      const url=URL.createObjectURL(blob)
-      const a=document.createElement("a"); a.href=url; a.download="Dompet_AI_6_Grup_FULL_"+new Date().toISOString().slice(0,10)+".csv"; a.click()
+      for(var i=0;i<txs.length;i++){var t=txs[i]; data.push([t.date, t.title+" - "+t.source, t.jenis, t.amount, t.note, t.foto||"-", t.curr||"IDR"])}
+      var csv=data.map(function(r){return r.join(",")}).join(String.fromCharCode(10))
+      var blob=new Blob([csv],{type:"text/csv"})
+      var url=URL.createObjectURL(blob)
+      var a=document.createElement("a"); a.href=url; a.download="Dompet_AI_6_Grup_FULL.csv"; a.click()
       if(window.gapi && window.gapi.client && window.gapi.client.sheets){
-        window.gapi.client.sheets.spreadsheets.create({properties:{title:"Dompet AI 6 Grup - "+new Date().toLocaleDateString("id-ID")}}).then(resp=>{
-          const sid=resp.result.spreadsheetId
-          const sUrl="https://docs.google.com/spreadsheets/d/"+sid
-          window.gapi.client.sheets.spreadsheets.values.update({spreadsheetId:sid, range:"Sheet1!A1", valueInputOption:"RAW", resource:{values:data}}).then(()=>{alert("Sheet REAL beneran di akun Google: "+sUrl); window.open(sUrl,"_blank")})
+        window.gapi.client.sheets.spreadsheets.create({properties:{title:"Dompet AI 6 Grup - "+new Date().toLocaleDateString()}}).then(function(resp){
+          var sid=resp.result.spreadsheetId
+          var sUrl="https://docs.google.com/spreadsheets/d/"+sid
+          window.gapi.client.sheets.spreadsheets.values.update({spreadsheetId:sid, range:"Sheet1!A1", valueInputOption:"RAW", resource:{values:data}}).then(function(){alert("Sheet REAL beneran: "+sUrl); window.open(sUrl,"_blank")})
         })
       }else{
-        alert("CSV terdownload - Import ke sheets.google.com - Jadi Sheet beneran di masing2 akun Google - Bisa setting Client ID dari Profil")
+        alert("CSV terdownload - Import ke sheets.google.com - Jadi Sheet beneran di masing2 akun Google")
       }
     }catch(e){alert("Export error: "+e.message)}
   }

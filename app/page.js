@@ -2,6 +2,7 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
+"use client"
 import { useState, useEffect } from "react"
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
 const TABUNGAN_BANKS=[
@@ -65,7 +66,9 @@ const T={
 
 export default function Page(){
   const [step,setStep]=useState("login")
+  const [mounted,setMounted]=useState(false)
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
+  const [savedPin,setSavedPin]=useState("")
   const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
   const [mode,setMode]=useState("Dompet"), [font,setFont]=useState("Tegas"), [lang,setLang]=useState("ID"), [hideTotal,setHideTotal]=useState(false), [hideNorek,setHideNorek]=useState({}), [bottom,setBottom]=useState("beranda"), [showMenu,setShowMenu]=useState(false), [theme,setTheme]=useState("light"), [notif,setNotif]=useState(true)
   const [newTx,setNewTx]=useState({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
@@ -127,20 +130,7 @@ export default function Page(){
   }
   const displayNorek=(norek,id)=>{ if(norek==="-"||norek==="") return "-"; if(!hideNorek[id]) return norek.slice(0,3)+"****"+norek.slice(-3); return norek }
   const handleNumber=(num)=>{ if(pin.length<6){ const np=pin+num; setPin(np); if(np.length===6){ setTimeout(()=>{ if(pinStep===1){ setPin1Saved(np); setPin(""); setPinStep(2)} else { if(np===pin1Saved){ setStep("main")} else { setPin(""); setPinStep(1)} } },300)} } }
-  const exportToRealSheet=()=>{
-    try{
-      var data=[["Dompet AI 6 Grup FULL"]]
-      for(var i=0;i<txs.length;i++){var t=txs[i]; data.push([t.date, t.title, t.amount])}
-      var csv=data.map(function(r){return r.join(",")}).join(String.fromCharCode(10))
-      var blob=new Blob([csv],{type:"text/csv"})
-      var url=URL.createObjectURL(blob)
-      var a=document.createElement("a"); a.href=url; a.download="Dompet_AI.csv"; a.click()
-      alert("CSV terdownload - V55 WEB AMAN")
-    }catch(e){alert("Export error: "+e.message)}
-  }
-
   if(step==="login"){
-
     return (
       <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#06b6d4,#8b5cf6)",display:"grid",placeItems:"center",padding:20,fontFamily:"Inter,sans-serif"}}>
         <div style={{maxWidth:380,width:"100%",background:"#fff",borderRadius:24,padding:24}}>

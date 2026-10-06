@@ -1,1 +1,1 @@
-self.addEventListener("install",e=>{e.waitUntil(caches.open("v47").then(c=>c.addAll(["/"])))});self.addEventListener("fetch",e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})
+self.addEventListener("install",function(e){e.waitUntil(caches.open("v55").then(function(c){return c.addAll(["/"])}))});self.addEventListener("fetch",function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))})

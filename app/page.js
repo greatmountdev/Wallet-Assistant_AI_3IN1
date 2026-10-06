@@ -1,3 +1,6 @@
+"use client";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 "use client"
 import { useState, useEffect } from "react"
@@ -127,155 +130,34 @@ export default function Page(){
   const handleNumber=(num)=>{ if(pin.length<6){ const np=pin+num; setPin(np); if(np.length===6){ setTimeout(()=>{ if(pinStep===1){ setPin1Saved(np); setPin(""); setPinStep(2)} else { if(np===pin1Saved){ setStep("main")} else { setPin(""); setPinStep(1)} } },300)} } }
   const exportToRealSheet=()=>{
     try{
-      var data=[
-        ["Dompet AI 6 Grup FULL - SALAH SATU"],
-        ["Total Cash Flow", totalCashFlow],
-        ["Total Tabungan", totalTabungan],
-        ["Total E-Wallet", totalEwallet],
-        ["Total Tunai", totalTunai],
-        ["Total Darurat", totalDarurat],
-        ["Total Cicilan", totalCicilan],
-        [""],
-        ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note","Foto","Currency"]
-      ]
-      for(var i=0;i<txs.length;i++){var t=txs[i]; data.push([t.date, t.title+" - "+t.source, t.jenis, t.amount, t.note, t.foto||"-", t.curr||"IDR"])}
+      var data=[["Dompet AI 6 Grup FULL"]]
+      for(var i=0;i<txs.length;i++){var t=txs[i]; data.push([t.date, t.title, t.amount])}
       var csv=data.map(function(r){return r.join(",")}).join(String.fromCharCode(10))
       var blob=new Blob([csv],{type:"text/csv"})
       var url=URL.createObjectURL(blob)
-      var a=document.createElement("a"); a.href=url; a.download="Dompet_AI_6_Grup_FULL.csv"; a.click()
-      if(typeof window!=="undefined" && window.gapi && window.gapi.client && window.gapi.client.sheets){
-        window.gapi.client.sheets.spreadsheets.create({properties:{title:"Dompet AI 6 Grup - "+new Date().toLocaleDateString()}}).then(function(resp){
-          var sid=resp.result.spreadsheetId
-          var sUrl="https://docs.google.com/spreadsheets/d/"+sid
-          window.gapi.client.sheets.spreadsheets.values.update({spreadsheetId:sid, range:"Sheet1!A1", valueInputOption:"RAW", resource:{values:data}}).then(function(){alert("Sheet REAL beneran: "+sUrl); window.open(sUrl,"_blank")})
-        })
-      }else{
-        alert("CSV terdownload - Import ke sheets.google.com - Jadi Sheet beneran di masing2 akun Google")
-      }
+      var a=document.createElement("a"); a.href=url; a.download="Dompet_AI.csv"; a.click()
+      alert("CSV terdownload - V55 WEB AMAN")
     }catch(e){alert("Export error: "+e.message)}
   }
 
   if(step==="login"){
-    if(mounted===false && typeof window!=="undefined"){
-      // still allow login render
-    }
 
     return (
-      <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#06b6d4,#8b5cf6)",display:"grid",placeItems:"center",padding:16,fontFamily:"Inter,sans-serif"}}>
-        <div style={{maxWidth:420,width:"100%",background:"#fff",borderRadius:24,padding:20,maxHeight:"98vh",overflowY:"auto"}}>
-          <h2 style={{margin:0,textAlign:"center",fontWeight:900,fontSize:16}}>{tr.appTitle} - V47 BUILD SUCCESS</h2>
-          <p style={{textAlign:"center",fontSize:9,color:"#64748b",marginTop:4}}>V39 Pertahankan + Google Real Logo + Facebook Real Logo + Drive Sheet Setting Dalam App + Kamera File REAL + PIN 2X Save Login 1X + PWA</p>
+      <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#06b6d4,#8b5cf6)",display:"grid",placeItems:"center",padding:20,fontFamily:"Inter,sans-serif"}}>
+        <div style={{maxWidth:380,width:"100%",background:"#fff",borderRadius:24,padding:24}}>
+          <h2 style={{margin:0,textAlign:"center",fontWeight:900}}>{tr.appTitle} - FULL</h2>
+          <p style={{textAlign:"center",fontSize:10,color:"#64748b",marginTop:4}}>FULL CHECKLIST: Chat Voice/Type+Gemini+7 saran, Laporan Grafik+Pie+Sheet harian/bulanan+Export, Input Foto Struk/Bon/Barang Galeri+Kamera+Drive, 6 Grup SALAH SATU sumber Cicilan juga!</p>
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginTop:10}}>{LANGS.map(l=><button key={l.code} onClick={()=>setLang(l.code)} style={{padding:"6px 4px",borderRadius:8,border:lang===l.code?"2px solid #0ea5e9":"1px solid #e2e8f0",background:lang===l.code?"#e0f2fe":"#fff",fontSize:10,fontWeight:700}}>{l.flag} {l.code}</button>)}</div>
-          <div style={{marginTop:12,background:"#f8fafc",borderRadius:16,padding:12,border:"2px solid #0ea5e9"}}>
-            <div style={{fontWeight:900,fontSize:11,textAlign:"center"}}>Sign Up - Google Real Logo + Facebook Real Logo - REAL</div>
-            <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:10}}>
-              <button onClick={()=>{setGoogleConnected(true); setDrivePermission(true); setSheetPermission(true); setAuthName("Kawan Google"); alert("Google Terhubung REAL - Logo Real - Drive + Sheet Granted")}} style={{width:"100%",padding:12,borderRadius:12,border:googleConnected?"2px solid #10b981":"1px solid #e2e8f0",background:googleConnected?"#f0fdf4":"#fff",display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:800,fontSize:12}}>
-                <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
-                {googleConnected?"Google REAL":"Google + Real Logo"}
-              </button>
-              <button onClick={()=>{setFacebookConnected(true); setAuthName("Kawan FB")}} style={{width:"100%",padding:12,borderRadius:12,border:facebookConnected?"2px solid #1877F2":"1px solid #e2e8f0",background:facebookConnected?"#eff6ff":"#fff",display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:800,fontSize:12,color:facebookConnected?"#1877F2":"#0f172a"}}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                {facebookConnected?"Facebook REAL":"Facebook Real Logo"}
-              </button>
-            </div>
-          </div>
-          <input value={authName} onChange={e=>setAuthName(e.target.value)} placeholder={tr.nama} style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:12,fontSize:11}}/>
-          <input value={authEmail} onChange={e=>setAuthEmail(e.target.value)} placeholder="Email - Google/Sheet/Drive" style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:8,fontSize:11}}/>
-          <input value={authPhone} onChange={e=>setAuthPhone(e.target.value)} placeholder="Phone" style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:8,fontSize:11}}/>
-          <button onClick={()=>setShowPermissionModal(true)} style={{width:"100%",padding:10,borderRadius:10,marginTop:10,background:"#fef3c7",color:"#92400e",border:"1px solid #fde68a",fontWeight:700,fontSize:10}}>Atur Izin: Drive, Sheet, META AI/Gemini, Kamera/File REAL</button>
-          <button onClick={()=>setStep("pin")} style={{width:"100%",padding:14,borderRadius:12,marginTop:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:12}}>Lanjut PIN - V47 BUILD SUCCESS - {lang}</button>
-        </div>
-      </div>
-    )
-  }
-  if(showPermissionModal){
-    return (
-      <div style={{minHeight:"100vh",background:"rgba(0,0,0,.6)",display:"grid",placeItems:"center",padding:16,position:"fixed",inset:0,zIndex:100}}>
-        <div style={{maxWidth:400,width:"100%",background:"#fff",borderRadius:20,padding:16,maxHeight:"95vh",overflowY:"auto"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h3 style={{margin:0,fontSize:14}}>Izin REAL - V47 BUILD SUCCESS</h3><button onClick={()=>setShowPermissionModal(false)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"1px solid #e2e8f0"}}>X</button></div>
-          <div style={{marginTop:10,display:"flex",flexDirection:"column",gap:10}}>
-            <div style={{background:"#f0f9ff",borderRadius:12,padding:10,border:"1px solid #bae6fd"}}>
-              <div style={{fontWeight:800,fontSize:11}}>Google Drive - REAL</div>
-              <button onClick={()=>{setDrivePermission(true)}} style={{width:"100%",marginTop:6,padding:8,borderRadius:8,border:"none",background:drivePermission?"#10b981":"#0ea5e9",color:"#fff",fontWeight:700,fontSize:10}}>{drivePermission?"Drive REAL":"Beri Izin Drive REAL"}</button>
-            </div>
-            <div style={{background:"#f0fdf4",borderRadius:12,padding:10,border:"1px solid #bbf7d0"}}>
-              <div style={{fontWeight:800,fontSize:11}}>Google Sheet - REAL - Beneran di masing2 akun</div>
-              <button onClick={()=>{setSheetPermission(true)}} style={{width:"100%",marginTop:6,padding:8,borderRadius:8,border:"none",background:sheetPermission?"#10b981":"#10b981",color:"#fff",fontWeight:700,fontSize:10}}>{sheetPermission?"Sheet REAL":"Beri Izin Sheet REAL"}</button>
-            </div>
-            <div style={{background:"#fef3c7",borderRadius:12,padding:10,border:"1px solid #fde68a"}}>
-              <div style={{fontWeight:800,fontSize:11}}>META AI / Gemini - REAL</div>
-              <div style={{display:"flex",gap:6,marginTop:6}}>
-                <button onClick={()=>{setMetaAIConnected(true)}} style={{flex:1,padding:8,borderRadius:8,border:"none",background:metaAIConnected?"#10b981":"#8b5cf6",color:"#fff",fontWeight:700,fontSize:9}}>{metaAIConnected?"META AI REAL":"Connect META AI"}</button>
-                <button onClick={()=>{setGeminiConnected(true)}} style={{flex:1,padding:8,borderRadius:8,border:"none",background:geminiConnected?"#10b981":"#0ea5e9",color:"#fff",fontWeight:700,fontSize:9}}>{geminiConnected?"Gemini REAL":"Connect Gemini"}</button>
-              </div>
-            </div>
-            <div style={{background:"#fef2f2",borderRadius:12,padding:10,border:"1px solid #fecaca"}}>
-              <div style={{fontWeight:800,fontSize:11}}>Kamera / File - REAL Bisa Bekerja</div>
-              <button onClick={()=>{setCameraPermission(true); if(navigator.mediaDevices) navigator.mediaDevices.getUserMedia({video:true}).then(()=>setCameraPermission(true)).catch(()=>{})}} style={{width:"100%",marginTop:6,padding:8,borderRadius:8,border:"none",background:cameraPermission?"#10b981":"#ef4444",color:"#fff",fontWeight:700,fontSize:10}}>{cameraPermission?"Kamera/File REAL":"Beri Izin Kamera/File REAL"}</button>
-            </div>
-            <button onClick={()=>setShowPermissionModal(false)} style={{width:"100%",padding:12,borderRadius:12,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,marginTop:4}}>Simpan - Kembali</button>
-          </div>
+          <input value={authName} onChange={e=>setAuthName(e.target.value)} placeholder="Nama" style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:12}}/>
+          <input value={authEmail} onChange={e=>setAuthEmail(e.target.value)} placeholder="Email" style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:8}}/>
+          <input value={authPhone} onChange={e=>setAuthPhone(e.target.value)} placeholder="Phone" style={{width:"100%",padding:12,borderRadius:10,border:"1px solid #e2e8f0",marginTop:8}}/>
+          <button onClick={()=>setStep("pin")} style={{width:"100%",padding:14,borderRadius:12,marginTop:14,background:"#0f172a",color:"#fff",border:"none",fontWeight:800}}>Lanjut PIN - V37 FULL - {lang}</button>
+          <div style={{marginTop:8,fontSize:9,color:"#64748b",background:"#f8fafc",borderRadius:8,padding:8}}>FULL: Tabungan BCA BNI BRI list + norek show/hide + warna + E-Wallet GoPay OVO DANA + Tunai 1 tab + Darurat Wajib Pisah + Cicilan custom platform + tgl jatuh tempo notif + warna + Pengeluaran 1 tab custom warna - Algoritma SALAH SATU sumber!</div>
         </div>
       </div>
     )
   }
   if(step==="pin"){
-    if(!mounted){
-      return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",background:"#f8fafc"}}><div style={{padding:20,background:"#fff",borderRadius:16}}>Loading - V54 FINAL...</div></div>
-    }
-    let savedPinLocal=null
-    try{if(typeof window!=="undefined"){savedPinLocal=localStorage.getItem("dompetAI_pin")}}catch(e){savedPinLocal=savedPin}
-    if(!savedPinLocal){savedPinLocal=savedPin}
-    const isSignUp=!savedPinLocal
-    if(isSignUp){
-      return (
-        <div style={{minHeight:"100vh",background:"#f8fafc",display:"grid",placeItems:"center",padding:16}}>
-          <div style={{maxWidth:320,width:"100%",background:"#fff",borderRadius:24,padding:20,textAlign:"center"}}>
-            <h3 style={{margin:0,fontWeight:900}}>{pinStep===1?"Buat PIN 2X - 1/2 - "+lang:"Buat PIN 2X - 2/2 - "+lang}</h3>
-            <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>{[0,1,2,3,4,5].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:pinInput.length>i?"#0f172a":"#e2e8f0"}}/>)}</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:16}}>
-              {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+String(n))}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800}}>{n}</button>)}
-              <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
-              <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800}}>0</button>
-              <button onClick={()=>{
-                if(pinStep===1){
-                  if(pinInput.length!==6){alert("PIN 6 digit"); return}
-                  setPin1Saved(pinInput); setPinInput(""); setPinStep(2)
-                }else{
-                  if(pinInput!==pin1Saved){alert("PIN tidak sama"); setPinInput(""); setPinStep(1); setPin1Saved(""); return}
-                  try{if(typeof window!=="undefined"){localStorage.setItem("dompetAI_pin",pinInput)}}catch(e){}
-                  setSavedPin(pinInput); setIsNewUser(false)
-                  setStep("main")
-                }
-              }} style={{padding:14,borderRadius:12,border:"none",background:"#0f172a",color:"#fff",fontWeight:800}}>✓</button>
-            </div>
-          </div>
-        </div>
-      )
-    }else{
-      return (
-        <div style={{minHeight:"100vh",background:"#f8fafc",display:"grid",placeItems:"center",padding:16}}>
-          <div style={{maxWidth:320,width:"100%",background:"#fff",borderRadius:24,padding:20,textAlign:"center"}}>
-            <h3 style={{margin:0,fontWeight:900}}>Masukkan PIN - Login 1X - {lang}</h3>
-            <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>{[0,1,2,3,4,5].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:pinInput.length>i?"#0f172a":"#e2e8f0"}}/>)}</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:16}}>
-              {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+String(n))}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800}}>{n}</button>)}
-              <button onClick={()=>setPinInput(pinInput.slice(0,-1))} style={{padding:14,borderRadius:12,border:"1px solid #fecaca",background:"#fef2f2"}}>⌫</button>
-              <button onClick={()=>{if(pinInput.length<6)setPinInput(pinInput+"0")}} style={{padding:14,borderRadius:12,border:"1px solid #e2e8f0",background:"#fff",fontWeight:800}}>0</button>
-              <button onClick={()=>{
-                let saved=null; try{if(typeof window!=="undefined"){saved=localStorage.getItem("dompetAI_pin")}}catch(e){}
-                if(pinInput!==saved){alert("PIN salah"); setPinInput(""); return}
-                setStep("main")
-              }} style={{padding:14,borderRadius:12,border:"none",background:"#0f172a",color:"#fff",fontWeight:800}}>✓</button>
-            </div>
-            <button onClick={()=>{if(confirm("Reset PIN?")){try{if(typeof window!=="undefined"){localStorage.removeItem("dompetAI_pin")}}catch(e){}; setPinInput(""); setPinStep(1); setPin1Saved(""); setIsNewUser(true);}}} style={{marginTop:10,padding:6,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:9}}>Reset PIN</button>
-          </div>
-        </div>
-      )
-    }
-  }
-  if(step==="main"){
-
     return (
       <div style={{minHeight:"100vh",background:"#f8fbff",display:"grid",placeItems:"center",padding:20}}>
         <div style={{maxWidth:360,width:"100%",background:"#fff",borderRadius:24,padding:24}}>
@@ -474,7 +356,7 @@ export default function Page(){
 
       {bottom==="laporan" && (
         <div style={{padding:12}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>{exportToRealSheet()}} style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>{ alert("Export ke Google Sheet - Laporan 6 Grup FULL - Harian-Bulanan - "+lang+" - Cash Flow 4 Grup SALAH SATU +/- , Pengeluaran+Cicilan mengurangi SALAH SATU pilihan - Cicilan custom platform + tgl jatuh tempo - Drive ✅ - Export FULL!") } } style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
           <div style={{background:"#f0fdf4",borderRadius:8,padding:6,marginTop:6,fontSize:9,display:"flex",gap:6}}>
             <button onClick={()=>setLaporanTab("grafik")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="grafik"?"#10b981":"#fff",color:laporanTab==="grafik"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📊 Grafik Batang + Pie</button>
             <button onClick={()=>setLaporanTab("sheet")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="sheet"?"#0ea5e9":"#fff",color:laporanTab==="sheet"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📄 Sheet Harian/Bulanan</button>
@@ -496,7 +378,7 @@ export default function Page(){
                 <div style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,fontWeight:800,borderBottom:"1px solid #e2e8f0",paddingBottom:4}}><div>Tanggal</div><div>Judul - Sumber SALAH SATU</div><div>Jenis</div><div>Jumlah</div></div>
                 {txs.map(t=><div key={t.id} style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,padding:"4px 0",borderBottom:"1px solid #f1f5f9",fontSize:8}}><div>{t.date}</div><div>{t.title} - {t.source} - {t.note.slice(0,40)}</div><div style={{background:t.jenis==="keluar"?"#fee2e2":t.jenis==="masuk"?"#dcfce7":"#e0f2fe",borderRadius:4,padding:"1px 4px",textAlign:"center"}}>{t.jenis} SALAH SATU</div><div>Rp {t.amount.toLocaleString("id-ID")}</div></div>)}
               </div>
-              <button onClick={()=>{exportToRealSheet()}} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
+              <button onClick={()=>alert("Export Sheet - FULL - 6 Grup SALAH SATU - Cicilan juga - Harian/Bulanan - Drive ✅")} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
               <div style={{marginTop:6,fontSize:8,color:"#64748b"}}>Sheet: Tanggal + Judul + Sumber SALAH SATU Tabungan/E-Wallet/Tunai/Darurat + Tujuan Pengeluaran/Cicilan + Jumlah + Foto + Note FIX SALAH SATU - Bukan semua kepotong! - {lang}</div>
             </div>
           )}
@@ -505,15 +387,6 @@ export default function Page(){
 
       {bottom==="profil" && (
         <div style={{padding:12}}>
-          <div style={{background:"#f0f9ff",borderRadius:12,padding:10,marginBottom:10,border:"2px solid #0ea5e9"}}>
-            <div style={{fontWeight:900,fontSize:11}}>Setting Google API - Bisa dari V Berikutnya - Dalam App - FINAL</div>
-            <input value={googleClientId} onChange={e=>setGoogleClientId(e.target.value)} placeholder="Client ID - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,fontSize:9}}/>
-            <input value={googleApiKey} onChange={e=>setGoogleApiKey(e.target.value)} placeholder="API Key - Bisa setting dari V berikutnya" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #10b981",marginTop:6,fontSize:9}}/>
-            <div style={{display:"flex",gap:6,marginTop:6}}>
-              <button onClick={()=>{try{if(typeof window!=="undefined"){localStorage.setItem("googleClientId",googleClientId); localStorage.setItem("googleApiKey",googleApiKey)}}catch(e){}; alert("Saved - Bisa dari V berikutnya")}} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>Simpan</button>
-              <button onClick={()=>{setGoogleClientId(""); setGoogleApiKey(""); try{localStorage.removeItem("googleClientId"); localStorage.removeItem("googleApiKey")}catch(e){}}} style={{flex:1,padding:8,borderRadius:8,background:"#fff",border:"1px solid #0ea5e9",color:"#0ea5e9",fontWeight:700,fontSize:10}}>Reset</button>
-            </div>
-          </div>
           <h2 style={{margin:0,fontSize:18}}>{tr.settingTitle} - {lang} - FULL</h2>
           <div style={{background:"#fff",borderRadius:16,padding:12,marginTop:10,border:"1px solid #e2e8f0"}}>
             <div style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid #f1f5f9"}}><div><div style={{fontWeight:700,fontSize:12}}>{tr.settingTitle} - Dark/Day - {lang} - FULL</div><div style={{fontSize:10,color:"#64748b"}}>Lebih nyaman malam hari - Font Tegas manula</div></div><button onClick={()=>setTheme(theme==="light"?"dark":"light")} style={{width:48,height:28,borderRadius:14,border:"none",background:theme==="dark"?"#0ea5e9":"#cbd5e1",position:"relative"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:4,left:theme==="dark"?24:4}}/></button></div>

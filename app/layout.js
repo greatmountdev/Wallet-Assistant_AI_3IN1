@@ -1,1 +1,5 @@
-export const metadata={title:"Dompet AI V47 FINAL BUILD SUCCESS", manifest:"/manifest.json"}; export default function RootLayout({children}){return <html lang="id"><head><link rel="manifest" href="/manifest.json"/><meta name="theme-color" content="#0ea5e9"/><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><link rel="apple-touch-icon" href="/icon-192.png"/></head><body style={{margin:0}}>{children}<script dangerouslySetInnerHTML={{__html:`if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js')}`}} /></body></html>}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+export const metadata={title:"Dompet AI V53 FINAL FIX GOOGLECONNECTED", manifest:"/manifest.json"};
+export default function RootLayout({children}){return <html lang="id"><head><link rel="manifest" href="/manifest.json"/><meta name="theme-color" content="#0ea5e9"/><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><link rel="apple-touch-icon" href="/icon-192.png"/></head><body style={{margin:0}}>{children}<script dangerouslySetInnerHTML={{__html:`if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{})}`}} /></body></html>}

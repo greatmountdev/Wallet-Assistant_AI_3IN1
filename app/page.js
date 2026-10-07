@@ -1,16 +1,12 @@
 "use client"
 import { useState, useEffect } from "react"
 
-const exportRealGoogleSheetV79 = async (wallets, authName, authEmail, clientId)=>{
+const exportRealGoogleSheetV80 = async (wallets, authName, authEmail, clientId)=>{
   const total = wallets.reduce((a,b)=>a+(b.balance||0),0);
-  const data = [
-    ["Total Cash Flow SALAH SATU | Rp "+total.toLocaleString("id-ID")],
-    ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note FIX"],
-    ...wallets.map(w=>[new Date().toISOString().slice(0,10), w.name+" - "+w.bank, w.group, w.balance, (w.platform||"")])
-  ];
+  const data = [["Total Cash Flow | Rp "+total.toLocaleString("id-ID")],["Tanggal","Judul","Jenis","Jumlah"],...wallets.map(w=>[new Date().toISOString().slice(0,10), w.name, w.group, w.balance])];
   const csv = data.map(r=>r.map(c=>`"${String(c||"").replace(/"/g,'""')}"`).join(",")).join("\n");
   const blob = new Blob([csv],{type:"text/csv"}); const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href=url; a.download="Dompet_AI_V79.csv"; a.click();
+  const a = document.createElement("a"); a.href=url; a.download="Dompet_AI_V80.csv"; a.click();
 };
 
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
@@ -99,10 +95,7 @@ export default function Page(){
     const btcIt = setInterval(()=>{ const base=1050000000 + Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+base.toLocaleString("id-ID")); },5000);
     return ()=>{ clearInterval(it); clearInterval(btcIt); };
   },[]);
-  const copyAddress = (addr)=>{ navigator.clipboard.writeText(addr); alert("Copy alamat: "+addr+" - TrustWallet/Metamask - Siap kirim/terima/swap"); };
-
-  const [showAddCoin,setShowAddCoin]=useState(false);
-  const [newCoin,setNewCoin]=useState({symbol:"",name:"",network:"BEP-20",address:"",contract:""});
+  const copyAddress = (addr)=>{ if(navigator.clipboard){ navigator.clipboard.writeText(addr); } alert("Copy alamat: "+addr+" - TrustWallet/Metamask - Siap kirim/terima/swap"); };
 
   const [cryptoAssets,setCryptoAssets]=useState([
     {id:"1", symbol:"BTC", name:"Bitcoin", network:"BTC", address:"bc1qxy2k...s8x4j3n5m9q7", contract:"", balance:0.0025, usd: 1250, icon:"₿"},
@@ -468,7 +461,7 @@ export default function Page(){
 
       {bottom==="laporan" && (
         <div style={{padding:12}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>exportRealGoogleSheetV79(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>exportRealGoogleSheetV80(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
           <div style={{background:"#f0fdf4",borderRadius:8,padding:6,marginTop:6,fontSize:9,display:"flex",gap:6}}>
             <button onClick={()=>setLaporanTab("grafik")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="grafik"?"#10b981":"#fff",color:laporanTab==="grafik"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📊 Grafik Batang + Pie</button>
             <button onClick={()=>setLaporanTab("sheet")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="sheet"?"#0ea5e9":"#fff",color:laporanTab==="sheet"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📄 Sheet Harian/Bulanan</button>
@@ -490,7 +483,7 @@ export default function Page(){
                 <div style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,fontWeight:800,borderBottom:"1px solid #e2e8f0",paddingBottom:4}}><div>Tanggal</div><div>Judul - Sumber SALAH SATU</div><div>Jenis</div><div>Jumlah</div></div>
                 {txs.map(t=><div key={t.id} style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,padding:"4px 0",borderBottom:"1px solid #f1f5f9",fontSize:8}}><div>{t.date}</div><div>{t.title} - {t.source} - {t.note.slice(0,40)}</div><div style={{background:t.jenis==="keluar"?"#fee2e2":t.jenis==="masuk"?"#dcfce7":"#e0f2fe",borderRadius:4,padding:"1px 4px",textAlign:"center"}}>{t.jenis} SALAH SATU</div><div>Rp {t.amount.toLocaleString("id-ID")}</div></div>)}
               </div>
-              <button onClick={()=>exportRealGoogleSheetV79(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
+              <button onClick={()=>exportRealGoogleSheetV80(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
               <div style={{marginTop:6,fontSize:8,color:"#64748b"}}>Sheet: Tanggal + Judul + Sumber SALAH SATU Tabungan/E-Wallet/Tunai/Darurat + Tujuan Pengeluaran/Cicilan + Jumlah + Foto + Note FIX SALAH SATU - Bukan semua kepotong! - {lang}</div>
             </div>
           )}
@@ -581,11 +574,11 @@ export default function Page(){
         <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.7)",zIndex:100,display:"grid",placeItems:"center",padding:12}}>
           <div style={{background:"#fff",borderRadius:20,padding:16,maxWidth:360,width:"100%",maxHeight:"90vh",overflowY:"auto"}}>
             <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>Crypto - Seed & 2FA Wajib - Hanya Geser ke Crypto</div>
-            <div style={{fontSize:9,color:"#64748b",textAlign:"center",marginTop:4}}>Di Dompet gak ada Seed! Hanya pas geser ke Crypto baru popup ini! Seed & 2FA cuma pintu masuk!</div>
+            <div style={{fontSize:9,color:"#64748b",textAlign:"center",marginTop:4}}>Di Dompet gak ada Seed! Seed & 2FA cuma pintu masuk!</div>
             <div style={{background:"#f8fafc",borderRadius:12,padding:10,marginTop:10,border:"1px solid #e2e8f0"}}>
-              <div style={{fontSize:10,fontWeight:800}}>Seed 12 Kata - Simpan Aman - QR + TrustWallet/Metamask</div>
+              <div style={{fontSize:10,fontWeight:800}}>Seed 12 Kata - QR + TrustWallet/Metamask</div>
               <div style={{background:"#0f172a",color:"#10b981",padding:8,borderRadius:8,marginTop:6,fontSize:10,fontFamily:"monospace",wordBreak:"break-all"}}>{cryptoSeed12}</div>
-              <label style={{display:"flex",gap:6,alignItems:"center",marginTop:8,fontSize:9,fontWeight:700}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Simpan Seed 12 kata aman!</label>
+              <label style={{display:"flex",gap:6,alignItems:"center",marginTop:8,fontSize:9,fontWeight:700}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Simpan Seed aman!</label>
             </div>
             <div style={{background:"#fef3c7",borderRadius:12,padding:10,marginTop:10,border:"1px solid #fde68a"}}>
               <div style={{fontSize:10,fontWeight:800}}>BSCScan 15 Menit + BTC Live</div>
@@ -616,10 +609,9 @@ export default function Page(){
             <div style={{fontSize:9,opacity:0.7,marginTop:4}}>Seed & 2FA sudah OK - Asset + Address + Network di dalem wallet - Bukan diluar/pas sign 2FA!</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>
               <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BTC Live</div><div style={{fontSize:11,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
-              <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BSCScan {bscScanTimer}</div><div style={{fontSize:9,fontWeight:700}}>Seed OK + 2FA {cryptoPIN ? "✅" : "❌"}</div></div>
+              <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BSCScan {bscScanTimer}</div><div style={{fontSize:9,fontWeight:700}}>Seed OK + 2FA {cryptoPIN ? "OK" : "NO"}</div></div>
             </div>
           </div>
-
           <div style={{marginTop:12}}>
             <div style={{fontWeight:900,fontSize:12}}>Asset Crypto - Alamat dari masing-masing Coin (tergantung jaringan)</div>
             <div style={{fontSize:8,color:"#64748b",marginTop:2}}>Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset - Alamat kontrak kirim/terima/swap</div>
@@ -629,7 +621,7 @@ export default function Page(){
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                     <div style={{display:"flex",gap:8,alignItems:"center"}}>
                       <div style={{width:32,height:32,borderRadius:8,background:"#f8fafc",display:"grid",placeItems:"center",fontSize:14,border:"1px solid #e2e8f0"}}>{a.icon}</div>
-                      <div><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b"}}>{a.network} {a.contract ? "• Contract" : "• Native"}</div></div>
+                      <div><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b"}}>{a.network} {a.contract ? "Contract" : "Native"}</div></div>
                     </div>
                     <div style={{textAlign:"right"}}><div style={{fontWeight:900,fontSize:11}}>{a.balance} {a.symbol}</div><div style={{fontSize:7,color:"#64748b"}}>≈ ${a.usd}</div></div>
                   </div>
@@ -650,36 +642,34 @@ export default function Page(){
                     )}
                   </div>
                   <div style={{display:"flex",gap:6,marginTop:8}}>
-                    <button onClick={()=>alert("Kirim "+a.symbol+" "+a.network+" dari "+a.address+" - TrustWallet/Metamask - BEP-20/ERC-20 - Input alamat tujuan + jumlah")} style={{flex:1,padding:6,borderRadius:8,background:"#ef4444",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>Kirim</button>
-                    <button onClick={()=>alert("Terima "+a.symbol+" "+a.network+" - Alamat: "+a.address+" - QR - TrustWallet/Metamask - Copy alamat kontrak "+(a.contract||a.address))} style={{flex:1,padding:6,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>Terima</button>
-                    <button onClick={()=>alert("Swap "+a.symbol+" "+a.network+" - PancakeSwap/Uniswap - Contract: "+(a.contract||"Native")+" - TrustWallet/Metamask")} style={{flex:1,padding:6,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>Swap</button>
-                    <button onClick={()=>alert("BSCScan: https://bscscan.com/address/"+(a.contract||a.address)+" - "+a.network+" - 15 menit timer "+bscScanTimer)} style={{flex:1,padding:6,borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>BSCScan</button>
+                    <button onClick={()=>alert("Kirim "+a.symbol+" "+a.network+" dari "+a.address)} style={{flex:1,padding:6,borderRadius:8,background:"#ef4444",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>Kirim</button>
+                    <button onClick={()=>alert("Terima "+a.symbol+" - Alamat: "+a.address+" - QR")} style={{flex:1,padding:6,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>Terima</button>
+                    <button onClick={()=>alert("Swap "+a.symbol+" - PancakeSwap/Uniswap - Contract: "+(a.contract||"Native"))} style={{flex:1,padding:6,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>Swap</button>
+                    <button onClick={()=>alert("BSCScan: https://bscscan.com/address/"+(a.contract||a.address))} style={{flex:1,padding:6,borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>BSCScan</button>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
           {showAddCoin && (
             <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:110,display:"grid",placeItems:"center",padding:12}}>
               <div style={{background:"#fff",borderRadius:16,padding:12,width:"100%",maxWidth:340}}>
-                <div style={{fontWeight:900,fontSize:12}}>Tambah Coin - Alamat dari masing-masing Coin (tergantung jaringan)</div>
-                <div style={{fontSize:8,color:"#64748b",marginTop:2}}>Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset - Alamat kontrak kirim/terima/swap</div>
+                <div style={{fontWeight:900,fontSize:12}}>Tambah Coin - Alamat dari masing-masing Coin</div>
                 <div style={{display:"grid",gap:6,marginTop:8}}>
                   <input value={newCoin.symbol} onChange={e=>setNewCoin({...newCoin,symbol:e.target.value})} placeholder="Symbol: USDT, BTC, ETH, BNB" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
                   <input value={newCoin.name} onChange={e=>setNewCoin({...newCoin,name:e.target.value})} placeholder="Nama: Tether BEP-20" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
                   <select value={newCoin.network} onChange={e=>setNewCoin({...newCoin,network:e.target.value})} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
-                    <option value="BEP-20">BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap</option>
-                    <option value="ERC-20">ERC-20 (Ethereum)</option>
-                    <option value="TRC-20">TRC-20 (Tron)</option>
-                    <option value="BTC">BTC (Bitcoin)</option>
-                    <option value="SOL">SOL (Solana)</option>
+                    <option value="BEP-20">BEP-20 (BSC)</option>
+                    <option value="ERC-20">ERC-20</option>
+                    <option value="TRC-20">TRC-20</option>
+                    <option value="BTC">BTC</option>
+                    <option value="SOL">SOL</option>
                   </select>
-                  <input value={newCoin.address} onChange={e=>setNewCoin({...newCoin,address:e.target.value})} placeholder="Alamat Wallet TrustWallet/Metamask: 0x... / bc1q..." style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-                  <input value={newCoin.contract} onChange={e=>setNewCoin({...newCoin,contract:e.target.value})} placeholder="Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+                  <input value={newCoin.address} onChange={e=>setNewCoin({...newCoin,address:e.target.value})} placeholder="Alamat Wallet: 0x... / bc1q..." style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+                  <input value={newCoin.contract} onChange={e=>setNewCoin({...newCoin,contract:e.target.value})} placeholder="Alamat Kontrak (kalo token)" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
                   <div style={{display:"flex",gap:6,marginTop:6}}>
                     <button onClick={()=>setShowAddCoin(false)} style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",background:"#fff",fontSize:10}}>Batal</button>
-                    <button onClick={()=>{ if(!newCoin.symbol || !newCoin.address){ alert("Isi Symbol + Alamat Wallet!"); return; } setCryptoAssets([...cryptoAssets,{id:Date.now().toString(), symbol:newCoin.symbol, name:newCoin.name||newCoin.symbol, network:newCoin.network, address:newCoin.address, contract:newCoin.contract, balance:0, usd:0, icon:"💎"}]); setShowAddCoin(false); setNewCoin({symbol:"",name:"",network:"BEP-20",address:"",contract:""}); }} style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah Asset</button>
+                    <button onClick={()=>{ if(!newCoin.symbol || !newCoin.address){ alert("Isi Symbol + Alamat!"); return; } setCryptoAssets([...cryptoAssets,{id:Date.now().toString(), symbol:newCoin.symbol, name:newCoin.name||newCoin.symbol, network:newCoin.network, address:newCoin.address, contract:newCoin.contract, balance:0, usd:0, icon:"💎"}]); setShowAddCoin(false); setNewCoin({symbol:"",name:"",network:"BEP-20",address:"",contract:""}); }} style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah</button>
                   </div>
                 </div>
               </div>

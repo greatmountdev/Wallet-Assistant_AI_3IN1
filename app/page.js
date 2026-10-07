@@ -51,7 +51,7 @@ const exportRealGoogleSheetV40 = async (wallets, authName, authEmail, clientId)=
 };
 
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
 const TABUNGAN_BANKS=[
   {name:"BCA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"BNI", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
@@ -114,6 +114,19 @@ const T={
 
 export default function Page(){
   const [step,setStep]=useState("login")
+  const [cryptoMode,setCryptoMode]=useState("dompet");
+  const [showCryptoSeedPopup,setShowCryptoSeedPopup]=useState(false);
+  const [cryptoSeedChecked,setCryptoSeedChecked]=useState(false);
+  const [crypto2FAChecked,setCrypto2FAChecked]=useState(false);
+  const [cryptoSeed12,setCryptoSeed12]=useState("abandon ability able about above absent absorb abstract absurd abuse access accident");
+  const [cryptoPIN,setCryptoPIN]=useState("");
+  const [btcPrice,setBtcPrice]=useState("Rp 1.050.000.000");
+  const [bscScanTimer,setBscScanTimer]=useState("15:00");
+  const handleCryptoTabClick = (target)=>{ if(target==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
+  const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed 12 kata sudah disimpan!"); return; } if(!crypto2FAChecked){ alert("Centang PIN 2FA wajib!"); return; } if(cryptoPIN.length!==6){ alert("PIN 2FA 6 digit wajib!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
+  useEffect(()=>{ const it = setInterval(()=>{ setBscScanTimer(prev=>{ const p=prev.split(":"); let m=parseInt(p[0]||"15"); let s=parseInt(p[1]||"00"); let t=m*60+s-1; if(t<=0) t=15*60; return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }); },1000); const bIt = setInterval(()=>{ const b=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+b.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(it); clearInterval(bIt); }; },[]);
+
+
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
   const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")
   const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
@@ -283,8 +296,8 @@ export default function Page(){
         </div>
         <div style={{display:"flex",justifyContent:"center",padding:"12px 0"}}>
           <div style={{display:"flex",background:"rgba(255,255,255,.22)",borderRadius:14,padding:4,gap:4}}>
-            <button onClick={()=>setMode("Dompet")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Dompet"?"#fff":"transparent",color:mode==="Dompet"?"#0f172a":"#fff",fontSize:12}}>{tr.dompet}</button>
-            <button onClick={()=>setMode("Crypto")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Crypto"?"#fff":"transparent",color:mode==="Crypto"?"#0f172a":"#fff",fontSize:12}}>{tr.crypto}</button>
+            <button onClick={()=>handleCryptoTabClick("dompet")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Dompet"?"#fff":"transparent",color:mode==="Dompet"?"#0f172a":"#fff",fontSize:12}}>{tr.dompet}</button>
+            <button onClick={()=>handleCryptoTabClick("crypto")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Crypto"?"#fff":"transparent",color:mode==="Crypto"?"#0f172a":"#fff",fontSize:12}}>{tr.crypto}</button>
           </div>
         </div>
       </div>
@@ -572,6 +585,53 @@ export default function Page(){
               <div style={{display:"flex",gap:6}}><input value={newWallet.platform} onChange={e=>setNewWallet({...newWallet,platform:e.target.value})} placeholder="Custom platform - Cicilan - ex: FIF, Kredivo, Akulaku" style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:11}}/><input type="date" value={newWallet.dueDate} onChange={e=>setNewWallet({...newWallet,dueDate:e.target.value})} placeholder="Tgl jatuh tempo notif - Cicilan" style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:11}}/></div>
               <div style={{display:"flex",gap:6}}><input type="number" value={newWallet.balance} onChange={e=>setNewWallet({...newWallet,balance:Number(e.target.value)})} placeholder="Jumlah uang - Cash flow SALAH SATU" style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:11}}/><select value={newWallet.currency} onChange={e=>setNewWallet({...newWallet,currency:e.target.value})} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:11}}><option>IDR</option><option>USD</option><option>SGD</option><option>EUR</option><option>GBP</option><option>JPY</option><option>MYR</option><option>CNY</option><option>INR</option><option>PHP</option><option>KRW</option><option>AUD</option><option>CAD</option><option>AED</option></select></div>
               <div style={{display:"flex",gap:6}}><button onClick={()=>setShowAddWallet(false)} style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",background:"#fff",fontSize:11}}>Batal - {lang} - FULL</button><button onClick={()=>{if(selectedSource){setWallets(wallets.map(w=>w.id===selectedSource.id?{...w,name:newWallet.name||w.name,bank:newWallet.bank,norek:newWallet.norek||w.norek,color:newWallet.color,balance:newWallet.balance||w.balance,platform:newWallet.platform,dueDate:newWallet.dueDate,currency:newWallet.currency,flag:newWallet.flag,group:newWallet.group}:w))} else {setWallets([...wallets,{id:Date.now().toString(),name:newWallet.name||"Baru "+newWallet.group,type:newWallet.type||newWallet.group,group:newWallet.group,color:newWallet.color,bank:newWallet.bank,norek:newWallet.norek||(newWallet.group==="tunai"||newWallet.group==="pengeluaran"?"-":""),balance:newWallet.balance||0,currency:newWallet.currency,flag:newWallet.flag||"🇮🇩",icon:newWallet.group==="tabungan"?"🏦":newWallet.group==="ewallet"?"📱":newWallet.group==="tunai"?"👛":newWallet.group==="darurat"?"🚨":newWallet.group==="cicilan"?"🏍️":"💸",platform:newWallet.platform,dueDate:newWallet.dueDate}])} setShowAddWallet(false)}} style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:11}}>Simpan - FULL - Hide/Show + Warna + {lang} - SALAH SATU</button></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      
+      {showCryptoSeedPopup && (
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.7)",zIndex:100,display:"grid",placeItems:"center",padding:12}}>
+          <div style={{background:"#fff",borderRadius:20,padding:16,maxWidth:360,width:"100%",maxHeight:"90vh",overflowY:"auto"}}>
+            <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>🔐 Crypto - Seed & 2FA Wajib - Hanya Geser ke Crypto</div>
+            <div style={{fontSize:9,color:"#64748b",textAlign:"center",marginTop:4}}>Di Dompet gak ada Seed! Hanya pas geser ke Crypto baru popup ini!</div>
+            <div style={{background:"#f8fafc",borderRadius:12,padding:10,marginTop:10,border:"1px solid #e2e8f0"}}>
+              <div style={{fontSize:10,fontWeight:800}}>🌱 Seed 12 Kata - Simpan Aman - QR + TrustWallet/Metamask</div>
+              <div style={{background:"#0f172a",color:"#10b981",padding:8,borderRadius:8,marginTop:6,fontSize:10,fontFamily:"monospace",wordBreak:"break-all"}}>{cryptoSeed12}</div>
+              <div style={{display:"flex",gap:6,marginTop:6}}>
+                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #e2e8f0",textAlign:"center"}}><div style={{fontSize:16}}>QR</div><div style={{fontSize:7,fontWeight:700}}>QR Code</div><div style={{width:40,height:40,background:"#000",margin:"4px auto",display:"grid",placeItems:"center",color:"#fff",fontSize:6}}>QR<br/>SEED</div></div>
+                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #e2e8f0",textAlign:"center"}}><div style={{fontSize:8,fontWeight:800}}>TrustWallet / Metamask</div><div style={{fontSize:6,color:"#64748b",marginTop:4}}>Import Seed → BSC / BTC</div></div>
+              </div>
+              <label style={{display:"flex",gap:6,alignItems:"center",marginTop:8,fontSize:9,fontWeight:700}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Saya sudah simpan Seed 12 kata + QR dengan aman!</label>
+            </div>
+            <div style={{background:"#fef3c7",borderRadius:12,padding:10,marginTop:10,border:"1px solid #fde68a"}}>
+              <div style={{fontSize:10,fontWeight:800}}>🔍 BSCScan 15 Menit + BTC Live</div>
+              <div style={{display:"flex",gap:6,marginTop:6}}>
+                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #f59e0b"}}><div style={{fontSize:7,color:"#92400e"}}>BSCScan Timer</div><div style={{fontSize:12,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
+                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #10b981"}}><div style={{fontSize:7,color:"#166534"}}>BTC Live</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
+              </div>
+            </div>
+            <div style={{background:"#f0f9ff",borderRadius:12,padding:10,marginTop:10,border:"1px solid #bae6fd"}}>
+              <div style={{fontSize:10,fontWeight:800}}>🔐 PIN 2FA Wajib Centang Baru Bisa Masuk Crypto</div>
+              <input type="password" value={cryptoPIN} onChange={e=>setCryptoPIN(e.target.value.slice(0,6))} placeholder="PIN 2FA 6 digit" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,fontSize:12,textAlign:"center",letterSpacing:4}}/>
+              <label style={{display:"flex",gap:6,alignItems:"center",marginTop:8,fontSize:9,fontWeight:700}}><input type="checkbox" checked={crypto2FAChecked} onChange={e=>setCrypto2FAChecked(e.target.checked)}/> Saya aktifkan PIN 2FA untuk Crypto - Wajib centang!</label>
+            </div>
+            <div style={{display:"flex",gap:8,marginTop:12}}>
+              <button onClick={()=>{setShowCryptoSeedPopup(false); setCryptoMode("dompet"); setMode("Dompet");}} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:10,fontWeight:700}}>Batal - Balik Dompet</button>
+              <button onClick={confirmCryptoSeed} style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#0f172a",color:"#fff",fontSize:10,fontWeight:900}}>Masuk Crypto - PIN 2FA OK</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {cryptoMode==="crypto" && (
+        <div style={{padding:12}}>
+          <div style={{background:"#0f172a",borderRadius:16,padding:12,color:"#fff"}}>
+            <div style={{fontWeight:900,fontSize:14}}>💎 Crypto - BSC + BTC Live - TrustWallet/Metamask + BTC Live + BSCScan timer</div>
+            <div style={{fontSize:9,opacity:0.7,marginTop:4}}>Seed OK + 2FA OK - {btcPrice} - BSCScan {bscScanTimer} - TrustWallet/Metamask Import Seed - Alamat di dalem wallet bukan diluar/pas sign 2FA - Tanda + tambah coin alamat dari masing-masing coin tergantung jaringan misal USDT BEP-20 TrustWallet/Metamask di copy di sana sebagai asset alamat kontrak kirim/terima/swap</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>
+              <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BTC Live</div><div style={{fontSize:11,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
+              <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BSCScan</div><div style={{fontSize:11,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
             </div>
           </div>
         </div>

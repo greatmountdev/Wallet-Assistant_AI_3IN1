@@ -1,6 +1,6 @@
 export const dynamic="force-dynamic";
 export const revalidate=0;
-export const metadata={title:"Dompet AI V71 SAFE PIN NO ANCUR - V70 FIX", manifest:"/manifest.json", themeColor:"#0ea5e9"};
+export const metadata={title:"Dompet AI V72 V40 SEMPURNA NO ANCUR - FINAL", manifest:"/manifest.json", themeColor:"#0ea5e9"};
 export default function RootLayout({children}){
   return (
     <html lang="id">
@@ -17,29 +17,21 @@ export default function RootLayout({children}){
       <body>
         {children}
         <script dangerouslySetInnerHTML={{__html: `
+          if('serviceWorker' in navigator){ window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});}); }
           window.loadGapi = function(){
-            return new Promise((resolve)=>{
-              const check = setInterval(()=>{
+            return new Promise((res)=>{
+              let i=setInterval(()=>{
                 if(window.gapi && window.google){
-                  clearInterval(check);
+                  clearInterval(i);
                   window.gapi.load('client', async ()=>{
-                    try{
-                      await window.gapi.client.init({
-                        apiKey: localStorage.getItem('dompetAI_apiKey') || '',
-                        discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4","https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]
-                      });
-                      console.log('V71 loadGapi OK');
-                    }catch(e){ console.log('gapi init',e); }
-                    resolve();
+                    try{ await window.gapi.client.init({apiKey: localStorage.getItem('dompetAI_apiKey')||'', discoveryDocs:["https://sheets.googleapis.com/$discovery/rest?version=v4","https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]}); }catch(e){}
+                    res();
                   });
                 }
-              },200);
-              setTimeout(()=>{clearInterval(check); resolve();},8000);
+              },300);
+              setTimeout(()=>{clearInterval(i); res();},8000);
             });
           };
-          if('serviceWorker' in navigator){
-            window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});});
-          }
         `}} />
       </body>
     </html>

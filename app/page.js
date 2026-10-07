@@ -624,14 +624,76 @@ export default function Page(){
           </div>
         </div>
       )}
+      
       {cryptoMode==="crypto" && (
-        <div style={{padding:12}}>
-          <div style={{background:"#0f172a",borderRadius:16,padding:12,color:"#fff"}}>
-            <div style={{fontWeight:900,fontSize:14}}>💎 Crypto - BSC + BTC Live - TrustWallet/Metamask + BTC Live + BSCScan timer</div>
-            <div style={{fontSize:9,opacity:0.7,marginTop:4}}>Seed OK + 2FA OK - {btcPrice} - BSCScan {bscScanTimer} - TrustWallet/Metamask Import Seed - Alamat di dalem wallet bukan diluar/pas sign 2FA - Tanda + tambah coin alamat dari masing-masing coin tergantung jaringan misal USDT BEP-20 TrustWallet/Metamask di copy di sana sebagai asset alamat kontrak kirim/terima/swap</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>
-              <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BTC Live</div><div style={{fontSize:11,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
-              <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BSCScan</div><div style={{fontSize:11,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
+        <div style={{background:"#fff",minHeight:"100vh",paddingBottom:80}}>
+          {/* TrustWallet Header - Balance */}
+          <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{fontWeight:900,fontSize:14}}>💎 Crypto Wallet - TrustWallet Style</div>
+              <div style={{display:"flex",gap:8}}>
+                <div style={{width:32,height:32,borderRadius:8,background:"#1e293b",display:"grid",placeItems:"center",fontSize:12}}>🔔</div>
+                <div style={{width:32,height:32,borderRadius:8,background:"#1e293b",display:"grid",placeItems:"center",fontSize:12}}>⚙️</div>
+              </div>
+            </div>
+            <div style={{textAlign:"center",marginTop:16}}>
+              <div style={{fontSize:10,opacity:0.6}}>Total Balance - BSC + BTC Live - TrustWallet/Metamask</div>
+              <div style={{fontWeight:900,fontSize:24,marginTop:4}}>$4,270.00</div>
+              <div style={{fontSize:10,opacity:0.6,marginTop:2,display:"flex",gap:6,justifyContent:"center"}}><span style={{background:"#1e293b",padding:"2px 8px",borderRadius:10}}>{btcPrice}</span><span style={{background:"#1e293b",padding:"2px 8px",borderRadius:10}}>BSCScan {bscScanTimer}</span></div>
+            </div>
+            {/* TrustWallet Actions - Send Receive Buy Swap */}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:12,marginTop:20}}>
+              <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#10b981",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>↑</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Send</div></div>
+              <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#0ea5e9",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>↓</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Receive</div></div>
+              <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#8b5cf6",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>💳</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Buy</div></div>
+              <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#f59e0b",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>⇄</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Swap</div></div>
+            </div>
+          </div>
+
+          {/* TrustWallet Tabs - Tokens NFTs */}
+          <div style={{display:"flex",gap:16,padding:"12px 16px",borderBottom:"1px solid #f1f5f9"}}>
+            <div style={{fontWeight:900,fontSize:12,borderBottom:"2px solid #0f172a",paddingBottom:8}}>Tokens</div>
+            <div style={{fontSize:12,color:"#94a3b8"}}>NFTs</div>
+            <div style={{fontSize:12,color:"#94a3b8"}}>DeFi</div>
+            <div style={{marginLeft:"auto",fontSize:9,color:"#0ea5e9",fontWeight:700}}>BSCScan {bscScanTimer} • {btcPrice}</div>
+          </div>
+
+          {/* TrustWallet Asset List - Like TrustWallet */}
+          <div style={{padding:12}}>
+            <div style={{fontWeight:800,fontSize:11,marginBottom:8}}>Assets - Alamat dari masing-masing Coin (tergantung jaringan) - USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset</div>
+            {[
+              {symbol:"BTC", name:"Bitcoin", network:"BTC", bal:"0.0025 BTC", usd:"$125.00", price:"$62,000", change:"+2.5%", icon:"₿", color:"#f7931a", addr:"bc1qxy2k...s8x4j3n5m9q7", contract:""},
+              {symbol:"ETH", name:"Ethereum", network:"ERC-20", bal:"0.5 ETH", usd:"$1,800.00", price:"$3,600", change:"-1.2%", icon:"Ξ", color:"#627eea", addr:"0xAbC...1234", contract:""},
+              {symbol:"USDT", name:"Tether BEP-20", network:"BEP-20", bal:"500 USDT", usd:"$500.00", price:"$1.00", change:"+0.01%", icon:"💲", color:"#26a17b", addr:"0x55d...7f6eB", contract:"0x55d398326f99059fF775485246999027B3197955"},
+              {symbol:"USDT", name:"Tether ERC-20", network:"ERC-20", bal:"250 USDT", usd:"$250.00", price:"$1.00", change:"+0.01%", icon:"💲", color:"#26a17b", addr:"0xdAC...a7d0", contract:"0xdAC17F958D2ee523a2206206994597C13D831ec7"},
+              {symbol:"BNB", name:"BNB", network:"BEP-20", bal:"1.2 BNB", usd:"$720.00", price:"$600", change:"+3.1%", icon:"🔶", color:"#f3ba2f", addr:"0x1a2...3b4c", contract:""},
+              {symbol:"SOL", name:"Solana", network:"SOL", bal:"10 SOL", usd:"$1,500", price:"$150", change:"+5.2%", icon:"◎", color:"#9945ff", addr:"So1...9xYz", contract:""},
+            ].map(a=>(
+              <div key={a.symbol+a.network} style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc"}}>
+                <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18,border:"1px solid "+a.color+"30"}}>{a.icon}</div>
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",gap:6,alignItems:"center"}}><div style={{fontWeight:800,fontSize:12}}>{a.symbol}</div><div style={{fontSize:7,background:"#f1f5f9",padding:"2px 6px",borderRadius:6,color:"#64748b"}}>{a.network}</div><div style={{fontSize:7,color:a.change.startsWith("+")?"#10b981":"#ef4444"}}>{a.change}</div></div>
+                  <div style={{fontSize:8,color:"#64748b",marginTop:2}}>{a.name} • {a.price} • {a.network} - {a.addr}</div>
+                  {a.contract && <div style={{fontSize:6,color:"#92400e",marginTop:2,background:"#fffbeb",padding:"2px 6px",borderRadius:4,display:"inline-block"}}>Contract: {a.contract.slice(0,10)}...{a.contract.slice(-6)} - Kirim/Terima/Swap</div>}
+                </div>
+                <div style={{textAlign:"right"}}>
+                  <div style={{fontWeight:800,fontSize:12}}>{a.bal}</div>
+                  <div style={{fontSize:8,color:"#64748b"}}>{a.usd}</div>
+                  <div style={{display:"flex",gap:4,marginTop:4,justifyContent:"flex-end"}}>
+                    <button onClick={()=>{ try{ navigator.clipboard.writeText(a.contract||a.addr); }catch(e){} alert("Copy alamat: "+(a.contract||a.addr)+" - "+a.network+" - TrustWallet/Metamask"); }} style={{padding:"2px 6px",borderRadius:6,background:"#f1f5f9",border:"none",fontSize:7,fontWeight:700}}>Copy</button>
+                    <button onClick={()=>alert("Kirim "+a.symbol+" "+a.network+" dari "+a.addr)} style={{padding:"2px 6px",borderRadius:6,background:"#fee2e2",color:"#ef4444",border:"none",fontSize:7,fontWeight:700}}>Kirim</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div style={{marginTop:12,background:"#f8fafc",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>
+              <div style={{fontWeight:800,fontSize:10}}>TrustWallet / Metamask - Import Seed - Alamat di dalem wallet bukan diluar/pas sign 2FA</div>
+              <div style={{fontSize:8,color:"#64748b",marginTop:4}}>Tanda + tambah coin alamat dari masing-masing coin (tergantung jaringan) misal USDT BEP-20 TrustWallet/Metamask di copy di sana sebagai asset yang biasanya alamat kontrak kirim/terima/swap - Seed: {cryptoSeed12.slice(0,20)}... - QR Ready - PIN 2FA {cryptoPIN ? "OK" : "NO"} - BSCScan {bscScanTimer} - BTC Live {btcPrice}</div>
+              <div style={{display:"flex",gap:6,marginTop:8}}>
+                <button onClick={()=>alert("Import Seed TrustWallet/Metamask: "+cryptoSeed12)} style={{flex:1,padding:6,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:8,fontWeight:700}}>Import Seed</button>
+                <button onClick={()=>alert("BSCScan Timer: "+bscScanTimer+" - Auto refresh BSC - TrustWallet/Metamask")} style={{flex:1,padding:6,borderRadius:8,background:"#f59e0b",color:"#fff",border:"none",fontSize:8,fontWeight:700}}>BSCScan {bscScanTimer}</button>
+                <button onClick={()=>alert("BTC Live: "+btcPrice+" - TrustWallet/Metamask")} style={{flex:1,padding:6,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontSize:8,fontWeight:700}}>BTC {btcPrice}</button>
+              </div>
             </div>
           </div>
         </div>

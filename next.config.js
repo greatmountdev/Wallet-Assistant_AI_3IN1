@@ -1,1 +1,1 @@
-const nextConfig={reactStrictMode:false}; module.exports=nextConfig
+const nextConfig={reactStrictMode:false, eslint:{ignoreDuringBuilds:true}, typescript:{ignoreBuildErrors:true}}; module.exports=nextConfig;

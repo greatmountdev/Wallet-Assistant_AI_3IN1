@@ -1,14 +1,57 @@
-"use client"
-import { useState, useEffect } from "react"
 
-const exportRealGoogleSheetV83 = async (wallets, authName)=>{
+"use client"
+
+const exportRealGoogleSheetV40 = async (wallets, authName, authEmail, clientId)=>{
   const total = wallets.reduce((a,b)=>a+(b.balance||0),0);
-  const data = [["Total SALAH SATU | Rp "+total.toLocaleString("id-ID")],["Tanggal","Judul","Jenis","Jumlah"],...wallets.map(w=>[new Date().toISOString().slice(0,10), w.name, w.group, w.balance])];
-  const csv = data.map(r=>r.map(c=>`"${String(c||"").replace(/"/g,'""')}"`).join(",")).join("\n");
-  const blob = new Blob([csv],{type:"text/csv"}); const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href=url; a.download="Dompet_AI_V83.csv"; a.click();
+  const totalTabungan = wallets.filter(w=>w.group==="tabungan").reduce((a,b)=>a+b.balance,0);
+  const totalEwallet = wallets.filter(w=>w.group==="ewallet").reduce((a,b)=>a+b.balance,0);
+  const totalTunai = wallets.filter(w=>w.group==="tunai").reduce((a,b)=>a+b.balance,0);
+  const totalDarurat = wallets.filter(w=>w.group==="darurat").reduce((a,b)=>a+b.balance,0);
+  const totalCicilan = wallets.filter(w=>w.group==="cicilan").reduce((a,b)=>a+b.balance,0);
+  const data = [
+    ["Total Cash Flow (Tabungan+E-Wallet+Tunai+Darurat) - SALAH SATU kepotong | Rp "+total.toLocaleString("id-ID")],
+    ["Total Tabungan (BCA BNI BRI + Global + CNY) | Rp "+totalTabungan.toLocaleString("id-ID")],
+    ["Total E-Wallet (GoPay OVO DANA + Global + CNY ¥) | Rp "+totalEwallet.toLocaleString("id-ID")],
+    ["Total Tunai | Rp "+totalTunai.toLocaleString("id-ID")+" | Total Darurat | Rp "+totalDarurat.toLocaleString("id-ID")+" | Total Cicilan | Rp "+totalCicilan.toLocaleString("id-ID")],
+    [""],
+    ["Tanggal","Judul - Sumber SALAH SATU","Jenis","Jumlah","Note FIX SALAH SATU","Foto","Currency","Mata Uang CNY","Account","V39 FIX 404"],
+    ...wallets.map(w=>[new Date().toISOString().slice(0,10), w.name+" - "+w.bank+" - SALAH SATU", w.group, w.balance, (w.platform||"")+" - SALAH SATU FIX - Bukan semua kepotong", "", w.currency, w.currency==="CNY"?"¥ Yuan BARU":"", authEmail, "SALAH SATU - FIX V39"])
+  ];
+  try{
+    if(clientId && window.google && window.gapi && window.gapi.client && window.gapi.client.sheets){
+      const tc = window.google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets",
+        callback: async (res)=>{
+          try{
+            window.gapi.client.setToken({access_token: res.access_token});
+            const cr = await window.gapi.client.sheets.spreadsheets.create({properties:{title:"Dompet AI 6 Grup FULL - "+(authName||"Kawan")+" - V39 FIX 404 - "+new Date().toISOString().slice(0,10)}});
+            const sid = cr.result.spreadsheetId;
+            const url = cr.result.spreadsheetUrl || "https://docs.google.com/spreadsheets/d/"+sid;
+            await window.gapi.client.sheets.spreadsheets.values.update({spreadsheetId:sid, range:"Sheet1!A1", valueInputOption:"RAW", resource:{values:data}});
+            alert("✅ REAL Sheet BENERAN Terbuat di Akun Google Kamu! - "+(authEmail||"")+" - ID: "+sid+" - Buka: "+url+" - Cek My Drive - V39 FIX 404 WORKING");
+            window.open(url,"_blank");
+          }catch(err){ alert("Sheet error: "+err.message); fallback(); }
+        }
+      });
+      tc.requestAccessToken();
+      return;
+    }
+  }catch(e){}
+  fallback();
+  function fallback(){
+    const csv = data.map(r=>r.map(c=>`"${String(c||"").replace(/"/g,'""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv],{type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const fn = "Dompet_AI_6_Grup_FULL_"+new Date().toISOString().slice(0,10)+"_"+(authName||"Kawan")+"_SALAH_SATU_REAL_V39_FIX_404.csv";
+    a.href=url; a.download=fn; a.click();
+    alert("📊 Fallback CSV REAL V39 FIX 404: "+fn+" - Total Cash Flow SALAH SATU kepotong | Rp "+total.toLocaleString("id-ID")+" - Import ke sheets.google.com → jadi Sheet REAL - Untuk REAL 100%: console.cloud.google.com → Enable Sheets+Drive API → OAuth Client ID Origin https://wallet-assistant-ai-3-in-1.vercel.app → Vercel Env NEXT_PUBLIC_GOOGLE_CLIENT_ID + API_KEY → Redeploy");
+  }
 };
 
+
+import { useState } from "react"
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
 const TABUNGAN_BANKS=[
   {name:"BCA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"BNI", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
@@ -71,28 +114,31 @@ const T={
 
 export default function Page(){
   const [step,setStep]=useState("login")
+  const [cryptoMode,setCryptoMode]=useState("dompet");
+  const [showCryptoSeedPopup,setShowCryptoSeedPopup]=useState(false);
+  const [cryptoSeedChecked,setCryptoSeedChecked]=useState(false);
+  const [crypto2FAChecked,setCrypto2FAChecked]=useState(false);
+  const [cryptoSeed12,setCryptoSeed12]=useState("abandon ability able about above absent absorb abstract absurd abuse access accident");
+  const [cryptoPIN,setCryptoPIN]=useState("");
+  const [btcPrice,setBtcPrice]=useState("Rp 1.050.000.000");
+  const [bscScanTimer,setBscScanTimer]=useState("15:00");
+  const handleCryptoTabClick = (target)=>{ if(target==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
+  const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed 12 kata sudah disimpan!"); return; } if(!crypto2FAChecked){ alert("Centang PIN 2FA wajib!"); return; } if(cryptoPIN.length!==6){ alert("PIN 2FA 6 digit wajib!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
+  useEffect(()=>{ const it = setInterval(()=>{ setBscScanTimer(prev=>{ const p=prev.split(":"); let m=parseInt(p[0]||"15"); let s=parseInt(p[1]||"00"); let total=m*60+s-1; if(total<=0) total=15*60; return String(Math.floor(total/60)).padStart(2,"0")+":"+String(total%60).padStart(2,"0"); }); },1000); const btcIt = setInterval(()=>{ const base=1050000000 + Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+base.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(it); clearInterval(btcIt); }; },[]);
+  const copyAddress = (addr)=>{ try{ if(typeof navigator!=="undefined" && navigator.clipboard){ navigator.clipboard.writeText(addr); } }catch(e){} alert("Copy alamat: "+addr); };
+
+  const [cryptoAssets,setCryptoAssets]=useState([{id:"1", symbol:"BTC", name:"Bitcoin", network:"BTC", address:"bc1qxy2k...s8x4j3n5m9q7", contract:"", balance:0.0025, usd:1250, icon:"₿"},{id:"2", symbol:"USDT", name:"Tether BEP-20", network:"BEP-20", address:"0x55d...7f6eB", contract:"0x55d398326f99059fF775485246999027B3197955", balance:500, usd:500, icon:"💲"}]);
+  const [showAddCoin,setShowAddCoin]=useState(false);
+  const [newCoin,setNewCoin]=useState({symbol:"",name:"",network:"BEP-20",address:"",contract:""});
+
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
+  const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")
   const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
   const [mode,setMode]=useState("Dompet"), [font,setFont]=useState("Tegas"), [lang,setLang]=useState("ID"), [hideTotal,setHideTotal]=useState(false), [hideNorek,setHideNorek]=useState({}), [bottom,setBottom]=useState("beranda"), [showMenu,setShowMenu]=useState(false), [theme,setTheme]=useState("light"), [notif,setNotif]=useState(true)
   const [newTx,setNewTx]=useState({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
   const [showAddTx,setShowAddTx]=useState(false)
   const [isListening,setIsListening]=useState(false)
   const [laporanTab,setLaporanTab]=useState("grafik")
-  
-  const handleCryptoTabClick = (target)=>{
-    if(target==="crypto"){ setShowCryptoSeedPopup(true); }
-    else { setCryptoMode("dompet"); setMode("Dompet"); }
-  };
-  const confirmCryptoSeed = ()=>{
-    if(!cryptoSeedChecked){ alert("Centang Seed 12 kata sudah disimpan!"); return; }
-    if(!crypto2FAChecked){ alert("Centang PIN 2FA wajib!"); return; }
-    if(cryptoPIN.length!==6){ alert("PIN 2FA 6 digit wajib!"); return; }
-    setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto");
-  };
-  const copyAddress = (addr)=>{ if(typeof navigator!=="undefined" && navigator.clipboard){ navigator.clipboard.writeText(addr); } alert("Copy: "+addr+" - TrustWallet/Metamask"); };
-
-  useEffect(()=>{ const it = setInterval(()=>{ setBscScanTimer(prev=>{ const p=prev.split(":"); let m=parseInt(p[0]); let s=parseInt(p[1]); let total=m*60+s-1; if(total<=0) total=15*60; return String(Math.floor(total/60)).padStart(2,"0")+":"+String(total%60).padStart(2,"0"); }); },1000); const btcIt = setInterval(()=>{ const base=1050000000 + Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+base.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(it); clearInterval(btcIt); }; },[]);
-
   const [wallets,setWallets]=useState([
     {id:"1",name:"Tabungan BCA",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
     {id:"2",name:"Tabungan BNI",type:"tabungan",group:"tabungan",color:"#2563eb",bank:"BNI",norek:"0987654321",balance:2500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
@@ -440,7 +486,7 @@ export default function Page(){
 
       {bottom==="laporan" && (
         <div style={{padding:12}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>exportRealGoogleSheetV83(wallets, authName)} style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>exportRealGoogleSheetV40(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
           <div style={{background:"#f0fdf4",borderRadius:8,padding:6,marginTop:6,fontSize:9,display:"flex",gap:6}}>
             <button onClick={()=>setLaporanTab("grafik")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="grafik"?"#10b981":"#fff",color:laporanTab==="grafik"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📊 Grafik Batang + Pie</button>
             <button onClick={()=>setLaporanTab("sheet")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="sheet"?"#0ea5e9":"#fff",color:laporanTab==="sheet"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📄 Sheet Harian/Bulanan</button>
@@ -462,7 +508,7 @@ export default function Page(){
                 <div style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,fontWeight:800,borderBottom:"1px solid #e2e8f0",paddingBottom:4}}><div>Tanggal</div><div>Judul - Sumber SALAH SATU</div><div>Jenis</div><div>Jumlah</div></div>
                 {txs.map(t=><div key={t.id} style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,padding:"4px 0",borderBottom:"1px solid #f1f5f9",fontSize:8}}><div>{t.date}</div><div>{t.title} - {t.source} - {t.note.slice(0,40)}</div><div style={{background:t.jenis==="keluar"?"#fee2e2":t.jenis==="masuk"?"#dcfce7":"#e0f2fe",borderRadius:4,padding:"1px 4px",textAlign:"center"}}>{t.jenis} SALAH SATU</div><div>Rp {t.amount.toLocaleString("id-ID")}</div></div>)}
               </div>
-              <button onClick={()=>exportRealGoogleSheetV83(wallets, authName)} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
+              <button onClick={()=>exportRealGoogleSheetV40(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
               <div style={{marginTop:6,fontSize:8,color:"#64748b"}}>Sheet: Tanggal + Judul + Sumber SALAH SATU Tabungan/E-Wallet/Tunai/Darurat + Tujuan Pengeluaran/Cicilan + Jumlah + Foto + Note FIX SALAH SATU - Bukan semua kepotong! - {lang}</div>
             </div>
           )}
@@ -586,10 +632,10 @@ export default function Page(){
         <div style={{padding:12}}>
           <div style={{background:"#0f172a",borderRadius:16,padding:12,color:"#fff"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontWeight:900,fontSize:14}}>💎 Crypto - BSC + BTC Live - TrustWallet/Metamask - Import Seed</div>
+              <div style={{fontWeight:900,fontSize:14}}>💎 Crypto - BSC + BTC Live - TrustWallet/Metamask</div>
               <button onClick={()=>setShowAddCoin(true)} style={{padding:"4px 8px",borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>+ Tambah Coin</button>
             </div>
-            <div style={{fontSize:9,opacity:0.7,marginTop:4}}>Seed & 2FA OK - Alamat di dalem wallet bukan diluar/pas sign 2FA - Tanda + tambah coin alamat dari masing-masing coin tergantung jaringan misal USDT BEP-20 TrustWallet/Metamask di copy di sana sebagai asset alamat kontrak kirim/terima/swap</div>
+            <div style={{fontSize:9,opacity:0.7,marginTop:4}}>Seed OK + 2FA OK - Alamat di dalem wallet bukan diluar/pas sign 2FA - USDT BEP-20 TrustWallet/Metamask di copy di sana sebagai asset alamat kontrak kirim/terima/swap</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>
               <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BTC Live</div><div style={{fontSize:11,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
               <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BSCScan</div><div style={{fontSize:11,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
@@ -605,10 +651,10 @@ export default function Page(){
                       <div style={{width:32,height:32,borderRadius:8,background:"#f8fafc",display:"grid",placeItems:"center",fontSize:14,border:"1px solid #e2e8f0"}}>{a.icon}</div>
                       <div><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b"}}>{a.network}</div></div>
                     </div>
-                    <div style={{textAlign:"right"}}><div style={{fontWeight:900,fontSize:11}}>{a.balance} {a.symbol}</div><div style={{fontSize:7,color:"#64748b"}}>≈ ${a.usd}</div></div>
+                    <div style={{textAlign:"right"}}><div style={{fontWeight:900,fontSize:11}}>{a.balance} {a.symbol}</div></div>
                   </div>
                   <div style={{marginTop:8,background:"#f8fafc",borderRadius:8,padding:6,border:"1px solid #e2e8f0"}}>
-                    <div style={{fontSize:7,color:"#64748b"}}>Alamat Wallet ({a.network})</div>
+                    <div style={{fontSize:7,color:"#64748b"}}>Alamat Wallet ({a.network}) - TrustWallet/Metamask</div>
                     <div style={{display:"flex",gap:4,marginTop:4}}>
                       <div style={{flex:1,background:"#0f172a",color:"#10b981",padding:"4px 6px",borderRadius:6,fontSize:8,fontFamily:"monospace",overflow:"hidden"}}>{a.address}</div>
                       <button onClick={()=>copyAddress(a.address)} style={{padding:"4px 8px",borderRadius:6,background:"#0ea5e9",color:"#fff",border:"none",fontSize:7,fontWeight:800}}>Copy</button>
@@ -640,7 +686,7 @@ export default function Page(){
                 <div style={{display:"grid",gap:6,marginTop:8}}>
                   <input value={newCoin.symbol} onChange={e=>setNewCoin({...newCoin,symbol:e.target.value})} placeholder="Symbol: USDT" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
                   <input value={newCoin.name} onChange={e=>setNewCoin({...newCoin,name:e.target.value})} placeholder="Nama: Tether BEP-20" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-                  <select value={newCoin.network} onChange={e=>setNewCoin({...newCoin,network:e.target.value})} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}><option value="BEP-20">BEP-20</option><option value="ERC-20">ERC-20</option><option value="TRC-20">TRC-20</option><option value="BTC">BTC</option></select>
+                  <select value={newCoin.network} onChange={e=>setNewCoin({...newCoin,network:e.target.value})} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}><option value="BEP-20">BEP-20</option><option value="ERC-20">ERC-20</option><option value="BTC">BTC</option></select>
                   <input value={newCoin.address} onChange={e=>setNewCoin({...newCoin,address:e.target.value})} placeholder="Alamat Wallet: 0x..." style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
                   <input value={newCoin.contract} onChange={e=>setNewCoin({...newCoin,contract:e.target.value})} placeholder="Alamat Kontrak" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
                   <div style={{display:"flex",gap:6,marginTop:6}}>

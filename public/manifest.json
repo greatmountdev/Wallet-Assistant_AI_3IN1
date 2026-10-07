@@ -1,10 +1,11 @@
 {
-  "name": "Dompet AI V80 FIX DUPLICATE",
-  "short_name": "Dompet AI V80",
+  "name": "Dompet AI V81 APP MOBILE BUKAN WEB",
+  "short_name": "Dompet AI APP",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0f172a",
-  "theme_color": "#0ea5e9",
+  "theme_color": "#0f172a",
   "icons": [
     {
       "src": "/icon-192.png",

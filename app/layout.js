@@ -1,10 +1,6 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export const metadata = {
-  title: "Dompet AI 6 Grup FULL - ALL UI Bahasa + CNY - V39 FIX 404 WORKING",
-  manifest: "/manifest.json",
-  themeColor: "#0ea5e9"
-};
+export const metadata = { title: "Dompet AI V77 FINAL - FIX 404 - CRYPTO GESER - V39 ALMOST SEMPURNA", manifest: "/manifest.json", themeColor: "#0ea5e9" };
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
@@ -16,33 +12,13 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <script src="https://apis.google.com/js/api.js" async defer></script>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <style>{`body{margin:0;font-family:Inter,system-ui;background:#f8fafc} .no-scrollbar::-webkit-scrollbar{display:none} .no-scrollbar{scrollbar-width:none}`}</style>
+        <style>{\`body{margin:0;font-family:Inter,system-ui;background:#f8fafc} .no-scrollbar::-webkit-scrollbar{display:none} .no-scrollbar{scrollbar-width:none}\`}</style>
       </head>
       <body style={{margin:0}}>
         {children}
         <script dangerouslySetInnerHTML={{__html: `
-          if('serviceWorker' in navigator){
-            window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});});
-          }
-          window.loadGapi = function(){
-            return new Promise((res)=>{
-              let i=setInterval(()=>{
-                if(window.gapi && window.google){
-                  clearInterval(i);
-                  window.gapi.load('client', async ()=>{
-                    try{
-                      await window.gapi.client.init({
-                        apiKey: localStorage.getItem('dompetAI_apiKey')||'',
-                        discoveryDocs:["https://sheets.googleapis.com/$discovery/rest?version=v4","https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]
-                      });
-                    }catch(e){}
-                    res();
-                  });
-                }
-              },300);
-              setTimeout(()=>{clearInterval(i); res();},8000);
-            });
-          };
+          if('serviceWorker' in navigator){ window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});}); }
+          window.loadGapi = function(){ return new Promise((res)=>{ let i=setInterval(()=>{ if(window.gapi && window.google){ clearInterval(i); window.gapi.load('client', async ()=>{ try{ await window.gapi.client.init({discoveryDocs:["https://sheets.googleapis.com/$discovery/rest?version=v4"]}); }catch(e){} res(); }); } },300); setTimeout(()=>{clearInterval(i); res();},8000); }); };
         `}} />
       </body>
     </html>

@@ -124,12 +124,9 @@ export default function Page(){
   const [bscScanTimer,setBscScanTimer]=useState("15:00");
   const handleCryptoTabClick = (target)=>{ if(target==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
   const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed 12 kata sudah disimpan!"); return; } if(!crypto2FAChecked){ alert("Centang PIN 2FA wajib!"); return; } if(cryptoPIN.length!==6){ alert("PIN 2FA 6 digit wajib!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
-  useEffect(()=>{ const it = setInterval(()=>{ setBscScanTimer(prev=>{ const p=prev.split(":"); let m=parseInt(p[0]||"15"); let s=parseInt(p[1]||"00"); let total=m*60+s-1; if(total<=0) total=15*60; return String(Math.floor(total/60)).padStart(2,"0")+":"+String(total%60).padStart(2,"0"); }); },1000); const btcIt = setInterval(()=>{ const base=1050000000 + Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+base.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(it); clearInterval(btcIt); }; },[]);
-  const copyAddress = (addr)=>{ try{ if(typeof navigator!=="undefined" && navigator.clipboard){ navigator.clipboard.writeText(addr); } }catch(e){} alert("Copy alamat: "+addr); };
+  const copyAddr = (a)=>{ try{ navigator.clipboard.writeText(a); }catch(e){} alert("Copy: "+a); };
+  useEffect(()=>{ const it = setInterval(()=>{ setBscScanTimer(p=>{ const parts=p.split(":"); let m=parseInt(parts[0]||"15"); let s=parseInt(parts[1]||"00"); let t=m*60+s-1; if(t<=0) t=15*60; return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }); },1000); const bIt = setInterval(()=>{ const b=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+b.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(it); clearInterval(bIt); }; },[]);
 
-  const [cryptoAssets,setCryptoAssets]=useState([{id:"1", symbol:"BTC", name:"Bitcoin", network:"BTC", address:"bc1qxy2k...s8x4j3n5m9q7", contract:"", balance:0.0025, usd:1250, icon:"₿"},{id:"2", symbol:"USDT", name:"Tether BEP-20", network:"BEP-20", address:"0x55d...7f6eB", contract:"0x55d398326f99059fF775485246999027B3197955", balance:500, usd:500, icon:"💲"}]);
-  const [showAddCoin,setShowAddCoin]=useState(false);
-  const [newCoin,setNewCoin]=useState({symbol:"",name:"",network:"BEP-20",address:"",contract:""});
 
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
   const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")
@@ -604,7 +601,7 @@ export default function Page(){
               <div style={{fontSize:10,fontWeight:800}}>🌱 Seed 12 Kata - Simpan Aman - QR + TrustWallet/Metamask</div>
               <div style={{background:"#0f172a",color:"#10b981",padding:8,borderRadius:8,marginTop:6,fontSize:10,fontFamily:"monospace",wordBreak:"break-all"}}>{cryptoSeed12}</div>
               <div style={{display:"flex",gap:6,marginTop:6}}>
-                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #e2e8f0",textAlign:"center"}}><div style={{fontSize:16}}>📱</div><div style={{fontSize:7,fontWeight:700}}>QR Code</div><div style={{width:40,height:40,background:"#000",margin:"4px auto",display:"grid",placeItems:"center",color:"#fff",fontSize:6}}>QR<br/>SEED</div></div>
+                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #e2e8f0",textAlign:"center"}}><div style={{fontSize:16}}>QR</div><div style={{fontSize:7,fontWeight:700}}>QR Code</div><div style={{width:40,height:40,background:"#000",margin:"4px auto",display:"grid",placeItems:"center",color:"#fff",fontSize:6}}>QR<br/>SEED</div></div>
                 <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #e2e8f0",textAlign:"center"}}><div style={{fontSize:8,fontWeight:800}}>TrustWallet / Metamask</div><div style={{fontSize:6,color:"#64748b",marginTop:4}}>Import Seed → BSC / BTC</div></div>
               </div>
               <label style={{display:"flex",gap:6,alignItems:"center",marginTop:8,fontSize:9,fontWeight:700}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Saya sudah simpan Seed 12 kata + QR dengan aman!</label>
@@ -631,72 +628,17 @@ export default function Page(){
       {cryptoMode==="crypto" && (
         <div style={{padding:12}}>
           <div style={{background:"#0f172a",borderRadius:16,padding:12,color:"#fff"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontWeight:900,fontSize:14}}>💎 Crypto - BSC + BTC Live - TrustWallet/Metamask</div>
-              <button onClick={()=>setShowAddCoin(true)} style={{padding:"4px 8px",borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>+ Tambah Coin</button>
-            </div>
-            <div style={{fontSize:9,opacity:0.7,marginTop:4}}>Seed OK + 2FA OK - Alamat di dalem wallet bukan diluar/pas sign 2FA - USDT BEP-20 TrustWallet/Metamask di copy di sana sebagai asset alamat kontrak kirim/terima/swap</div>
+            <div style={{fontWeight:900,fontSize:14}}>💎 Crypto - BSC + BTC Live - TrustWallet/Metamask + BTC Live + BSCScan timer + TrustWallet / Metamask - Import Seed</div>
+            <div style={{fontSize:9,opacity:0.7,marginTop:4}}>Seed OK + 2FA OK - {btcPrice} - BSCScan {bscScanTimer} - TrustWallet/Metamask Import Seed</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>
               <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BTC Live</div><div style={{fontSize:11,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
               <div style={{background:"#1e293b",borderRadius:10,padding:8}}><div style={{fontSize:7,opacity:0.6}}>BSCScan</div><div style={{fontSize:11,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
             </div>
-          </div>
-          <div style={{marginTop:12}}>
-            <div style={{fontWeight:900,fontSize:12}}>Asset - Alamat dari masing-masing Coin (tergantung jaringan)</div>
-            <div style={{display:"grid",gap:8,marginTop:8}}>
-              {cryptoAssets.map(a=>(
-                <div key={a.id} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                      <div style={{width:32,height:32,borderRadius:8,background:"#f8fafc",display:"grid",placeItems:"center",fontSize:14,border:"1px solid #e2e8f0"}}>{a.icon}</div>
-                      <div><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b"}}>{a.network}</div></div>
-                    </div>
-                    <div style={{textAlign:"right"}}><div style={{fontWeight:900,fontSize:11}}>{a.balance} {a.symbol}</div></div>
-                  </div>
-                  <div style={{marginTop:8,background:"#f8fafc",borderRadius:8,padding:6,border:"1px solid #e2e8f0"}}>
-                    <div style={{fontSize:7,color:"#64748b"}}>Alamat Wallet ({a.network}) - TrustWallet/Metamask</div>
-                    <div style={{display:"flex",gap:4,marginTop:4}}>
-                      <div style={{flex:1,background:"#0f172a",color:"#10b981",padding:"4px 6px",borderRadius:6,fontSize:8,fontFamily:"monospace",overflow:"hidden"}}>{a.address}</div>
-                      <button onClick={()=>copyAddress(a.address)} style={{padding:"4px 8px",borderRadius:6,background:"#0ea5e9",color:"#fff",border:"none",fontSize:7,fontWeight:800}}>Copy</button>
-                    </div>
-                    {a.contract && (
-                      <div style={{marginTop:6}}>
-                        <div style={{fontSize:7,color:"#92400e"}}>Alamat Kontrak - {a.network}</div>
-                        <div style={{display:"flex",gap:4,marginTop:2}}>
-                          <div style={{flex:1,background:"#fffbeb",color:"#92400e",padding:"4px 6px",borderRadius:6,fontSize:7,fontFamily:"monospace",border:"1px solid #fde68a",overflow:"hidden"}}>{a.contract}</div>
-                          <button onClick={()=>copyAddress(a.contract)} style={{padding:"4px 8px",borderRadius:6,background:"#f59e0b",color:"#fff",border:"none",fontSize:7,fontWeight:800}}>Copy</button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div style={{display:"flex",gap:6,marginTop:8}}>
-                    <button style={{flex:1,padding:6,borderRadius:8,background:"#fee2e2",color:"#ef4444",border:"none",fontSize:8,fontWeight:800}}>Kirim</button>
-                    <button style={{flex:1,padding:6,borderRadius:8,background:"#dcfce7",color:"#10b981",border:"none",fontSize:8,fontWeight:800}}>Terima</button>
-                    <button style={{flex:1,padding:6,borderRadius:8,background:"#dbeafe",color:"#0ea5e9",border:"none",fontSize:8,fontWeight:800}}>Swap</button>
-                    <button style={{flex:1,padding:6,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:8,fontWeight:800}}>BSCScan</button>
-                  </div>
-                </div>
-              ))}
+            <div style={{marginTop:10,background:"#1e293b",borderRadius:10,padding:8}}>
+              <div style={{fontSize:9,fontWeight:700}}>TrustWallet / Metamask - Import Seed - Alamat di dalem wallet bukan diluar/pas sign 2FA</div>
+              <div style={{fontSize:7,opacity:0.6,marginTop:2}}>Seed: {cryptoSeed12.slice(0,20)}... - QR Ready - PIN 2FA {cryptoPIN ? "OK" : "NO"} - Tanda + tambah coin alamat dari masing-masing coin tergantung jaringan misal USDT BEP-20 TrustWallet/Metamask di copy di sana sebagai asset alamat kontrak kirim/terima/swap</div>
             </div>
           </div>
-          {showAddCoin && (
-            <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:110,display:"grid",placeItems:"center",padding:12}}>
-              <div style={{background:"#fff",borderRadius:16,padding:12,width:"100%",maxWidth:340}}>
-                <div style={{fontWeight:900,fontSize:12}}>Tambah Coin - Alamat dari masing-masing Coin</div>
-                <div style={{display:"grid",gap:6,marginTop:8}}>
-                  <input value={newCoin.symbol} onChange={e=>setNewCoin({...newCoin,symbol:e.target.value})} placeholder="Symbol: USDT" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-                  <input value={newCoin.name} onChange={e=>setNewCoin({...newCoin,name:e.target.value})} placeholder="Nama: Tether BEP-20" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-                  <select value={newCoin.network} onChange={e=>setNewCoin({...newCoin,network:e.target.value})} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}><option value="BEP-20">BEP-20</option><option value="ERC-20">ERC-20</option><option value="BTC">BTC</option></select>
-                  <input value={newCoin.address} onChange={e=>setNewCoin({...newCoin,address:e.target.value})} placeholder="Alamat Wallet: 0x..." style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-                  <input value={newCoin.contract} onChange={e=>setNewCoin({...newCoin,contract:e.target.value})} placeholder="Alamat Kontrak" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-                  <div style={{display:"flex",gap:6,marginTop:6}}>
-                    <button onClick={()=>setShowAddCoin(false)} style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",background:"#fff",fontSize:10}}>Batal</button>
-                    <button onClick={()=>{ if(!newCoin.symbol || !newCoin.address){ alert("Isi Symbol + Alamat!"); return; } setCryptoAssets([...cryptoAssets,{id:Date.now().toString(), symbol:newCoin.symbol, name:newCoin.name||newCoin.symbol, network:newCoin.network, address:newCoin.address, contract:newCoin.contract, balance:0, usd:0, icon:"💎"}]); setShowAddCoin(false); setNewCoin({symbol:"",name:"",network:"BEP-20",address:"",contract:""}); }} style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
 

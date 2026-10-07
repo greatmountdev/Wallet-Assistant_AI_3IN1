@@ -1,11 +1,10 @@
 {
-  "name": "Dompet AI V81 APP MOBILE BUKAN WEB",
-  "short_name": "Dompet AI APP",
+  "name": "Dompet AI V39 PALING BENER FIX",
+  "short_name": "Dompet AI V39 BENER",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "theme_color": "#0ea5e9",
   "icons": [
     {
       "src": "/icon-192.png",

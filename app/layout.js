@@ -1,2 +1,5 @@
-export const dynamic="force-dynamic";
-export const metadata={title:"Dompet AI 6 Grup FULL - ALL UI Bahasa + CNY - V39"}; export default function RootLayout({children}){return <html lang="id"><head><link rel="manifest" href="/manifest.json"/><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><script src="https://apis.google.com/js/api.js" async defer></script><script src="https://accounts.google.com/gsi/client" async defer></script></head><body style={{margin:0}}>{children}<script>window.loadGapi=function(){return new Promise((res)=>{let i=setInterval(()=>{if(window.gapi&&window.google){clearInterval(i);window.gapi.load("client",async()=>{try{await window.gapi.client.init({apiKey:localStorage.getItem("dompetAI_apiKey")||"", discoveryDocs:["https://sheets.googleapis.com/$discovery/rest?version=v4"]});}catch(e){}res();});}},300);setTimeout(()=>{clearInterval(i);res();},8000);});};</script></body></html>}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+export const metadata={title:"Dompet AI V64 REAL 100% - Google Facebook Real Icon Real Otorisasi Drive Sheet Meta AI Gemini Kamera File REAL", manifest:"/manifest.json"};
+export default function RootLayout({children}){return <html lang="id"><head><link rel="manifest" href="/manifest.json"/><meta name="theme-color" content="#0ea5e9"/><meta name="viewport" content="width=device-width, initial-scale=1"/></head><body style={{margin:0}}>{children}</body></html>}

@@ -122,6 +122,9 @@ export default function Page(){
   const [cryptoPIN,setCryptoPIN]=useState("");
   const [btcPrice,setBtcPrice]=useState("Rp 1.050.000.000");
   const [bscScanTimer,setBscScanTimer]=useState("15:00");
+  const [cryptoBottom,setCryptoBottom]=useState("beranda");
+  const [selectedCoin,setSelectedCoin]=useState(null);
+
   const handleCryptoTabClick = (target)=>{ if(target==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
   const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed 12 kata sudah disimpan!"); return; } if(!crypto2FAChecked){ alert("Centang PIN 2FA wajib!"); return; } if(cryptoPIN.length!==6){ alert("PIN 2FA 6 digit wajib!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
   useEffect(()=>{ const it = setInterval(()=>{ setBscScanTimer(prev=>{ const p=prev.split(":"); let m=parseInt(p[0]||"15"); let s=parseInt(p[1]||"00"); let t=m*60+s-1; if(t<=0) t=15*60; return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }); },1000); const bIt = setInterval(()=>{ const b=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+b.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(it); clearInterval(bIt); }; },[]);
@@ -626,7 +629,7 @@ export default function Page(){
       )}
       
       {cryptoMode==="crypto" && (
-        <div style={{background:"#fff",minHeight:"100vh",paddingBottom:80}}>
+        <div style={{background:"#fff",minHeight:"100vh",paddingBottom:80, marginTop:0}}>
           {/* TrustWallet Header - Balance */}
           <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -699,6 +702,169 @@ export default function Page(){
         </div>
       )}
 
+      
+      {cryptoMode==="crypto" && (
+        <div style={{background:"#fff",minHeight:"100vh",paddingBottom:80}}>
+          {/* TrustWallet Header - Only when beranda and no coin selected */}
+          {cryptoBottom==="beranda" && !selectedCoin && (
+            <>
+              <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div style={{fontWeight:900,fontSize:14}}>💎 Crypto Wallet - TrustWallet - 2 Nav</div>
+                  <div style={{display:"flex",gap:8}}>
+                    <div style={{width:32,height:32,borderRadius:8,background:"#1e293b",display:"grid",placeItems:"center",fontSize:12}}>🔔</div>
+                    <div style={{width:32,height:32,borderRadius:8,background:"#1e293b",display:"grid",placeItems:"center",fontSize:12}}>⚙️</div>
+                  </div>
+                </div>
+                <div style={{textAlign:"center",marginTop:16}}>
+                  <div style={{fontSize:10,opacity:0.6}}>Total Balance - BSC + BTC Live</div>
+                  <div style={{fontWeight:900,fontSize:24,marginTop:4}}>$4,270.00</div>
+                  <div style={{fontSize:10,opacity:0.6,marginTop:2,display:"flex",gap:6,justifyContent:"center"}}><span style={{background:"#1e293b",padding:"2px 8px",borderRadius:10}}>{btcPrice}</span><span style={{background:"#1e293b",padding:"2px 8px",borderRadius:10}}>BSCScan {bscScanTimer}</span></div>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:12,marginTop:20}}>
+                  <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#10b981",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>↑</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Send</div></div>
+                  <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#0ea5e9",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>↓</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Receive</div></div>
+                  <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#8b5cf6",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>💳</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Buy</div></div>
+                  <div style={{textAlign:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"#f59e0b",display:"grid",placeItems:"center",margin:"0 auto",fontSize:18}}>⇄</div><div style={{fontSize:9,marginTop:6,fontWeight:700}}>Swap</div></div>
+                </div>
+              </div>
+              <div style={{display:"flex",gap:16,padding:"12px 16px",borderBottom:"1px solid #f1f5f9"}}>
+                <div style={{fontWeight:900,fontSize:12,borderBottom:"2px solid #0f172a",paddingBottom:8}}>Tokens</div>
+                <div style={{fontSize:12,color:"#94a3b8"}}>NFTs</div>
+                <div style={{marginLeft:"auto",fontSize:9,color:"#0ea5e9",fontWeight:700}}>{btcPrice}</div>
+              </div>
+              <div style={{padding:12}}>
+                <div style={{fontWeight:800,fontSize:11,marginBottom:8}}>Beranda Daftar Coin - Klik salah satu coin tampil sub menu terima/kirim/swap di bawahnya</div>
+                {[
+                  {symbol:"BTC", name:"Bitcoin", network:"BTC", bal:"0.0025 BTC", usd:"$125", price:"$62,000", change:"+2.5%", icon:"₿", color:"#f7931a", addr:"bc1qxy2k...s8x4j3n5m9q7", contract:""},
+                  {symbol:"ETH", name:"Ethereum", network:"ERC-20", bal:"0.5 ETH", usd:"$1,800", price:"$3,600", change:"-1.2%", icon:"Ξ", color:"#627eea", addr:"0xAbC...1234", contract:""},
+                  {symbol:"USDT", name:"Tether BEP-20", network:"BEP-20", bal:"500 USDT", usd:"$500", price:"$1.00", change:"+0.01%", icon:"💲", color:"#26a17b", addr:"0x55d...7f6eB", contract:"0x55d398326f99059fF775485246999027B3197955"},
+                  {symbol:"BNB", name:"BNB", network:"BEP-20", bal:"1.2 BNB", usd:"$720", price:"$600", change:"+3.1%", icon:"🔶", color:"#f3ba2f", addr:"0x1a2...3b4c", contract:""},
+                  {symbol:"SOL", name:"Solana", network:"SOL", bal:"10 SOL", usd:"$1,500", price:"$150", change:"+5.2%", icon:"◎", color:"#9945ff", addr:"So1...9xYz", contract:""},
+                ].map(a=>(
+                  <div key={a.symbol+a.network} onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc",cursor:"pointer"}}>
+                    <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
+                    <div style={{flex:1}}>
+                      <div style={{display:"flex",gap:6,alignItems:"center"}}><div style={{fontWeight:800,fontSize:12}}>{a.symbol}</div><div style={{fontSize:7,background:"#f1f5f9",padding:"2px 6px",borderRadius:6}}>{a.network}</div><div style={{fontSize:7,color:a.change.startsWith("+")?"#10b981":"#ef4444"}}>{a.change}</div></div>
+                      <div style={{fontSize:8,color:"#64748b",marginTop:2}}>{a.name} • {a.price} • {a.addr}</div>
+                    </div>
+                    <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:12}}>{a.bal}</div><div style={{fontSize:8,color:"#64748b"}}>{a.usd}</div><div style={{fontSize:8,color:"#0ea5e9",marginTop:2}}>Tap → Detail</div></div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Coin Detail - Sub menu terima/kirim/swap di bawahnya */}
+          {selectedCoin && (
+            <div style={{padding:12}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+                <button onClick={()=>setSelectedCoin(null)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"none",display:"grid",placeItems:"center"}}>←</button>
+                <div style={{fontWeight:900,fontSize:14}}>{selectedCoin.symbol} - {selectedCoin.name} - Detail</div>
+              </div>
+              <div style={{background:"#0f172a",borderRadius:16,padding:16,color:"#fff",textAlign:"center"}}>
+                <div style={{width:56,height:56,borderRadius:28,background:selectedCoin.color+"30",display:"grid",placeItems:"center",margin:"0 auto",fontSize:28,border:"2px solid "+selectedCoin.color}}>{selectedCoin.icon}</div>
+                <div style={{fontWeight:900,fontSize:18,marginTop:8}}>{selectedCoin.bal}</div>
+                <div style={{fontSize:10,opacity:0.6}}>{selectedCoin.usd} • {selectedCoin.price} {selectedCoin.change}</div>
+                <div style={{fontSize:8,opacity:0.6,marginTop:6,background:"#1e293b",padding:"6px 10px",borderRadius:8,wordBreak:"break-all"}}>Alamat Wallet ({selectedCoin.network}): {selectedCoin.addr}</div>
+                {selectedCoin.contract && <div style={{fontSize:7,opacity:0.8,marginTop:6,background:"#fffbeb",color:"#92400e",padding:"6px 10px",borderRadius:8,wordBreak:"break-all"}}>Alamat Kontrak ({selectedCoin.network}): {selectedCoin.contract} - Kirim/Terima/Swap - USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset</div>}
+              </div>
+              {/* Sub menu terima/kirim/swap di bawahnya */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginTop:12}}>
+                <button onClick={()=>alert("Terima "+selectedCoin.symbol+" - Alamat: "+selectedCoin.addr+" - QR - TrustWallet/Metamask - Copy alamat kontrak "+(selectedCoin.contract||selectedCoin.addr))} style={{padding:14,borderRadius:12,background:"#dcfce7",color:"#166534",border:"none",fontWeight:800,fontSize:11,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}><span style={{fontSize:18}}>↓</span> Terima</button>
+                <button onClick={()=>alert("Kirim "+selectedCoin.symbol+" "+selectedCoin.network+" dari "+selectedCoin.addr+" - Input alamat tujuan + jumlah - TrustWallet/Metamask - BEP-20/ERC-20")} style={{padding:14,borderRadius:12,background:"#fee2e2",color:"#991b1b",border:"none",fontWeight:800,fontSize:11,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}><span style={{fontSize:18}}>↑</span> Kirim</button>
+                <button onClick={()=>alert("Swap "+selectedCoin.symbol+" - PancakeSwap/Uniswap - Contract: "+(selectedCoin.contract||"Native")+" - TrustWallet/Metamask - BEP-20/ERC-20")} style={{padding:14,borderRadius:12,background:"#dbeafe",color:"#1e40af",border:"none",fontWeight:800,fontSize:11,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}><span style={{fontSize:18}}>⇄</span> Swap</button>
+              </div>
+              <div style={{marginTop:12,background:"#f8fafc",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>
+                <div style={{fontWeight:800,fontSize:10}}>Transaksi {selectedCoin.symbol} - {selectedCoin.network}</div>
+                <div style={{fontSize:8,color:"#64748b",marginTop:4}}>Alamat dari masing-masing coin tergantung jaringan - Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset alamat kontrak kirim/terima/swap - Di dalem Crypto Wallet bukan diluar/pas sign 2FA - BSCScan {bscScanTimer} - BTC Live {btcPrice}</div>
+                <div style={{display:"flex",gap:6,marginTop:8}}>
+                  <button onClick={()=>{ try{ navigator.clipboard.writeText(selectedCoin.contract||selectedCoin.addr); }catch(e){} alert("Copy: "+(selectedCoin.contract||selectedCoin.addr)); }} style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:8,fontWeight:700}}>Copy Alamat Kontrak</button>
+                  <button onClick={()=>alert("BSCScan: https://bscscan.com/address/"+(selectedCoin.contract||selectedCoin.addr)+" - "+selectedCoin.network)} style={{flex:1,padding:8,borderRadius:8,background:"#f59e0b",color:"#fff",border:"none",fontSize:8,fontWeight:700}}>BSCScan</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* dApp - Menu lainnya biasanya dApp masukan situs seperti pancakeswap dlsbg */}
+          {cryptoBottom==="dapp" && !selectedCoin && (
+            <div style={{padding:12}}>
+              <div style={{fontWeight:900,fontSize:14}}>🌐 dApp Browser - TrustWallet Style - 2 Nav</div>
+              <div style={{fontSize:9,color:"#64748b",marginTop:4}}>Menu lainnya biasanya dApp masukan situs seperti pancakeswap dlsbg - PancakeSwap Uniswap 1inch OpenSea</div>
+              <div style={{marginTop:12,display:"grid",gap:10}}>
+                <div style={{background:"#0f172a",borderRadius:16,padding:12,color:"#fff"}}>
+                  <div style={{fontWeight:800,fontSize:11}}>🔍 Search dApp atau masukkan URL</div>
+                  <div style={{marginTop:8,background:"#1e293b",borderRadius:10,padding:8,display:"flex",gap:8,alignItems:"center"}}>
+                    <div style={{fontSize:12}}>🌐</div>
+                    <input placeholder="pancakeswap.finance / uniswap.org / app.1inch.io / opensea.io" style={{flex:1,background:"transparent",border:"none",color:"#fff",fontSize:9,outline:"none"}}/>
+                  </div>
+                </div>
+                <div style={{fontWeight:800,fontSize:11}}>Favorites - dApp - PancakeSwap dlsbg</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                  {[
+                    {name:"PancakeSwap", url:"pancakeswap.finance", icon:"🥞", color:"#d1884f", desc:"BSC DEX - Swap BEP-20 - USDT BEP-20 Contract: 0x55d...7f6eB"},
+                    {name:"Uniswap", url:"uniswap.org", icon:"🦄", color:"#ff007a", desc:"ETH DEX - Swap ERC-20 - USDT ERC-20 Contract: 0xdAC...a7d0"},
+                    {name:"1inch", url:"app.1inch.io", icon:"🦄", color:"#1a1a1a", desc:"Aggregator - Best price - BEP-20/ERC-20"},
+                    {name:"OpenSea", url:"opensea.io", icon:"🌊", color:"#2081e2", desc:"NFT Marketplace - TrustWallet/Metamask"},
+                    {name:"SushiSwap", url:"sushi.com", icon:"🍣", color:"#fa52a0", desc:"Multi-chain DEX - BSC ETH"},
+                    {name:"Aave", url:"aave.com", icon:"👻", color:"#b6509e", desc:"Lending - BSC ETH"},
+                  ].map(d=>(
+                    <div key={d.name} onClick={()=>alert("Buka dApp: "+d.name+" - "+d.url+" - "+d.desc+" - TrustWallet dApp Browser - Connect Wallet - BSCScan "+bscScanTimer+" - BTC Live "+btcPrice)} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9",cursor:"pointer"}}>
+                      <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                        <div style={{width:32,height:32,borderRadius:8,background:d.color+"20",display:"grid",placeItems:"center",fontSize:16}}>{d.icon}</div>
+                        <div><div style={{fontWeight:800,fontSize:10}}>{d.name}</div><div style={{fontSize:7,color:"#64748b"}}>{d.url}</div></div>
+                      </div>
+                      <div style={{fontSize:7,color:"#64748b",marginTop:6}}>{d.desc}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{marginTop:8,background:"#f8fafc",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>
+                  <div style={{fontWeight:800,fontSize:10}}>dApp Browser - TrustWallet Style - Connect Wallet</div>
+                  <div style={{fontSize:8,color:"#64748b",marginTop:4}}>Masukan situs seperti pancakeswap.finance - Connect TrustWallet/Metamask - Swap USDT BEP-20 - Alamat dari masing-masing coin tergantung jaringan - Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset alamat kontrak kirim/terima/swap - BSCScan {bscScanTimer} - BTC Live {btcPrice} - Seed OK + 2FA OK - Import Seed: {cryptoSeed12.slice(0,20)}...</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Bottom Nav 2 - Beranda Daftar Coin + dApp - Hanya Crypto */}
+          {!selectedCoin && (
+            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
+              <button onClick={()=>setCryptoBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 20px"}}>
+                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="beranda"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:14}}>💎</div>
+                <div style={{fontSize:8,fontWeight:cryptoBottom==="beranda"?800:400,color:cryptoBottom==="beranda"?"#0f172a":"#94a3b8"}}>Beranda - Daftar Coin</div>
+              </button>
+              <button onClick={()=>setCryptoBottom("dapp")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 20px"}}>
+                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="dapp"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:14}}>🌐</div>
+                <div style={{fontSize:8,fontWeight:cryptoBottom==="dapp"?800:400,color:cryptoBottom==="dapp"?"#0f172a":"#94a3b8"}}>dApp - PancakeSwap dlsbg</div>
+              </button>
+            </div>
+          )}
+
+          {/* Coin Detail Bottom - Terima/Kirim/Swap - Tampil di bawahnya ketika coin diklik */}
+          {selectedCoin && (
+            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
+              <button onClick={()=>alert("Terima "+selectedCoin.symbol+" - Alamat: "+selectedCoin.addr)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+                <div style={{width:28,height:28,borderRadius:10,background:"#dcfce7",display:"grid",placeItems:"center",fontSize:14}}>↓</div>
+                <div style={{fontSize:8,fontWeight:700,color:"#166534"}}>Terima</div>
+              </button>
+              <button onClick={()=>alert("Kirim "+selectedCoin.symbol+" - Dari: "+selectedCoin.addr)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+                <div style={{width:28,height:28,borderRadius:10,background:"#fee2e2",display:"grid",placeItems:"center",fontSize:14}}>↑</div>
+                <div style={{fontSize:8,fontWeight:700,color:"#991b1b"}}>Kirim</div>
+              </button>
+              <button onClick={()=>alert("Swap "+selectedCoin.symbol+" - PancakeSwap/Uniswap - Contract: "+(selectedCoin.contract||"Native"))} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+                <div style={{width:28,height:28,borderRadius:10,background:"#dbeafe",display:"grid",placeItems:"center",fontSize:14}}>⇄</div>
+                <div style={{fontSize:8,fontWeight:700,color:"#1e40af"}}>Swap</div>
+              </button>
+              <button onClick={()=>setSelectedCoin(null)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+                <div style={{width:28,height:28,borderRadius:10,background:"#f1f5f9",display:"grid",placeItems:"center",fontSize:14}}>←</div>
+                <div style={{fontSize:8,fontWeight:700,color:"#64748b"}}>Kembali - Daftar Coin</div>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {cryptoMode==="dompet" && (
       <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:440,background:"#fff",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-around",padding:"8px 0 14px",zIndex:30}}>
         <button onClick={()=>setBottom("beranda")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🏠</div><div style={{fontSize:8,fontWeight:700}}>{tr.beranda}</div></button>
         <button onClick={()=>setBottom("riwayat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🧾</div><div style={{fontSize:8,fontWeight:700}}>{tr.input}</div></button>
@@ -706,6 +872,7 @@ export default function Page(){
         <button onClick={()=>setBottom("laporan")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>📊</div><div style={{fontSize:8,fontWeight:700}}>{tr.laporan}</div></button>
         <button onClick={()=>setBottom("profil")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>⚙️</div><div style={{fontSize:8,fontWeight:700}}>{tr.profil}</div></button>
       </div>
+      )}
     </div>
   )
 }

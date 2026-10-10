@@ -611,7 +611,8 @@ export default function Page(){
         </div>
       )}
       {cryptoMode==="crypto" && (
-        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"#fff",zIndex:50,overflowY:"auto",paddingBottom:80}}>
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"#f1f5f9",zIndex:50,display:"flex",justifyContent:"center"}}>
+          <div style={{width:"100%",maxWidth:420,background:"#fff",overflowY:"auto",paddingBottom:80,position:"relative",boxShadow:"0 0 0 1px #e2e8f0"}}>
           <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",color:"#fff"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - TrustWallet - Satu List Coin - $4,270.00 - Satu aja list coin</div>
@@ -635,7 +636,7 @@ export default function Page(){
                 <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>BNB - BNB - 1.2 BNB $720</div><div style={{fontSize:8,color:"#64748b"}}>0x1a2...3b4c - BEP-20</div></div>
               </div>
             </div>
-            <div style={{marginTop:12,background:"#f8fafc",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>
+            <div style={{marginTop:12,background:"#f8fafc",borderRadius:12,padding:10,border:"1px solid #f1f5f9",margin:"12px"}}>
               <div style={{fontWeight:800,fontSize:10}}>2 Nav - Beranda Daftar Coin + dApp - PancakeSwap dlsbg</div>
               <div style={{fontSize:8,color:"#64748b",marginTop:4}}>Beranda Daftar Coin - Satu aja list coin - Klik salah satu coin tampil sub menu coin tersebut di bawahnya terima kirim swap - Menu lainnya biasanya dApp masukan situs seperti pancakeswap dlsbg - PancakeSwap pancakeswap.finance - Uniswap uniswap.org - 1inch app.1inch.io - OpenSea opensea.io</div>
             </div>
@@ -644,9 +645,10 @@ export default function Page(){
               <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>dApp - PancakeSwap dlsbg</div><div style={{fontSize:7,color:"#64748b"}}>pancakeswap.finance - uniswap.org - 1inch - opensea</div></div>
             </div>
           </div>
-          <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 20px"}}><div style={{width:28,height:28,borderRadius:10,background:"#0f172a",display:"grid",placeItems:"center",fontSize:14}}>💎</div><div style={{fontSize:8,fontWeight:800}}>Beranda - Daftar Coin</div></div>
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 20px"}}><div style={{width:28,height:28,borderRadius:10,background:"#f8fafc",display:"grid",placeItems:"center",fontSize:14}}>🌐</div><div style={{fontSize:8}}>dApp - PancakeSwap dlsbg</div></div>
+          </div>
           </div>
         </div>
       )}

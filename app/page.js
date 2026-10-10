@@ -124,7 +124,6 @@ export default function Page(){
   const [bscScanTimer,setBscScanTimer]=useState("15:00");
   const [cryptoBottom,setCryptoBottom]=useState("beranda");
   const [selectedCoin,setSelectedCoin]=useState(null);
-  const isCrypto = cryptoMode==="crypto";
 
   const handleCryptoTabClick = (target)=>{ if(target==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
   const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed 12 kata sudah disimpan!"); return; } if(!crypto2FAChecked){ alert("Centang PIN 2FA wajib!"); return; } if(cryptoPIN.length!==6){ alert("PIN 2FA 6 digit wajib!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
@@ -209,30 +208,26 @@ export default function Page(){
   
   const isCrypto = cryptoMode==="crypto";
   return (
-    <div style={{minHeight:"100vh",background:isCrypto?"#fff":"#f8fafc",paddingBottom:80, maxWidth:420, margin:"0 auto", position:"relative"}}>
+    <div style={{minHeight:"100vh",background:isCrypto?"#fff":"#f8fafc",paddingBottom:80,maxWidth:420,margin:"0 auto",position:"relative"}}>
       {showCryptoSeedPopup && (
         <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.7)",zIndex:100,display:"grid",placeItems:"center",padding:12}}>
           <div style={{background:"#fff",borderRadius:20,padding:16,maxWidth:360,width:"100%",maxHeight:"90vh",overflowY:"auto"}}>
-            <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>🔐 Crypto - Seed & 2FA Wajib - Hanya Geser ke Crypto</div>
+            <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>Crypto - Seed & 2FA Wajib - Hanya Geser ke Crypto</div>
             <div style={{fontSize:9,color:"#64748b",textAlign:"center",marginTop:4}}>Di Dompet gak ada Seed! Hanya pas geser ke Crypto baru popup ini!</div>
             <div style={{background:"#f8fafc",borderRadius:12,padding:10,marginTop:10,border:"1px solid #e2e8f0"}}>
-              <div style={{fontSize:10,fontWeight:800}}>🌱 Seed 12 Kata - Simpan Aman - QR + TrustWallet/Metamask</div>
+              <div style={{fontSize:10,fontWeight:800}}>Seed 12 Kata - Simpan Aman - QR + TrustWallet/Metamask</div>
               <div style={{background:"#0f172a",color:"#10b981",padding:8,borderRadius:8,marginTop:6,fontSize:10,fontFamily:"monospace",wordBreak:"break-all"}}>{cryptoSeed12}</div>
-              <div style={{display:"flex",gap:6,marginTop:6}}>
-                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #e2e8f0",textAlign:"center"}}><div style={{fontSize:16}}>QR</div><div style={{fontSize:7,fontWeight:700}}>QR Code</div><div style={{width:40,height:40,background:"#000",margin:"4px auto",display:"grid",placeItems:"center",color:"#fff",fontSize:6}}>QR<br/>SEED</div></div>
-                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #e2e8f0",textAlign:"center"}}><div style={{fontSize:8,fontWeight:800}}>TrustWallet / Metamask</div><div style={{fontSize:6,color:"#64748b",marginTop:4}}>Import Seed → BSC / BTC</div></div>
-              </div>
               <label style={{display:"flex",gap:6,alignItems:"center",marginTop:8,fontSize:9,fontWeight:700}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Saya sudah simpan Seed 12 kata + QR dengan aman!</label>
             </div>
             <div style={{background:"#fef3c7",borderRadius:12,padding:10,marginTop:10,border:"1px solid #fde68a"}}>
-              <div style={{fontSize:10,fontWeight:800}}>🔍 BSCScan 15 Menit + BTC Live</div>
+              <div style={{fontSize:10,fontWeight:800}}>BSCScan 15 Menit + BTC Live</div>
               <div style={{display:"flex",gap:6,marginTop:6}}>
-                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #f59e0b"}}><div style={{fontSize:7,color:"#92400e"}}>BSCScan Timer</div><div style={{fontSize:12,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
-                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #10b981"}}><div style={{fontSize:7,color:"#166534"}}>BTC Live</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
+                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #f59e0b"}}><div style={{fontSize:7}}>BSCScan</div><div style={{fontSize:12,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
+                <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #10b981"}}><div style={{fontSize:7}}>BTC Live</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
               </div>
             </div>
             <div style={{background:"#f0f9ff",borderRadius:12,padding:10,marginTop:10,border:"1px solid #bae6fd"}}>
-              <div style={{fontSize:10,fontWeight:800}}>🔐 PIN 2FA Wajib Centang Baru Bisa Masuk Crypto</div>
+              <div style={{fontSize:10,fontWeight:800}}>PIN 2FA Wajib Centang Baru Bisa Masuk Crypto</div>
               <input type="password" value={cryptoPIN} onChange={e=>setCryptoPIN(e.target.value.slice(0,6))} placeholder="PIN 2FA 6 digit" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,fontSize:12,textAlign:"center",letterSpacing:4}}/>
               <label style={{display:"flex",gap:6,alignItems:"center",marginTop:8,fontSize:9,fontWeight:700}}><input type="checkbox" checked={crypto2FAChecked} onChange={e=>setCrypto2FAChecked(e.target.checked)}/> Saya aktifkan PIN 2FA untuk Crypto - Wajib centang!</label>
             </div>
@@ -244,24 +239,23 @@ export default function Page(){
         </div>
       )}
 
-      {/* DOMPET BIASA - TAMPIL KALO DOMPET */}
       {!isCrypto && (
         <>
-          <div style={{background:"#0f172a", padding:"12px 16px 20px 16px", borderRadius:"0 0 24px 24px"}}>
+          <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",color:"#fff"}}>
               <div>
                 <div style={{fontSize:9,opacity:0.6}}>Dompet AI Universal - 6 Groups FULL - Rp 18.405.000</div>
-                <div style={{fontWeight:900,fontSize:13,marginTop:2}}>Total Cash Flow SALAH SATU kepotong I Rp {wallets.reduce((a,b)=>a+(b.balance||0),0).toLocaleString("id-ID")}</div>
+                <div style={{fontWeight:900,fontSize:13,marginTop:2}}>Total Cash Flow SALAH SATU Rp {wallets.reduce((a,b)=>a+(b.balance||0),0).toLocaleString("id-ID")}</div>
               </div>
               <div style={{width:36,height:36,borderRadius:12,background:"#1e293b",display:"grid",placeItems:"center"}}>👤</div>
             </div>
             <div style={{display:"flex",background:"#1e293b",borderRadius:14,padding:4,marginTop:16}}>
-              <button onClick={()=>handleCryptoTabClick("dompet")} style={{flex:1,padding:8,borderRadius:10,background:cryptoMode==="dompet"?"#fff":"transparent",color:cryptoMode==="dompet"?"#0f172a":"#94a3b8",border:"none",fontWeight:800,fontSize:10}}>Dompet</button>
+              <button onClick={()=>handleCryptoTabClick("dompet")} style={{flex:1,padding:8,borderRadius:10,background:"#fff",color:"#0f172a",border:"none",fontWeight:800,fontSize:10}}>Dompet</button>
               <button onClick={()=>handleCryptoTabClick("crypto")} style={{flex:1,padding:8,borderRadius:10,background:"transparent",color:"#94a3b8",border:"none",fontWeight:800,fontSize:10}}>Crypto</button>
             </div>
           </div>
           <div style={{padding:12}}>
-            <div style={{fontWeight:900,fontSize:12}}>Transaksi - Dompet Biasa - 5 Nav</div>
+            <div style={{fontWeight:900,fontSize:12}}>Transaksi - Dompet Biasa - 5 Nav - Satu aja</div>
             <div style={{display:"grid",gap:8,marginTop:8}}>
               {wallets.slice(0,5).map(w=>(
                 <div key={w.id} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}>
@@ -274,15 +268,13 @@ export default function Page(){
         </>
       )}
 
-      {/* CRYPTO WALLET - SATU AJA LIST COIN - BUKAN 3 HALAMAN PANJANG - 2 NAV */}
       {isCrypto && (
         <div style={{background:"#fff",minHeight:"100vh"}}>
-          {/* Beranda Daftar Coin - Satu aja list coin */}
           {cryptoBottom==="beranda" && !selectedCoin && (
             <>
               <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div style={{fontWeight:900,fontSize:14}}>💎 Crypto Wallet - TrustWallet Style - $4,270.00</div>
+                  <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - TrustWallet - $4,270.00 - Satu List Coin</div>
                   <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>← Dompet</button>
                 </div>
                 <div style={{textAlign:"center",marginTop:12}}>
@@ -298,7 +290,7 @@ export default function Page(){
                 </div>
               </div>
               <div style={{padding:12}}>
-                <div style={{fontWeight:800,fontSize:11}}>Beranda Daftar Coin - Satu aja list coin - Klik coin tampil sub menu terima/kirim/swap di bawahnya</div>
+                <div style={{fontWeight:800,fontSize:11}}>Beranda Daftar Coin - Satu aja list coin</div>
                 <div style={{marginTop:8}}>
                   {[
                     {symbol:"BTC", name:"Bitcoin", network:"BTC", bal:"0.0025 BTC", usd:"$125", icon:"₿", color:"#f7931a", addr:"bc1qxy2k...s8x4j3n5m9q7", contract:""},
@@ -334,7 +326,7 @@ export default function Page(){
           )}
           {cryptoBottom==="dapp" && !selectedCoin && (
             <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:14}}>🌐 dApp Browser - PancakeSwap dlsbg</div>
+              <div style={{fontWeight:900,fontSize:14}}>dApp Browser - PancakeSwap dlsbg</div>
               <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                 {[
                   {name:"PancakeSwap", url:"pancakeswap.finance", icon:"🥞", color:"#d1884f"},
@@ -351,7 +343,6 @@ export default function Page(){
               </div>
             </div>
           )}
-          {/* Bottom Nav 2 - Beranda Daftar Coin + dApp - Satu aja list coin */}
           {!selectedCoin && (
             <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
               <button onClick={()=>setCryptoBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 20px"}}>
@@ -366,16 +357,15 @@ export default function Page(){
           )}
           {selectedCoin && (
             <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
-              <button onClick={()=>alert("Terima "+selectedCoin.symbol)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dcfce7",display:"grid",placeItems:"center"}}>↓</div><div style={{fontSize:8,fontWeight:700}}>Terima</div></button>
-              <button onClick={()=>alert("Kirim "+selectedCoin.symbol)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#fee2e2",display:"grid",placeItems:"center"}}>↑</div><div style={{fontSize:8,fontWeight:700}}>Kirim</div></button>
-              <button onClick={()=>alert("Swap "+selectedCoin.symbol)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dbeafe",display:"grid",placeItems:"center"}}>⇄</div><div style={{fontSize:8,fontWeight:700}}>Swap</div></button>
+              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dcfce7",display:"grid",placeItems:"center"}}>↓</div><div style={{fontSize:8,fontWeight:700}}>Terima</div></button>
+              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#fee2e2",display:"grid",placeItems:"center"}}>↑</div><div style={{fontSize:8,fontWeight:700}}>Kirim</div></button>
+              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dbeafe",display:"grid",placeItems:"center"}}>⇄</div><div style={{fontSize:8,fontWeight:700}}>Swap</div></button>
               <button onClick={()=>setSelectedCoin(null)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#f1f5f9",display:"grid",placeItems:"center"}}>←</div><div style={{fontSize:8,fontWeight:700}}>Kembali</div></button>
             </div>
           )}
         </div>
       )}
 
-      {/* Bottom Nav Dompet Biasa - 5 Nav - Hanya tampil kalo Dompet */}
       {!isCrypto && (
         <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
           <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#0f172a",display:"grid",placeItems:"center",fontSize:14}}>🏠</div><div style={{fontSize:8,fontWeight:800}}>Beranda</div></button>

@@ -51,7 +51,7 @@ const exportRealGoogleSheetV40 = async (wallets, authName, authEmail, clientId)=
 };
 
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
 const TABUNGAN_BANKS=[
   {name:"BCA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"BNI", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
@@ -114,6 +114,19 @@ const T={
 
 export default function Page(){
   const [step,setStep]=useState("login")
+  const [cryptoMode,setCryptoMode]=useState("dompet");
+  const [showCryptoSeedPopup,setShowCryptoSeedPopup]=useState(false);
+  const [cryptoSeedChecked,setCryptoSeedChecked]=useState(false);
+  const [crypto2FAChecked,setCrypto2FAChecked]=useState(false);
+  const [cryptoSeed12,setCryptoSeed12]=useState("abandon ability able about above absent absorb abstract absurd abuse access accident");
+  const [cryptoPIN,setCryptoPIN]=useState("");
+  const [btcPrice,setBtcPrice]=useState("Rp 1.050.000.000");
+  const [bscScanTimer,setBscScanTimer]=useState("15:00");
+  const handleCryptoTabClick = (t)=>{ if(t==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
+  const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed!"); return; } if(!crypto2FAChecked){ alert("Centang 2FA!"); return; } if(cryptoPIN.length!==6){ alert("PIN 6 digit!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
+  useEffect(()=>{ const a=setInterval(()=>{ setBscScanTimer(p=>{ const x=p.split(":"); let m=parseInt(x[0]||"15"); let s=parseInt(x[1]||"00"); let t=m*60+s-1; if(t<=0) t=900; return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }); },1000); const b=setInterval(()=>{ const v=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+v.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(a); clearInterval(b); }; },[]);
+
+
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
   const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")
   const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
@@ -283,8 +296,8 @@ export default function Page(){
         </div>
         <div style={{display:"flex",justifyContent:"center",padding:"12px 0"}}>
           <div style={{display:"flex",background:"rgba(255,255,255,.22)",borderRadius:14,padding:4,gap:4}}>
-            <button onClick={()=>setMode("Dompet")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Dompet"?"#fff":"transparent",color:mode==="Dompet"?"#0f172a":"#fff",fontSize:12}}>{tr.dompet}</button>
-            <button onClick={()=>setMode("Crypto")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Crypto"?"#fff":"transparent",color:mode==="Crypto"?"#0f172a":"#fff",fontSize:12}}>{tr.crypto}</button>
+            <button onClick={()=>handleCryptoTabClick("dompet")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Dompet"?"#fff":"transparent",color:mode==="Dompet"?"#0f172a":"#fff",fontSize:12}}>{tr.dompet}</button>
+            <button onClick={()=>handleCryptoTabClick("crypto")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Crypto"?"#fff":"transparent",color:mode==="Crypto"?"#0f172a":"#fff",fontSize:12}}>{tr.crypto}</button>
           </div>
         </div>
       </div>
@@ -577,7 +590,67 @@ export default function Page(){
         </div>
       )}
 
-      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:440,background:"#fff",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-around",padding:"8px 0 14px",zIndex:30}}>
+      
+      {showCryptoSeedPopup && (
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.7)",zIndex:100,display:"grid",placeItems:"center",padding:12}}>
+          <div style={{background:"#fff",borderRadius:20,padding:16,maxWidth:360,width:"100%"}}>
+            <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>Crypto Seed & 2FA Wajib - Hanya Geser ke Crypto</div>
+            <div style={{background:"#0f172a",color:"#10b981",padding:8,borderRadius:8,marginTop:6,fontSize:10,fontFamily:"monospace",wordBreak:"break-all"}}>{cryptoSeed12}</div>
+            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Simpan Seed 12 kata + QR</label>
+            <div style={{display:"flex",gap:6,marginTop:6}}>
+              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #f59e0b"}}><div style={{fontSize:7}}>BSCScan Timer</div><div style={{fontSize:12,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
+              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #10b981"}}><div style={{fontSize:7}}>BTC Live</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
+            </div>
+            <input type="password" value={cryptoPIN} onChange={e=>setCryptoPIN(e.target.value.slice(0,6))} placeholder="PIN 2FA 6 digit" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,textAlign:"center",letterSpacing:4}}/>
+            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={crypto2FAChecked} onChange={e=>setCrypto2FAChecked(e.target.checked)}/> Aktifkan PIN 2FA - Wajib centang</label>
+            <div style={{display:"flex",gap:8,marginTop:12}}>
+              <button onClick={()=>{setShowCryptoSeedPopup(false); setCryptoMode("dompet"); setMode("Dompet");}} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:10}}>Batal - Balik Dompet</button>
+              <button onClick={confirmCryptoSeed} style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#0f172a",color:"#fff",fontSize:10,fontWeight:900}}>Masuk Crypto - PIN 2FA OK</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {cryptoMode==="crypto" && (
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"#fff",zIndex:50,overflowY:"auto",paddingBottom:80}}>
+          <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",color:"#fff"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - TrustWallet - Satu List Coin - $4,270.00 - Satu aja list coin</div>
+              <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>← Dompet</button>
+            </div>
+            <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • BSCScan {bscScanTimer}</div></div>
+          </div>
+          <div style={{padding:12}}>
+            <div style={{fontWeight:800,fontSize:11}}>Beranda Daftar Coin - Satu aja list coin - Navigasi pertahankan 2 menu di crypto wallet - Satu halaman panjang banget 3 harusnya satu aja list coin</div>
+            <div style={{marginTop:8}}>
+              <div style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc"}}>
+                <div style={{width:40,height:40,borderRadius:20,background:"#f7931a20",display:"grid",placeItems:"center",fontSize:10}}>BTC</div>
+                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>BTC - Bitcoin - BTC - 0.0025 BTC $125</div><div style={{fontSize:8,color:"#64748b"}}>bc1q...s8x4j3n5m9q7 - Klik tampil sub menu terima kirim swap</div></div>
+              </div>
+              <div style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc"}}>
+                <div style={{width:40,height:40,borderRadius:20,background:"#26a17b20",display:"grid",placeItems:"center",fontSize:10}}>USDT</div>
+                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>USDT - Tether BEP-20 - 500 USDT $500</div><div style={{fontSize:8,color:"#64748b"}}>0x55d...7f6eB - Contract: 0x55d398326f99059fF775485246999027B3197955 - BEP-20 - Kirim Terima Swap</div></div>
+              </div>
+              <div style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc"}}>
+                <div style={{width:40,height:40,borderRadius:20,background:"#f3ba2f20",display:"grid",placeItems:"center",fontSize:10}}>BNB</div>
+                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>BNB - BNB - 1.2 BNB $720</div><div style={{fontSize:8,color:"#64748b"}}>0x1a2...3b4c - BEP-20</div></div>
+              </div>
+            </div>
+            <div style={{marginTop:12,background:"#f8fafc",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>
+              <div style={{fontWeight:800,fontSize:10}}>2 Nav - Beranda Daftar Coin + dApp - PancakeSwap dlsbg</div>
+              <div style={{fontSize:8,color:"#64748b",marginTop:4}}>Beranda Daftar Coin - Satu aja list coin - Klik salah satu coin tampil sub menu coin tersebut di bawahnya terima kirim swap - Menu lainnya biasanya dApp masukan situs seperti pancakeswap dlsbg - PancakeSwap pancakeswap.finance - Uniswap uniswap.org - 1inch app.1inch.io - OpenSea opensea.io</div>
+            </div>
+            <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+              <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>Beranda - Daftar Coin</div><div style={{fontSize:7,color:"#64748b"}}>Satu aja list coin - Klik coin tampil terima kirim swap</div></div>
+              <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>dApp - PancakeSwap dlsbg</div><div style={{fontSize:7,color:"#64748b"}}>pancakeswap.finance - uniswap.org - 1inch - opensea</div></div>
+            </div>
+          </div>
+          <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 20px"}}><div style={{width:28,height:28,borderRadius:10,background:"#0f172a",display:"grid",placeItems:"center",fontSize:14}}>💎</div><div style={{fontSize:8,fontWeight:800}}>Beranda - Daftar Coin</div></div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 20px"}}><div style={{width:28,height:28,borderRadius:10,background:"#f8fafc",display:"grid",placeItems:"center",fontSize:14}}>🌐</div><div style={{fontSize:8}}>dApp - PancakeSwap dlsbg</div></div>
+          </div>
+        </div>
+      )}
+<div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:440,background:"#fff",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-around",padding:"8px 0 14px",zIndex:30}}>
         <button onClick={()=>setBottom("beranda")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🏠</div><div style={{fontSize:8,fontWeight:700}}>{tr.beranda}</div></button>
         <button onClick={()=>setBottom("riwayat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🧾</div><div style={{fontSize:8,fontWeight:700}}>{tr.input}</div></button>
         <button onClick={()=>setBottom("chat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>💬</div><div style={{fontSize:8,fontWeight:700}}>{tr.chatAI}</div></button>

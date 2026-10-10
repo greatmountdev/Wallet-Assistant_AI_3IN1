@@ -1,28 +1,50 @@
-
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export const metadata = { title: "Dompet AI 6 Grup FULL - ALL UI Bahasa CNY - V39 FIX 404 WORKING - Google Real Logo + Facebook Real Logo + Drive + Sheet + META AI/Gemini + Kamera/File REAL Bukan Dummy - Crypto Wallet Real Valid - Mobile Precise", description: "Dompet AI - V39 Pertahankan - Google Facebook REAL - PIN 2X save login sekali" };
+export const metadata = {
+  title: "Dompet AI 6 Grup FULL - ALL UI Bahasa + CNY - V39 FIX 404 WORKING",
+  manifest: "/manifest.json",
+  themeColor: "#0ea5e9"
+};
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0ea5e9" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <script src="https://apis.google.com/js/api.js" async defer></script>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <script dangerouslySetInnerHTML={{__html: `
-          window.fbAsyncInit = function() {
-            FB.init({ appId: "YOUR_FACEBOOK_APP_ID - Ganti real dari developers.facebook.com - OAuth REAL - Bukan dummy - Facebook Login SDK", cookie: true, xfbml: true, version: "v18.0" });
-          };
-          (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-          }(document, "script", "facebook-jssdk"));
-        `}} />
+        <style>{`body{margin:0;font-family:Inter,system-ui;background:#f8fafc} .no-scrollbar::-webkit-scrollbar{display:none} .no-scrollbar{scrollbar-width:none}`}</style>
       </head>
-      <body style={{margin:0,background:"#f8fafc"}}>{children}<div id="googleSignInDiv" style={{display:"none"}}></div></body>
+      <body style={{margin:0}}>
+        {children}
+        <script dangerouslySetInnerHTML={{__html: `
+          if('serviceWorker' in navigator){
+            window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});});
+          }
+          window.loadGapi = function(){
+            return new Promise((res)=>{
+              let i=setInterval(()=>{
+                if(window.gapi && window.google){
+                  clearInterval(i);
+                  window.gapi.load('client', async ()=>{
+                    try{
+                      await window.gapi.client.init({
+                        apiKey: localStorage.getItem('dompetAI_apiKey')||'',
+                        discoveryDocs:["https://sheets.googleapis.com/$discovery/rest?version=v4","https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]
+                      });
+                    }catch(e){}
+                    res();
+                  });
+                }
+              },300);
+              setTimeout(()=>{clearInterval(i); res();},8000);
+            });
+          };
+        `}} />
+      </body>
     </html>
-  )
+  );
 }

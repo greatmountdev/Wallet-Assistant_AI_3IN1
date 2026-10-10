@@ -1,18 +1,17 @@
 
-export const metadata = { title: "Dompet AI Universal - 6 Grup FULL - ALL UI Bahasa CNY - V39 FIX 404 WORKING - Google Real Logo + Facebook Real Logo + Drive + Sheet + META AI/Gemini + Kamera/File REAL Bukan Dummy - Crypto Wallet Real Valid - Mobile Precise", description: "Dompet AI Universal - 6 Grup FULL - ALL UI Bahasa CNY - V39 FIX 404 WORKING - Google Real Logo + Facebook Real Logo + Drive + Sheet + META AI/Gemini + Kamera/File REAL Bukan Dummy - Crypto Wallet Real Valid - Mobile Precise - Daftar Google/Facebook dan PIN 2X save lalu login sekali - Real Valid - No Dummy Fake - V106" };
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const metadata = { title: "Dompet AI 6 Grup FULL - ALL UI Bahasa CNY - V39 FIX 404 WORKING - Google Real Logo + Facebook Real Logo + Drive + Sheet + META AI/Gemini + Kamera/File REAL Bukan Dummy - Crypto Wallet Real Valid - Mobile Precise", description: "Dompet AI - V39 Pertahankan - Google Facebook REAL - PIN 2X save login sekali" };
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0ea5e9" />
         <script src="https://accounts.google.com/gsi/client" async defer></script>
         <script dangerouslySetInnerHTML={{__html: `
           window.fbAsyncInit = function() {
-            FB.init({
-              appId: "YOUR_FACEBOOK_APP_ID - Ganti dengan App ID real dari developers.facebook.com - OAuth REAL - Bukan dummy - Facebook Login SDK",
-              cookie: true,
-              xfbml: true,
-              version: "v18.0"
-            });
+            FB.init({ appId: "YOUR_FACEBOOK_APP_ID - Ganti real dari developers.facebook.com - OAuth REAL - Bukan dummy - Facebook Login SDK", cookie: true, xfbml: true, version: "v18.0" });
           };
           (function(d, s, id){
             var js, fjs = d.getElementsByTagName(s)[0];

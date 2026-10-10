@@ -115,8 +115,6 @@ const T={
 export default function Page(){
   const [step,setStep]=useState("login")
   const [cryptoMode,setCryptoMode]=useState("dompet");
-  const [Mode,setMode]=useState("Dompet");
-  const [mode,setModeLower]=useState("Dompet");
   const [showCryptoSeedPopup,setShowCryptoSeedPopup]=useState(false);
   const [cryptoSeedChecked,setCryptoSeedChecked]=useState(false);
   const [crypto2FAChecked,setCrypto2FAChecked]=useState(false);
@@ -124,10 +122,6 @@ export default function Page(){
   const [cryptoPIN,setCryptoPIN]=useState("");
   const [btcPrice,setBtcPrice]=useState("Rp 1.050.000.000");
   const [bscScanTimer,setBscScanTimer]=useState("15:00");
-  const handleCryptoTabClick = (t)=>{ if(t==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); setModeLower("Dompet"); } };
-  const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed!"); return; } if(!crypto2FAChecked){ alert("Centang 2FA!"); return; } if(cryptoPIN.length!==6){ alert("PIN 6 digit!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); setModeLower("Crypto"); };
-  useEffect(()=>{ const a=setInterval(()=>{ setBscScanTimer(p=>{ const x=p.split(":"); let m=parseInt(x[0]||"15"); let s=parseInt(x[1]||"00"); let t=m*60+s-1; if(t<=0) t=900; return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }); },1000); const b=setInterval(()=>{ const v=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+v.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(a); clearInterval(b); }; },[]);
-
   const [cryptoBottom,setCryptoBottom]=useState("beranda");
   const [selectedCoin,setSelectedCoin]=useState(null);
 
@@ -135,6 +129,11 @@ export default function Page(){
   const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")
   const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
   const [mode,setMode]=useState("Dompet"), [font,setFont]=useState("Tegas"), [lang,setLang]=useState("ID"), [hideTotal,setHideTotal]=useState(false), [hideNorek,setHideNorek]=useState({}), [bottom,setBottom]=useState("beranda"), [showMenu,setShowMenu]=useState(false), [theme,setTheme]=useState("light"), [notif,setNotif]=useState(true)
+  const Mode = mode;
+  const setModeLower = setMode;
+  const handleCryptoTabClick = (t)=>{ if(t==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
+  const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed!"); return; } if(!crypto2FAChecked){ alert("Centang 2FA!"); return; } if(cryptoPIN.length!==6){ alert("PIN 6 digit!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
+  useEffect(()=>{ const a=setInterval(()=>{ setBscScanTimer(p=>{ const x=p.split(":"); let m=parseInt(x[0]||"15"); let s=parseInt(x[1]||"00"); let t=m*60+s-1; if(t<=0) t=900; return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }); },1000); const b=setInterval(()=>{ const v=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+v.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(a); clearInterval(b); }; },[]);
   const [newTx,setNewTx]=useState({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"7",foto:null})
   const [showAddTx,setShowAddTx]=useState(false)
   const [isListening,setIsListening]=useState(false)
@@ -608,7 +607,7 @@ export default function Page(){
             <input type="password" value={cryptoPIN} onChange={e=>setCryptoPIN(e.target.value.slice(0,6))} placeholder="PIN 2FA 6 digit" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,textAlign:"center",letterSpacing:4}}/>
             <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={crypto2FAChecked} onChange={e=>setCrypto2FAChecked(e.target.checked)}/> Aktifkan PIN 2FA - Wajib centang</label>
             <div style={{display:"flex",gap:8,marginTop:12}}>
-              <button onClick={()=>{setShowCryptoSeedPopup(false); setCryptoMode("dompet"); setMode("Dompet"); setModeLower("Dompet");}} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:10}}>Batal - Balik Dompet</button>
+              <button onClick={()=>{setShowCryptoSeedPopup(false); setCryptoMode("dompet"); setMode("Dompet");}} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:10}}>Batal - Balik Dompet</button>
               <button onClick={confirmCryptoSeed} style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#0f172a",color:"#fff",fontSize:10,fontWeight:900}}>Masuk Crypto - PIN 2FA OK</button>
             </div>
           </div>
@@ -622,7 +621,7 @@ export default function Page(){
                 <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",color:"#fff",borderRadius:"0 0 24px 24px"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                     <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - TrustWallet - Satu List Coin - $4,270.00 - Real Valid - Mobile Precise</div>
-                    <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet"); setModeLower("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>← Dompet</button>
+                    <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>← Dompet</button>
                   </div>
                   <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance - Real Valid - No Dummy Fake - Mobile Precise</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • BSCScan {bscScanTimer} • Real Valid TrustWallet/Metamask - No Dummy Fake</div></div>
                 </div>

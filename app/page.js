@@ -610,48 +610,7 @@ export default function Page(){
           </div>
         </div>
       )}
-      {cryptoMode==="crypto" && (
-        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"#f1f5f9",zIndex:50,display:"flex",justifyContent:"center"}}>
-          <div style={{width:"100%",maxWidth:420,background:"#fff",overflowY:"auto",paddingBottom:80,position:"relative",boxShadow:"0 0 0 1px #e2e8f0"}}>
-          <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",color:"#fff"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - TrustWallet - Satu List Coin - $4,270.00 - Satu aja list coin</div>
-              <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>← Dompet</button>
-            </div>
-            <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • BSCScan {bscScanTimer}</div></div>
-          </div>
-          <div style={{padding:12}}>
-            <div style={{fontWeight:800,fontSize:11}}>Beranda Daftar Coin - Satu aja list coin - Navigasi pertahankan 2 menu di crypto wallet - Satu halaman panjang banget 3 harusnya satu aja list coin</div>
-            <div style={{marginTop:8}}>
-              <div style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc"}}>
-                <div style={{width:40,height:40,borderRadius:20,background:"#f7931a20",display:"grid",placeItems:"center",fontSize:10}}>BTC</div>
-                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>BTC - Bitcoin - BTC - 0.0025 BTC $125</div><div style={{fontSize:8,color:"#64748b"}}>bc1q...s8x4j3n5m9q7 - Klik tampil sub menu terima kirim swap</div></div>
-              </div>
-              <div style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc"}}>
-                <div style={{width:40,height:40,borderRadius:20,background:"#26a17b20",display:"grid",placeItems:"center",fontSize:10}}>USDT</div>
-                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>USDT - Tether BEP-20 - 500 USDT $500</div><div style={{fontSize:8,color:"#64748b"}}>0x55d...7f6eB - Contract: 0x55d398326f99059fF775485246999027B3197955 - BEP-20 - Kirim Terima Swap</div></div>
-              </div>
-              <div style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc"}}>
-                <div style={{width:40,height:40,borderRadius:20,background:"#f3ba2f20",display:"grid",placeItems:"center",fontSize:10}}>BNB</div>
-                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>BNB - BNB - 1.2 BNB $720</div><div style={{fontSize:8,color:"#64748b"}}>0x1a2...3b4c - BEP-20</div></div>
-              </div>
-            </div>
-            <div style={{marginTop:12,background:"#f8fafc",borderRadius:12,padding:10,border:"1px solid #f1f5f9",margin:"12px"}}>
-              <div style={{fontWeight:800,fontSize:10}}>2 Nav - Beranda Daftar Coin + dApp - PancakeSwap dlsbg</div>
-              <div style={{fontSize:8,color:"#64748b",marginTop:4}}>Beranda Daftar Coin - Satu aja list coin - Klik salah satu coin tampil sub menu coin tersebut di bawahnya terima kirim swap - Menu lainnya biasanya dApp masukan situs seperti pancakeswap dlsbg - PancakeSwap pancakeswap.finance - Uniswap uniswap.org - 1inch app.1inch.io - OpenSea opensea.io</div>
-            </div>
-            <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-              <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>Beranda - Daftar Coin</div><div style={{fontSize:7,color:"#64748b"}}>Satu aja list coin - Klik coin tampil terima kirim swap</div></div>
-              <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>dApp - PancakeSwap dlsbg</div><div style={{fontSize:7,color:"#64748b"}}>pancakeswap.finance - uniswap.org - 1inch - opensea</div></div>
-            </div>
-          </div>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 20px"}}><div style={{width:28,height:28,borderRadius:10,background:"#0f172a",display:"grid",placeItems:"center",fontSize:14}}>💎</div><div style={{fontSize:8,fontWeight:800}}>Beranda - Daftar Coin</div></div>
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 20px"}}><div style={{width:28,height:28,borderRadius:10,background:"#f8fafc",display:"grid",placeItems:"center",fontSize:14}}>🌐</div><div style={{fontSize:8}}>dApp - PancakeSwap dlsbg</div></div>
-          </div>
-          </div>
-        </div>
-      )}
+      
 <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:440,background:"#fff",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-around",padding:"8px 0 14px",zIndex:30}}>
         <button onClick={()=>setBottom("beranda")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🏠</div><div style={{fontSize:8,fontWeight:700}}>{tr.beranda}</div></button>
         <button onClick={()=>setBottom("riwayat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🧾</div><div style={{fontSize:8,fontWeight:700}}>{tr.input}</div></button>

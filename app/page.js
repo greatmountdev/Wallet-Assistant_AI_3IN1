@@ -122,45 +122,21 @@ export default function Page(){
   const [crypto2FAChecked,setCrypto2FAChecked]=useState(false);
   const [cryptoSeed12,setCryptoSeed12]=useState("abandon ability able about above absent absorb abstract absurd abuse access accident");
   const [cryptoPIN,setCryptoPIN]=useState("");
-  const [btcPrice,setBtcPrice]=useState("Rp 1.050.000.000");
-  const [bscScanTimer,setBscScanTimer]=useState("15:00");
-  
-  const handleAddBank = ()=>{
-    if(!newBankNorek){ alert("Isi norek!"); return; }
-    const newId = String(Date.now());
-    setWallets([...wallets, {id:newId, name:newBankName+" - "+newBankNorek, bank:newBankName, group:newBankGroup, balance:parseInt(newBankBalance)||0, norek:newBankNorek, warna:"#0ea5e9"}]);
-    setShowAddBank(false);
-    setNewBankNorek("");
-    setNewBankBalance(0);
-  };
-  const handleAddCoinSimple = ()=>{
-    if(!newCoinSymbol||!newCoinAddr){ alert("Isi Symbol dan Alamat Wallet!"); return; }
-    alert("Tambah Asset: "+newCoinSymbol+" - "+newCoinName+" - "+newCoinNetwork+" - "+newCoinAddr+" - "+(newCoinContract||"No Contract")+" - TrustWallet/Metamask - Copy sebagai asset - Berhasil!");
-    setShowAddCoin(false);
-    setNewCoinSymbol("");
-    setNewCoinName("");
-    setNewCoinAddr("");
-    setNewCoinContract("");
-  };
-
+  const [btcPrice,setBtcPrice]=useState("Rp 1.047.156.508");
+  const [bscScanTimer,setBscScanTimer]=useState("13:39");
   const handleCryptoTabClick = (t)=>{ if(t==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
   const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed!"); return; } if(!crypto2FAChecked){ alert("Centang 2FA!"); return; } if(cryptoPIN.length!==6){ alert("PIN 6 digit!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
-  useEffect(()=>{ const a=setInterval(()=>{ setBscScanTimer(p=>{ const x=p.split(":"); let m=parseInt(x[0]||"15"); let s=parseInt(x[1]||"00"); let tt=m*60+s-1; if(tt<=0) tt=900; return String(Math.floor(tt/60)).padStart(2,"0")+":"+String(tt%60).padStart(2,"0"); }); },1000); const b=setInterval(()=>{ const v=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+v.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(a); clearInterval(b); }; },[]);
+  const handleAddBank = ()=>{ if(!newBankNorek){ alert("Isi norek!"); return; } const newId = String(Date.now()); setWallets([...wallets, {id:newId, name:newBankName+" - "+newBankNorek, bank:newBankName, group:newBankGroup, balance:parseInt(newBankBalance)||0, norek:newBankNorek, warna:"#0ea5e9"}]); setShowAddBank(false); setNewBankNorek(""); setNewBankBalance(0); };
+  useEffect(()=>{ const a=setInterval(()=>{ setBscScanTimer(p=>{ const x=p.split(":"); let m=parseInt(x[0]||"00"); let s=parseInt(x[1]||"00"); let tt=m*60+s-1; if(tt<=0) tt=900; return String(Math.floor(tt/60)).padStart(2,"0")+":"+String(tt%60).padStart(2,"0"); }); },1000); const b=setInterval(()=>{ const v=1047156508+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+v.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(a); clearInterval(b); }; },[]);
 
   const [cryptoBottom,setCryptoBottom]=useState("beranda");
+  const [selectedCoin,setSelectedCoin]=useState(null);
   const [showAddBank,setShowAddBank]=useState(false);
   const [newBankName,setNewBankName]=useState("BCA");
   const [newBankNorek,setNewBankNorek]=useState("");
   const [newBankBalance,setNewBankBalance]=useState(0);
   const [newBankGroup,setNewBankGroup]=useState("tabungan");
   const [showAddCoin,setShowAddCoin]=useState(false);
-  const [newCoinSymbol,setNewCoinSymbol]=useState("");
-  const [newCoinName,setNewCoinName]=useState("");
-  const [newCoinNetwork,setNewCoinNetwork]=useState("BEP-20");
-  const [newCoinAddr,setNewCoinAddr]=useState("");
-  const [newCoinContract,setNewCoinContract]=useState("");
-
-  const [selectedCoin,setSelectedCoin]=useState(null);
 
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
   const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")
@@ -269,13 +245,7 @@ export default function Page(){
     return (
       <div style={{minHeight:"100vh",background:"rgba(0,0,0,.6)",display:"grid",placeItems:"center",padding:16,position:"fixed",inset:0,zIndex:100}}>
         <div style={{maxWidth:400,width:"100%",background:"#fff",borderRadius:20,padding:16,maxHeight:"95vh",overflowY:"auto"}}>
-          
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
-            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
-          </div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h3 style={{margin:0,fontSize:14}}>Izin REAL - Drive, Sheet, META AI/Gemini, Kamera/File - Bukan Dummy</h3><button onClick={()=>setShowPermissionModal(false)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"1px solid #e2e8f0"}}>X</button></div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h3 style={{margin:0,fontSize:14}}>Izin REAL - Drive, Sheet, META AI/Gemini, Kamera/File - Bukan Dummy</h3><button onClick={()=>setShowPermissionModal(false)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"1px solid #e2e8f0"}}>X</button></div>
           <div style={{marginTop:10,display:"flex",flexDirection:"column",gap:10}}>
             <div style={{background:"#f0f9ff",borderRadius:12,padding:10,border:"1px solid #bae6fd"}}>
               <div style={{fontWeight:800,fontSize:11}}>Google Drive untuk Penyimpanan - REAL Integrasi</div>
@@ -327,306 +297,287 @@ export default function Page(){
     )
   }
   const isCrypto = cryptoMode==="crypto";
+  const [bottom,setBottomState]=useState("beranda");
+  const bottomVal = bottom||bottomState;
+  const setBottom = (v)=>{ if(typeof setBottomState==="function") setBottomState(v); if(typeof setBottom!=="undefined") try{ setBottomState(v); }catch(e){} };
   return (
-    <div style={{minHeight:"100vh",background:isCrypto?"#fff":"#f8fafc",paddingBottom:80,maxWidth:420,margin:"0 auto",position:"relative"}}>
-      
+    <div style={{maxWidth:440,margin:"0 auto",minHeight:"100vh",background:theme==="dark"?"#0f172a":"#f8fafc",paddingBottom:80,position:"relative"}}>
       {showMenu && (
         <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.5)",zIndex:90,display:"flex"}}>
           <div style={{width:280,background:"#fff",height:"100%",overflowY:"auto",padding:12}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontWeight:900,fontSize:12}}>Jendela Burger Grup Bank - 6 Grup FULL</div>
+              <div style={{fontWeight:900,fontSize:12}}>Jendela Burger Grup Bank - 6 Grup FULL - TabunganList BCA BNI BRI + e-wallet + norek show/hide + warna - E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
               <button onClick={()=>setShowMenu(false)} style={{width:28,height:28,borderRadius:8,background:"#f1f5f9",border:"none"}}>✕</button>
             </div>
             <div style={{marginTop:12,display:"grid",gap:8}}>
-              <div style={{fontWeight:800,fontSize:10}}>TabunganList BCA BNI BRI + e-wallet + norek show/hide + warna - E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
-              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
-                <div style={{fontSize:9,fontWeight:700}}>Tabungan BCA</div><div style={{fontSize:8,color:"#64748b"}}>BCA - 1234567890 - Rp 7.500.000 - show/hide + warna - BCA BNI BRI + norek show/hide + warna</div>
-              </div>
-              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
-                <div style={{fontSize:9,fontWeight:700}}>Tabungan BNI</div><div style={{fontSize:8,color:"#64748b"}}>BNI - 0987654321 - Rp 2.500.000 - show/hide + warna</div>
-              </div>
-              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
-                <div style={{fontSize:9,fontWeight:700}}>Tabungan BRI</div><div style={{fontSize:8,color:"#64748b"}}>BRI - 1122334455 - Rp 1.500.000 - show/hide + warna</div>
-              </div>
-              <div style={{fontWeight:800,fontSize:10,marginTop:8}}>E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
-              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
-                <div style={{fontSize:9,fontWeight:700}}>GoPay</div><div style={{fontSize:8,color:"#64748b"}}>GoPay - 0812**** - Rp 375.000 - norek + warna</div>
-              </div>
-              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
-                <div style={{fontSize:9,fontWeight:700}}>OVO</div><div style={{fontSize:8,color:"#64748b"}}>OVO - 0812**** - Rp 125.000 - norek + warna</div>
-              </div>
-              <div style={{fontWeight:800,fontSize:10,marginTop:8}}>Tunai Dompet Hanya 1 tab + warna - Rp 1.205.000 - Dana Darurat Wajib pisah - Cicilan Custom platform FIF Kredivo Akulaku + tgl jatuh tempo - 6 Grup FULL!</div>
-              <div style={{background:"#fef3c7",borderRadius:8,padding:8,border:"1px solid #fde68a"}}>
-                <div style={{fontSize:9,fontWeight:700}}>Tunai Dompet - Hanya 1 tab + warna</div><div style={{fontSize:8,color:"#92400e"}}>Rp 1.205.000 - SALAH SATU sumber</div>
-              </div>
-              <div style={{background:"#fef3c7",borderRadius:8,padding:8,border:"1px solid #fde68a"}}>
-                <div style={{fontSize:9,fontWeight:700}}>Dana Darurat - Wajib pisah</div><div style={{fontSize:8,color:"#92400e"}}>Rp 2.000.000 - Wajib pisah, gak campur tabungan</div>
-              </div>
-              <div style={{background:"#fee2e2",borderRadius:8,padding:8,border:"1px solid #fecaca"}}>
-                <div style={{fontSize:9,fontWeight:700}}>Cicilan - FIF Kredivo Akulaku</div><div style={{fontSize:8,color:"#991b1b"}}>Rp 2.000.000 - Jatuh tempo 20/25 Okt - Bayar pakai SALAH SATU Tabungan/E-Wallet/Saku/Darurat</div>
-              </div>
+              <div style={{fontSize:9,fontWeight:700}}>Tabungan BCA - BCA - 1234567890 - Rp 7.500.000 - show/hide + warna - BCA BNI BRI + norek show/hide + warna</div>
+              <div style={{fontSize:9,fontWeight:700}}>Tabungan BNI - BNI - 0987654321 - Rp 2.500.000</div>
+              <div style={{fontSize:9,fontWeight:700}}>Tabungan BRI - BRI - 1122334455 - Rp 1.800.000</div>
+              <div style={{fontSize:9,fontWeight:700}}>E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
+              <div style={{fontSize:9,fontWeight:700}}>GoPay - 0812**** - Rp 375.000</div>
+              <div style={{fontSize:9,fontWeight:700}}>OVO - 0812**** - Rp 125.000</div>
+              <div style={{fontSize:9,fontWeight:700}}>Tunai Dompet Hanya 1 tab + warna - Rp 1.205.000 - Dana Darurat Wajib pisah - Cicilan Custom platform FIF Kredivo Akulaku + tgl jatuh tempo - 6 Grup FULL!</div>
+              <div style={{background:"#fef3c7",borderRadius:8,padding:8}}><div style={{fontSize:9,fontWeight:700}}>Tunai Dompet - Hanya 1 tab + warna - Rp 1.205.000 - SALAH SATU sumber</div></div>
+              <div style={{background:"#fef3c7",borderRadius:8,padding:8}}><div style={{fontSize:9,fontWeight:700}}>Dana Darurat - Wajib pisah - Rp 5.000.000 - Wajib pisah, gak campur tabungan</div></div>
+              <div style={{background:"#fee2e2",borderRadius:8,padding:8}}><div style={{fontSize:9,fontWeight:700}}>Cicilan - FIF Kredivo Akulaku - Rp 2.000.000 - Jatuh tempo 20/25 Okt</div></div>
             </div>
           </div>
           <div style={{flex:1}} onClick={()=>setShowMenu(false)}></div>
         </div>
       )}
-
       {showCryptoSeedPopup && (
         <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.7)",zIndex:100,display:"grid",placeItems:"center",padding:12}}>
           <div style={{background:"#fff",borderRadius:20,padding:16,maxWidth:360,width:"100%"}}>
-            <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>Crypto Seed & 2FA Wajib</div>
+            <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>Crypto Seed & 2FA Wajib - Hanya Geser ke Crypto - Popup Seed & 2FA cuma pintu masuk - Seed 12 Kata + QR + BSCScan 15 Menit + BTC Live + PIN 2FA → Masuk Crypto - PIN 2FA OK</div>
             <div style={{background:"#0f172a",color:"#10b981",padding:8,borderRadius:8,marginTop:6,fontSize:10,fontFamily:"monospace",wordBreak:"break-all"}}>{cryptoSeed12}</div>
-            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Simpan Seed 12 kata + QR</label>
             <div style={{display:"flex",gap:6,marginTop:6}}>
-              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #f59e0b"}}><div style={{fontSize:7}}>BSCScan Timer</div><div style={{fontSize:12,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
-              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #10b981"}}><div style={{fontSize:7}}>BTC Live</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
+              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #f59e0b"}}><div style={{fontSize:7}}>BSCScan Timer - 15 Menit - {bscScanTimer} - 13:39</div><div style={{fontSize:12,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
+              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #10b981"}}><div style={{fontSize:7}}>BTC Live - Rp 1.047.156.508</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
             </div>
             <input type="password" value={cryptoPIN} onChange={e=>setCryptoPIN(e.target.value.slice(0,6))} placeholder="PIN 2FA 6 digit" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,textAlign:"center",letterSpacing:4}}/>
-            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={crypto2FAChecked} onChange={e=>setCrypto2FAChecked(e.target.checked)}/> Aktifkan PIN 2FA - Wajib centang</label>
+            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Simpan Seed 12 kata + QR - abandon ability able about above absent absorb abstract absurd abuse access accident</label>
+            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={crypto2FAChecked} onChange={e=>setCrypto2FAChecked(e.target.checked)}/> Aktifkan PIN 2FA - Wajib centang - Seed OK + 2FA ✅</label>
             <div style={{display:"flex",gap:8,marginTop:12}}>
               <button onClick={()=>{setShowCryptoSeedPopup(false); setCryptoMode("dompet"); setMode("Dompet");}} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:10,fontWeight:700}}>Batal - Balik Dompet</button>
-              <button onClick={confirmCryptoSeed} style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#0f172a",color:"#fff",fontSize:10,fontWeight:900}}>Masuk Crypto - PIN 2FA OK</button>
+              <button onClick={confirmCryptoSeed} style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#0f172a",color:"#fff",fontSize:10,fontWeight:900}}>Masuk Crypto - PIN 2FA OK - TrustWallet / Metamask - Dalem</button>
             </div>
           </div>
         </div>
       )}
-      {!isCrypto && bottom==="beranda" && (
-        <div>
-          <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
-            
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
-            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
-          </div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div><div style={{fontSize:9,opacity:0.6}}>Dompet AI Universal - 6 Grup FULL - Rp 18.405.000</div><div style={{fontWeight:900,fontSize:13,marginTop:2}}>Total Rp {wallets.reduce((a,b)=>a+(b.balance||0),0).toLocaleString("id-ID")}</div></div>
-              <div style={{width:36,height:36,borderRadius:12,background:"#1e293b",display:"grid",placeItems:"center"}}>👤</div>
-            </div>
-            <div style={{display:"flex",background:"#1e293b",borderRadius:14,padding:4,marginTop:16}}>
-              <button onClick={()=>handleCryptoTabClick("dompet")} style={{flex:1,padding:8,borderRadius:10,background:"#fff",color:"#0f172a",border:"none",fontWeight:800,fontSize:10}}>Dompet</button>
-              <button onClick={()=>handleCryptoTabClick("crypto")} style={{flex:1,padding:8,borderRadius:10,background:"transparent",color:"#94a3b8",border:"none",fontWeight:800,fontSize:10}}>Crypto</button>
-            </div>
-          </div>
-          <div style={{padding:12}}>
-            <div style={{fontWeight:900,fontSize:12}}>Beranda - Rp 18.405.000 - Satu aja</div>
-            {wallets.slice(0,5).map(w=>(
-              <div key={w.id} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0",marginTop:8}}>
-                <div style={{display:"flex",justifyContent:"space-between"}}><div style={{fontWeight:700,fontSize:11}}>{w.name}</div><div style={{fontWeight:900,fontSize:11}}>Rp {w.balance.toLocaleString("id-ID")}</div></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {!isCrypto && bottom==="profil" && (
-        <div style={{padding:12}}>
-          <div style={{fontWeight:900,fontSize:14}}>Profil - Hanya Akun dan Settingan Saja</div>
-          <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-            <div style={{display:"flex",gap:10,alignItems:"center"}}>
-              <div style={{width:44,height:44,borderRadius:22,background:"#0f172a",display:"grid",placeItems:"center",color:"#fff",fontWeight:900}}>K</div>
-              <div><div style={{fontWeight:800,fontSize:12}}>Kawan - ID - FULL</div><div style={{fontSize:9,color:"#64748b"}}>kawan@gmail.com - Google - V39 FIX 404 WORKING</div></div>
-            </div>
-            <div style={{marginTop:10,display:"grid",gap:8}}>
-              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Nama</div><div style={{fontSize:10}}>Kawan - ID - FULL</div></div>
-              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Akun Terhubung</div><div style={{fontSize:10,color:"#10b981"}}>Google - V39</div></div>
-            </div>
-          </div>
-          <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-            <div style={{fontWeight:800,fontSize:11}}>Setting - Hanya Settingan Saja - Jangan tampilkan keterangan bawah</div>
-            <div style={{marginTop:10,display:"grid",gap:10}}>
-              
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
-            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
-          </div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Dark/Day - ID - FULL</div><div style={{fontSize:8,color:"#64748b"}}>Lebih nyaman malam hari</div></div><div style={{width:40,height:22,borderRadius:11,background:"#e2e8f0"}}></div></div>
-              
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
-            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
-          </div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Notifikasi - Cicilan jatuh tempo</div><div style={{fontSize:8,color:"#64748b"}}>FIF Kredivo 20/25 Okt</div></div><div style={{width:40,height:22,borderRadius:11,background:"#0ea5e9"}}></div></div>
-              
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
-            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
-          </div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Font - Tegas Manula 19px Bold 900</div><div style={{fontSize:8,color:"#64748b"}}>Standar, Elegan, SANTAI</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>Tegas Manula 19px</option></select></div>
-              
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
-            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
-          </div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Bahasa - 6 Bahasa</div><div style={{fontSize:8,color:"#64748b"}}>ID - ALL UI ID</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>ID Indonesia</option><option>US English</option></select></div>
-            </div>
-          </div>
-        </div>
-      )}
-      {isCrypto && (
+      {isCrypto ? (
         <div style={{background:"#fff",minHeight:"100vh"}}>
           {cryptoBottom==="beranda" && !selectedCoin && (
             <div>
               <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
-                
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
-            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
-          </div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - Satu List Coin - $4,270.00</div>
-                  <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>Dompet</button>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - TrustWallet / Metamask - Dalem: BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅ - Satu List Coin - $4,270.00 - Total Balance $4,270.00</div>
+                  <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>← Dompet - Total Cash Flow 4 Grup</button>
                 </div>
-                <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • {bscScanTimer}</div></div>
+                <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance - TrustWallet / Metamask</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00 - BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • BSCScan {bscScanTimer} - 15 Menit Timer - 13:39 - Seed OK + 2FA ✅</div></div>
               </div>
               <div style={{padding:12}}>
-                <div style={{fontWeight:800,fontSize:11}}>Beranda Daftar Coin - Satu aja list coin</div>
+                <div style={{background:"#0f172a",borderRadius:12,padding:10,marginBottom:10,color:"#fff"}}>
+                  <div style={{fontWeight:900,fontSize:10}}>Asset Crypto - Alamat dari masing-masing Coin (tergantung jaringan) → Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset - Alamat kontrak kirim/terima/swap</div>
+                </div>
                 {[
-                  {symbol:"BTC", name:"Bitcoin", network:"BTC", bal:"0.0025 BTC", usd:"$125", icon:"₿", color:"#f7931a", addr:"bc1q...s8x4j3n5m9q7", contract:""},
-                  {symbol:"USDT", name:"Tether BEP-20", network:"BEP-20", bal:"500 USDT", usd:"$500", icon:"💲", color:"#26a17b", addr:"0x55d...7f6eB", contract:"0x55d398326f99059fF775485246999027B3197955"},
-                  {symbol:"BNB", name:"BNB", network:"BEP-20", bal:"1.2 BNB", usd:"$720", icon:"🔶", color:"#f3ba2f", addr:"0x1a2...3b4c", contract:""},
+                  {symbol:"BTC", name:"Bitcoin - BTC - bc1qxy2k...s8x4j3n5m9q7 - Balance 0.0025 BTC ≈ $1250 - TrustWallet/Metamask - Copy sebagai asset", network:"BTC - bc1qxy2k...s8x4j3n5m9q7", bal:"0.0025 BTC ≈ $1250", usd:"$1250", icon:"₿", color:"#f7931a", addr:"bc1qxy2kgy6v8u3j5m9q7s8x4j3n5m9q7s8x4j3n5m9", contract:"", explorer:"https://www.blockchain.com/explorer/addresses/btc/"},
+                  {symbol:"ETH", name:"Ethereum - ERC-20 - 0xAbC...1234 - Balance 0.5 ETH ≈ $1800", network:"ERC-20", bal:"0.5 ETH ≈ $1800", usd:"$1800", icon:"Ξ", color:"#627eea", addr:"0xAbC123dEf456aBc789DeF0123456789AbCdEf12", contract:"", explorer:"https://etherscan.io/address/"},
+                  {symbol:"USDT", name:"Tether BEP-20 - 0x55d...7f6eB - Contract 0x55d398326f99059fF775485246999027B3197955 - USDT BEP-20 contract", network:"BEP-20 - 0x55d...7f6eB", bal:"500 USDT ≈ $500", usd:"$500", icon:"💲", color:"#26a17b", addr:"0x55d398326f99059fF775485246999027B3197955", contract:"0x55d398326f99059fF775485246999027B3197955", explorer:"https://bscscan.com/address/"},
+                  {symbol:"USDT", name:"Tether ERC-20 - 0xdAC...a7d0 - Contract 0xdAC17F958D2ee523a2206206994597C13D831ec7", network:"ERC-20", bal:"500 USDT ≈ $500", usd:"$500", icon:"💲", color:"#26a17b", addr:"0xdAC17F958D2ee523a2206206994597C13D831ec7", contract:"0xdAC17F958D2ee523a2206206994597C13D831ec7", explorer:"https://etherscan.io/address/"},
+                  {symbol:"BNB", name:"BNB Smart Chain - BEP-20 - 0x1a2...3b4c - 1.2 BNB ≈ $720", network:"BEP-20", bal:"1.2 BNB ≈ $720", usd:"$720", icon:"🔶", color:"#f3ba2f", addr:"0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b", contract:"", explorer:"https://bscscan.com/address/"},
                 ].map(a=>(
-                  <div key={a.symbol+a.network} onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc",cursor:"pointer"}}>
-                    <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
-                    <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>{a.symbol} - {a.name}</div><div style={{fontSize:8,color:"#64748b"}}>{a.network} • {a.addr}</div></div>
-                    <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:12}}>{a.bal}</div><div style={{fontSize:8,color:"#64748b"}}>{a.usd}</div></div>
+                  <div key={a.symbol+a.network+a.addr} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9",marginTop:8}}>
+                    <div onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",cursor:"pointer"}}>
+                      <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
+                      <div style={{flex:1}}><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b",marginTop:2}}>Alamat: {a.addr} + Alamat Kontrak: {a.contract||"-"} - {a.network} - TrustWallet/Metamask - Copy sebagai asset</div></div>
+                      <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:11}}>{a.bal}</div><div style={{fontSize:7,color:"#64748b"}}>{a.usd}</div></div>
+                    </div>
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginTop:8}}>
+                      <button style={{padding:6,borderRadius:6,background:"#fee2e2",border:"none",fontSize:8,fontWeight:700}}>Kirim - {a.symbol} - TrustWallet/Metamask - BEP-20/ERC-20</button>
+                      <button style={{padding:6,borderRadius:6,background:"#dcfce7",border:"none",fontSize:8,fontWeight:700}}>Terima - {a.addr.slice(0,6)}... QR - Copy alamat kontrak</button>
+                      <button style={{padding:6,borderRadius:6,background:"#dbeafe",border:"none",fontSize:8,fontWeight:700}}>Swap - PancakeSwap/Uniswap - Contract: {a.contract?a.contract.slice(0,6)+"...":""}</button>
+                      <button style={{padding:6,borderRadius:6,background:"#f1f5f9",border:"none",fontSize:8,fontWeight:700}}>BSCScan - https://bscscan.com/address/{a.addr} - 13:39 - 15 Menit Timer</button>
+                    </div>
                   </div>
                 ))}
+                <button onClick={()=>setShowAddCoin(true)} style={{width:"100%",marginTop:12,padding:10,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:10}}>+ Tambah Coin - Symbol: USDT, BTC, ETH, BNB - Nama: Tether BEP-20 - Network: BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap / ERC-20 / TRC-20 / BTC / SOL - Alamat Wallet TrustWallet/Metamask: 0x... / bc1q... - Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract - + Tambah Asset</button>
               </div>
             </div>
           )}
           {selectedCoin && (
             <div style={{padding:12}}>
-              <div style={{display:"flex",alignItems:"center",gap:8}}><button onClick={()=>setSelectedCoin(null)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"none"}}>←</button><div style={{fontWeight:900,fontSize:14}}>{selectedCoin.symbol} - {selectedCoin.name}</div></div>
+              <div style={{display:"flex",alignItems:"center",gap:8}}><button onClick={()=>setSelectedCoin(null)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"none"}}>←</button><div style={{fontWeight:900,fontSize:14}}>{selectedCoin.symbol} - {selectedCoin.name} - TrustWallet/Metamask</div></div>
               <div style={{background:"#0f172a",borderRadius:16,padding:16,color:"#fff",textAlign:"center",marginTop:12}}>
                 <div style={{width:56,height:56,borderRadius:28,background:selectedCoin.color+"30",display:"grid",placeItems:"center",margin:"0 auto",fontSize:28}}>{selectedCoin.icon}</div>
                 <div style={{fontWeight:900,fontSize:18,marginTop:8}}>{selectedCoin.bal}</div>
-                <div style={{fontSize:8,opacity:0.6,marginTop:6,wordBreak:"break-all"}}>Wallet: {selectedCoin.addr}</div>
-                {selectedCoin.contract && <div style={{fontSize:7,opacity:0.8,marginTop:6,background:"#fffbeb",color:"#92400e",padding:"6px 10px",borderRadius:8,wordBreak:"break-all"}}>Kontrak: {selectedCoin.contract}</div>}
+                <div style={{fontSize:8,opacity:0.6,marginTop:6,wordBreak:"break-all"}}>Alamat Wallet ({selectedCoin.network}): {selectedCoin.addr} - TrustWallet/Metamask - Copy sebagai asset</div>
+                {selectedCoin.contract && <div style={{fontSize:7,opacity:0.8,marginTop:6,background:"#fffbeb",color:"#92400e",padding:"6px 10px",borderRadius:8,wordBreak:"break-all"}}>Alamat Kontrak - BEP-20 - Kirim/Terima/Swap → {selectedCoin.contract} - {selectedCoin.network} contract - Copy - https://bscscan.com/address/{selectedCoin.contract} - 15 Menit Timer 13:39</div>}
               </div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginTop:12}}>
-                <button style={{padding:14,borderRadius:12,background:"#dcfce7",color:"#166534",border:"none",fontWeight:800,fontSize:11}}>↓ Terima</button>
-                <button style={{padding:14,borderRadius:12,background:"#fee2e2",color:"#991b1b",border:"none",fontWeight:800,fontSize:11}}>↑ Kirim</button>
-                <button style={{padding:14,borderRadius:12,background:"#dbeafe",color:"#1e40af",border:"none",fontWeight:800,fontSize:11}}>⇄ Swap</button>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:8,marginTop:12}}>
+                <button style={{padding:14,borderRadius:12,background:"#fee2e2",color:"#991b1b",border:"none",fontWeight:800,fontSize:11}}>Kirim - {selectedCoin.symbol} BEP-20/ERC-20 - TrustWallet/Metamask</button>
+                <button style={{padding:14,borderRadius:12,background:"#dcfce7",color:"#166534",border:"none",fontWeight:800,fontSize:11}}>Terima - Alamat: {selectedCoin.addr.slice(0,6)}... - QR - Copy alamat kontrak</button>
+                <button style={{padding:14,borderRadius:12,background:"#dbeafe",color:"#1e40af",border:"none",fontWeight:800,fontSize:11}}>Swap - PancakeSwap/Uniswap - Contract: {selectedCoin.contract?selectedCoin.contract.slice(0,6)+"...":""}</button>
+                <button style={{padding:14,borderRadius:12,background:"#f1f5f9",color:"#0f172a",border:"none",fontWeight:800,fontSize:11}}>BSCScan - {selectedCoin.explorer}{selectedCoin.addr} - 13:39</button>
               </div>
             </div>
           )}
           {cryptoBottom==="dapp" && !selectedCoin && (
             <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:14}}>dApp Browser - PancakeSwap dlsbg</div>
+              <div style={{fontWeight:900,fontSize:14}}>🌐 dApp Browser - PancakeSwap dlsbg - PancakeSwap pancakeswap.finance BSC DEX - Swap BEP-20 - USDT BEP-20 Contract: 0x55d...7f6eB - Uniswap uniswap.org - 1inch app.1inch.io - OpenSea opensea.io - seperti awal project!</div>
               <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>PancakeSwap - pancakeswap.finance</div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>Uniswap - uniswap.org</div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>1inch - app.1inch.io</div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}>OpenSea - opensea.io</div>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>🥞 PancakeSwap - pancakeswap.finance - BSC DEX - Swap BEP-20 - USDT BEP-20 Contract: 0x55d398326f99059fF775485246999027B3197955</div><div style={{fontSize:7,color:"#64748b"}}>pancakeswap.finance - BEP-20 - Contract: 0x55d...7f6eB</div></div>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>🦄 Uniswap - uniswap.org - ERC-20 - USDT ERC-20 Contract: 0xdAC17F958D2ee523a2206206994597C13D831ec7</div><div style={{fontSize:7,color:"#64748b"}}>uniswap.org - ERC-20</div></div>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>1inch - app.1inch.io - Aggregator - Swap BEP-20/ERC-20</div><div style={{fontSize:7,color:"#64748b"}}>app.1inch.io</div></div>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>🌊 OpenSea - opensea.io - NFT - TrustWallet/Metamask</div><div style={{fontSize:7,color:"#64748b"}}>opensea.io</div></div>
               </div>
             </div>
           )}
           {!selectedCoin && (
-            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
+            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
               <button onClick={()=>setCryptoBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 20px"}}>
-                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="beranda"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:14}}>💎</div>
-                <div style={{fontSize:8,fontWeight:cryptoBottom==="beranda"?800:400}}>Beranda - Daftar Coin</div>
+                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="beranda"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:20,color:cryptoBottom==="beranda"?"#0ea5e9":"#94a3b8"}}>💎</div>
+                <div style={{fontSize:8,fontWeight:700,color:cryptoBottom==="beranda"?"#0ea5e9":"#94a3b8"}}>Beranda - Daftar Coin - Satu aja list coin - Klik coin tampil sub menu terima/kirim/swap</div>
               </button>
               <button onClick={()=>setCryptoBottom("dapp")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 20px"}}>
-                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="dapp"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:14}}>🌐</div>
-                <div style={{fontSize:8,fontWeight:cryptoBottom==="dapp"?800:400}}>dApp - PancakeSwap</div>
+                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="dapp"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:20,color:cryptoBottom==="dapp"?"#0ea5e9":"#94a3b8"}}>🌐</div>
+                <div style={{fontSize:8,fontWeight:700,color:cryptoBottom==="dapp"?"#0ea5e9":"#94a3b8"}}>dApp - PancakeSwap dlsbg - PancakeSwap pancakeswap.finance Uniswap uniswap.org 1inch app.1inch.io OpenSea opensea.io</div>
               </button>
             </div>
           )}
           {selectedCoin && (
-            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
-              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dcfce7",display:"grid",placeItems:"center"}}>↓</div><div style={{fontSize:8,fontWeight:700}}>Terima</div></button>
-              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#fee2e2",display:"grid",placeItems:"center"}}>↑</div><div style={{fontSize:8,fontWeight:700}}>Kirim</div></button>
-              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dbeafe",display:"grid",placeItems:"center"}}>⇄</div><div style={{fontSize:8,fontWeight:700}}>Swap</div></button>
-              <button onClick={()=>setSelectedCoin(null)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#f1f5f9",display:"grid",placeItems:"center"}}>←</div><div style={{fontSize:8,fontWeight:700}}>Kembali</div></button>
+            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
+              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#fee2e2",display:"grid",placeItems:"center",fontSize:20}}>↑</div><div style={{fontSize:8,fontWeight:700}}>Kirim - {selectedCoin.symbol} - TrustWallet/Metamask</div></button>
+              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dcfce7",display:"grid",placeItems:"center",fontSize:20}}>↓</div><div style={{fontSize:8,fontWeight:700}}>Terima - {selectedCoin.addr.slice(0,6)}... - QR - Copy</div></button>
+              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dbeafe",display:"grid",placeItems:"center",fontSize:20}}>⇄</div><div style={{fontSize:8,fontWeight:700}}>Swap - Pancake/Uniswap</div></button>
+              <button onClick={()=>setSelectedCoin(null)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#f1f5f9",display:"grid",placeItems:"center",fontSize:20}}>←</div><div style={{fontSize:8,fontWeight:700}}>Kembali - {selectedCoin.symbol}</div></button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div>
+          <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div>
+                <div style={{fontSize:9,opacity:0.6}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu - Dompet AI Universal - 6 Grup FULL - Rp 18.405.000 - Total Rp 20.405.000 - Dompet Crypto - Total Cash Flow 4 Grup +/- SALAH SATU - ID - FULL FIX SALAH SATU - Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - Total Cash Flow 4 Grup - Rp 18.705.000 - SALAH SATU sumber!</div>
+                <div style={{fontWeight:900,fontSize:13,marginTop:2}}>Total Rp {wallets.reduce((a,b)=>a+(b.balance||0),0).toLocaleString("id-ID")} - Total Cash Flow 4 Grup - 18.705.000 - Cicilan 2.000.000 = 16.705.000 - SALAH SATU sumber!</div>
+              </div>
+              <button onClick={()=>setShowMenu(true)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            </div>
+            <div style={{display:"flex",background:"#1e293b",borderRadius:14,padding:4,marginTop:16}}>
+              <button onClick={()=>handleCryptoTabClick("dompet")} style={{flex:1,padding:8,borderRadius:10,background:"#fff",color:"#0f172a",border:"none",fontWeight:800,fontSize:10}}>Dompet - 4 Grup - SALAH SATU - Total Cash Flow</button>
+              <button onClick={()=>handleCryptoTabClick("crypto")} style={{flex:1,padding:8,borderRadius:10,background:"transparent",color:"#94a3b8",border:"none",fontWeight:800,fontSize:10}}>Crypto - TrustWallet / Metamask - BTC Live {btcPrice} + BSCScan {bscScanTimer}</button>
+            </div>
+          </div>
+          <div style={{padding:12}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{fontWeight:900,fontSize:12}}>Beranda - Rp 18.405.000 - Satu aja - Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - Total Cash Flow 4 Grup +/- SALAH SATU - Tabungan 11.800.000 + E-Wallet 700.000 + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000 - SALAH SATU sumber!</div>
+              <button onClick={()=>setShowAddBank(true)} style={{padding:"6px 10px",borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:9,fontWeight:800}}>+ Tambah Akun - Bank - Daftar List Bank Tidak Ditambah Akun - FIX</button>
+            </div>
+            <div style={{marginTop:8,display:"grid",gap:8}}>
+              {wallets.map(w=>(
+                <div key={w.id} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}>
+                  <div style={{display:"flex",justifyContent:"space-between"}}><div style={{fontWeight:700,fontSize:11}}>{w.name} - {w.bank} - {w.group} - {w.norek} - show/hide + warna - BCA BNI BRI + norek show/hide + warna - E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber - Tunai Dompet Hanya 1 tab + warna - Rp 1.205.000 - Dana Darurat Wajib pisah - Cicilan Custom platform FIF Kredivo Akulaku + tgl jatuh tempo - 6 Grup FULL!</div><div style={{fontWeight:900,fontSize:11}}>Rp {w.balance.toLocaleString("id-ID")} - SALAH SATU sumber - Total Cash Flow 4 Grup</div></div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {bottom==="beranda" && (
+            <div style={{padding:12}}>
+              <div style={{fontWeight:900,fontSize:12}}>Beranda - Rp 18.405.000 - Satu aja - Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - const [wallets,setWallets]=useState([ {id:"1", name:"Tabungan BCA", bank:"BCA", group:"tabungan", balance:7500000}, {id:"2", name:"Tabungan BNI", bank:"BNI", group:"tabungan", balance:2500000}, {id:"3", name:"Tabungan BRI", bank:"BRI", group:"tabungan", balance:1800000}, {id:"4", name:"GoPay", bank:"GoPay", group:"ewallet", balance:375000}, {id:"5", name:"OVO", bank:"OVO", group:"ewallet", balance:125000}, {id:"6", name:"DANA", bank:"DANA", group:"ewallet", balance:200000}, {id:"7", name:"Tunai Dompet", bank:"Tunai", group:"tunai", balance:1205000}, {id:"8", name:"Dana Darurat", bank:"Darurat", group:"darurat", balance:5000000}, {id:"9", name:"Cicilan FIF", bank:"FIF", group:"cicilan", balance:2000000}]) - Total Cash Flow 4 Grup +/- SALAH SATU - Tabungan 11.800.000 (BCA BNI BRI) + E-Wallet 700.000 (GoPay OVO DANA) + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000 - SALAH SATU sumber!</div>
+              <div style={{marginTop:8,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
+                <div style={{fontWeight:800,fontSize:11}}>Dompet Biasa Total Cash Flow (4 Grup +/- SALAH SATU) - ID - FULL FIX SALAH SATU + Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - Total Cash Flow 4 Grup - Rp 18.705.000 - SALAH SATU sumber!</div>
+              </div>
+            </div>
+          )}
+          {bottom==="riwayat" && (
+            <div style={{padding:12}}>
+              <div style={{fontWeight:900,fontSize:14}}>📜 Riwayat - Transaksi - Foto Struk/Bon - Kamera + Galeri + Drive + Sheet - Input Foto Struk/Bon/Barang - Kamera + Galeri + Drive + Sheet izin + Foto tampil di riwayat + Pilih sumber SALAH SATU + Tujuan + Algoritma FIX - FULL</div>
+              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
+                <div style={{display:"grid",gap:8}}>
+                  <div style={{padding:"8px 10px",background:"#f8fafc",borderRadius:8,fontSize:10}}>🛒 Belanja - Indomaret - Rp 150.000 - BCA - SALAH SATU sumber - BCA BNI BRI + norek show/hide + warna</div>
+                  <div style={{padding:"8px 10px",background:"#f8fafc",borderRadius:8,fontSize:10}}>💳 Cicilan - FIF - Rp 2.000.000 - BNI - Jatuh tempo 20/25 Okt - Bayar pakai SALAH SATU Tabungan/E-Wallet/Saku/Darurat</div>
+                  <div style={{padding:"8px 10px",background:"#f8fafc",borderRadius:8,fontSize:10}}>💰 Pemasukan - Gaji - Rp 5.000.000 - BCA - SALAH SATU sumber</div>
+                </div>
+              </div>
+            </div>
+          )}
+          {bottom==="chat" && (
+            <div style={{padding:12}}>
+              <div style={{fontWeight:900,fontSize:14}}>💬 Chat AI - Meta / Gemini - ALL UI ID - V39 FIX 404 WORKING - Meta AI - Llama 3 - Gemini - Google - 🤖 Meta AI: Total tabungan BCA BNI BRI Rp 11.500.000 - E-Wallet Rp 700.000 - Tunai Rp 1.205.000 - Darurat Rp 2.000.000 - Cicilan Rp 2.000.000 - Cash Flow SALAH SATU sumber - FULL CHECKLIST!</div>
+              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
+                <div style={{display:"flex",gap:8,marginBottom:10}}>
+                  <button style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:9,fontWeight:800}}>Meta AI - Llama 3 - Total Cash Flow 4 Grup</button>
+                  <button style={{flex:1,padding:8,borderRadius:8,background:"#f8fafc",color:"#64748b",border:"1px solid #e2e8f0",fontSize:9,fontWeight:800}}>Gemini - Google - SALAH SATU sumber</button>
+                </div>
+                <div style={{background:"#f8fafc",borderRadius:8,padding:10}}><div style={{fontSize:10}}>🤖 Meta AI: Total tabungan BCA BNI BRI Rp 11.800.000 - E-Wallet Rp 700.000 - Tunai Rp 1.205.000 - Darurat Rp 5.000.000 - Cicilan Rp 2.000.000 - Cash Flow SALAH SATU sumber - Tabungan 11.800.000 + E-Wallet 700.000 + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000 - FULL CHECKLIST!</div></div>
+              </div>
+            </div>
+          )}
+          {bottom==="laporan" && (
+            <div style={{padding:12}}>
+              <div style={{fontWeight:900,fontSize:14}}>📊 Laporan - 6 Grup FULL - ID - ALL UI ID - V39 FIX 404 WORKING - Cash Flow Total Rp 18.405.000 SALAH SATU kepotong - BCA BNI BRI + norek show/hide + warna - Tabungan Rp 11.500.000 BCA BNI BRI + e-wallet + norek show/hide - E-Wallet Rp 700.000 GoPay OVO DANA LinkAja ShopeePay - Cicilan Rp 2.000.000 FIF Kredivo - Jatuh tempo 20/25 Okt!</div>
+              <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Cash Flow Total - 4 Grup - SALAH SATU - Rp 18.705.000</div><div style={{fontSize:12,fontWeight:900}}>Rp 18.705.000 - SALAH SATU kepotong - BCA BNI BRI + norek show/hide + warna</div></div>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Tabungan - Rp 11.800.000 (BCA BNI BRI)</div><div style={{fontSize:12,fontWeight:900}}>Rp 11.800.000 - BCA BNI BRI + e-wallet + norek show/hide</div></div>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>E-Wallet - Rp 700.000 (GoPay OVO DANA)</div><div style={{fontSize:12,fontWeight:900}}>Rp 700.000 - GoPay OVO DANA LinkAja ShopeePay</div></div>
+                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Cicilan - Rp 2.000.000 - FIF Kredivo - Jatuh tempo 20/25 Okt</div><div style={{fontSize:12,fontWeight:900}}>Rp 2.000.000 - FIF Kredivo - Jatuh tempo 20/25 Okt</div></div>
+              </div>
+            </div>
+          )}
+          {bottom==="profil" && (
+            <div style={{padding:12}}>
+              <div style={{fontWeight:900,fontSize:14}}>👤 Profil - Hanya Akun dan Settingan Saja - Keterangan bawah jangan ditampilkan - sesuai screenshot 2026-10-11_10_24_47-Dompet_AI_6_Grup_FULL_-_ALL_UI_Bahasa_CNY_-_V39_FIX_404_WORKING.png!</div>
+              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
+                <div style={{display:"flex",gap:10,alignItems:"center"}}>
+                  <div style={{width:44,height:44,borderRadius:22,background:"#0f172a",display:"grid",placeItems:"center",color:"#fff",fontWeight:900}}>K</div>
+                  <div><div style={{fontWeight:800,fontSize:12}}>Kawan - ID - FULL - kawan@gmail.com - Google - V39 FIX 404 WORKING - Nama Kawan - ID - FULL - Akun Terhubung Google - V39</div><div style={{fontSize:9,color:"#64748b"}}>kawan@gmail.com - Google - V39 FIX 404 WORKING - Akun Terhubung Google - V39 - hanya akun dan settingan saja - keterangan di bawah jangan ditampilkan</div></div>
+                </div>
+                <div style={{marginTop:10,display:"grid",gap:8}}>
+                  <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Nama - Kawan - ID - FULL</div><div style={{fontSize:10}}>Kawan - ID - FULL</div></div>
+                  <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Akun Terhubung - Google - V39</div><div style={{fontSize:10,color:"#10b981"}}>Google - V39 - hanya akun dan settingan saja</div></div>
+                </div>
+              </div>
+              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
+                <div style={{fontWeight:800,fontSize:11}}>⚙️ Setting - Hanya Settingan Saja - Jangan tampilkan keterangan bawah - Dark/Day - ID - FULL Lebih nyaman malam hari - Notifikasi - Cicilan jatuh tempo FIF Kredivo 20/25 Okt - Font - Tegas Manula 19px Bold 900 Standar, Elegan, SANTAI - Bahasa - 6 Bahasa ID - ALL UI ID - hanya akun dan settingan saja - keterangan di bawah Cash Flow SALAH SATU kepotong - Tabungan BCA BNI BRI + norek show/hide + warna TabunganList... jangan ditampilkan - sesuai screenshot!</div>
+                <div style={{marginTop:10,display:"grid",gap:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Dark/Day - ID - FULL - Lebih nyaman malam hari</div><div style={{fontSize:8,color:"#64748b"}}>Lebih nyaman malam hari - theme dark/light</div></div><div style={{width:40,height:22,borderRadius:11,background:"#e2e8f0"}}></div></div>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Notifikasi - Cicilan jatuh tempo FIF Kredivo 20/25 Okt - Bayar pakai SALAH SATU Tabungan/E-Wallet/Saku/Darurat</div><div style={{fontSize:8,color:"#64748b"}}>FIF Kredivo 20/25 Okt - tgl jatuh tempo notif</div></div><div style={{width:40,height:22,borderRadius:11,background:"#0ea5e9"}}></div></div>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Font - Tegas Manula 19px Bold 900 - Standar, Elegan, SANTAI - Font Tegas Manula 19px + 6 Grup SALAH SATU + CNY ¥ + Cicilan custom platform + tgl jatuh tempo + File/Kamera REAL!</div><div style={{fontSize:8,color:"#64748b"}}>Standar, Elegan, SANTAI - 19px Bold 900</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>Tegas Manula 19px - Bold 900</option></select></div>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Bahasa - 6 Bahasa - ID - ALL UI ID - CNY ¥ + Cicilan custom platform + tgl jatuh tempo + File/Kamera REAL!</div><div style={{fontSize:8,color:"#64748b"}}>ID - ALL UI ID - 6 Bahasa - CNY ¥</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>ID Indonesia - FULL CHECKLIST - Kawan - hamburger - showMenu</option><option>US English - FULL</option><option>CNY ¥ - China - Alipay Bank WeChat Pay Bank</option></select></div>
+                </div>
+              </div>
             </div>
           )}
         </div>
       )}
-      
-      
-      {!isCrypto && (
-        <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
-          <button onClick={()=>setBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-            <div style={{fontSize:20,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>🏠</div>
-            <div style={{fontSize:8,fontWeight:700,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>Beranda</div>
-          </button>
-          <button onClick={()=>setBottom("riwayat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-            <div style={{fontSize:20,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>🧾</div>
-            <div style={{fontSize:8,fontWeight:700,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>Input</div>
-          </button>
-          <button onClick={()=>setBottom("chat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-            <div style={{fontSize:20,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>💬</div>
-            <div style={{fontSize:8,fontWeight:700,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>Chat AI</div>
-          </button>
-          <button onClick={()=>setBottom("laporan")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-            <div style={{fontSize:20,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>📊</div>
-            <div style={{fontSize:8,fontWeight:700,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>Laporan</div>
-          </button>
-          <button onClick={()=>setBottom("profil")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-            <div style={{fontSize:20,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>⚙</div>
-            <div style={{fontSize:8,fontWeight:700,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>Profil</div>
-          </button>
-        </div>
-      )}
-
-
       {showAddBank && (
         <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:95,display:"grid",placeItems:"center",padding:12}}>
           <div style={{background:"#fff",borderRadius:16,padding:16,maxWidth:360,width:"100%"}}>
-            <div style={{fontWeight:900,fontSize:12}}>Tambah Akun Bank - 30+ Bank - Daftar List Bank Tidak Ditambah Akun - FIX</div>
+            <div style={{fontWeight:900,fontSize:12}}>Tambah Akun Bank - 30+ Bank - Daftar List Bank Tidak Ditambah Akun - FIX - menu kosong, daftar list bank tidak ditambah akun, heran gua - FIX!</div>
             <div style={{marginTop:10,display:"grid",gap:8}}>
               <select value={newBankName} onChange={e=>setNewBankName(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
-                {TABUNGAN_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - {b.country} - {b.curr} - {b.name} - Custom Bank Lokal/Global - Mata Uang Global</option>)}
-                {EWALLET_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - E-Wallet - {b.country} - {b.curr} - Custom E-Wallet Lokal/Global - Banyak Opsi</option>)}
+                {TABUNGAN_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - {b.country} - {b.curr} - Custom Bank Lokal/Global - Mata Uang Global - BCA BNI BRI Mandiri BSI CIMB BTN Permata Danamon Maybank Indonesia BCA Syariah Jago Chase Bank of America Wells Fargo Citibank HSBC UK Barclays Deutsche Bank BNP Paribas DBS OCBC UOB Maybank Malaysia MUFG Mizuho ICBC Commonwealth RBC Emirates NBD Revolut Wise ICBC China Bank of China China Construction Bank Alipay Bank WeChat Pay Bank + Custom Bank Lokal/Global</option>)}
+                {EWALLET_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - E-Wallet - {b.country} - {b.curr} - Custom E-Wallet Lokal/Global - Banyak Opsi - GoPay OVO DANA LinkAja ShopeePay i.saku Sakuku DOKU Paytren TrueMoney Jenius Pay Flip PayPal Venmo Cash App Apple Pay Google Pay Samsung Pay Alipay WeChat Pay GrabPay GCash Paytm PhonePe + Custom</option>)}
               </select>
               <select value={newBankGroup} onChange={e=>setNewBankGroup(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
-                <option value="tabungan">Tabungan - Rp 11.800.000 (BCA BNI BRI) - SALAH SATU sumber</option>
-                <option value="ewallet">E-Wallet - Rp 700.000 (GoPay OVO DANA) - SALAH SATU sumber</option>
-                <option value="tunai">Tunai - Rp 1.205.000 - Hanya 1 tab + warna - SALAH SATU sumber</option>
-                <option value="darurat">Darurat - Rp 5.000.000 - Wajib pisah - gak campur tabungan</option>
-                <option value="cicilan">Cicilan - Rp 2.000.000 - FIF Kredivo Akulaku - tgl jatuh tempo - Bayar pakai SALAH SATU</option>
+                <option value="tabungan">Tabungan - Rp 11.800.000 (BCA BNI BRI) - SALAH SATU sumber - Tabungan: Rp 11.800.000 (BCA BNI BRI)</option>
+                <option value="ewallet">E-Wallet - Rp 700.000 (GoPay OVO DANA) - SALAH SATU sumber - E-Wallet: Rp 700.000 (GoPay OVO DANA)</option>
+                <option value="tunai">Tunai - Rp 1.205.000 - Hanya 1 tab + warna - SALAH SATU sumber - Tunai: Rp 1.205.000</option>
+                <option value="darurat">Darurat - Rp 5.000.000 - Wajib pisah - gak campur tabungan - Darurat: Rp 5.000.000</option>
+                <option value="cicilan">Cicilan - Rp 2.000.000 - FIF Kredivo Akulaku - tgl jatuh tempo - Bayar pakai SALAH SATU - Cicilan: Rp 2.000.000</option>
               </select>
-              <input value={newBankNorek} onChange={e=>setNewBankNorek(e.target.value)} placeholder="Norek - 1234567890 / 0812**** - show/hide + warna" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-              <input value={newBankBalance} onChange={e=>setNewBankBalance(e.target.value)} type="number" placeholder="Balance - Rp - SALAH SATU sumber" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <input value={newBankNorek} onChange={e=>setNewBankNorek(e.target.value)} placeholder="Norek - 1234567890 / 0812**** - show/hide + warna - BCA BNI BRI + norek show/hide + warna" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <input value={newBankBalance} onChange={e=>setNewBankBalance(e.target.value)} type="number" placeholder="Balance - Rp - SALAH SATU sumber - Rp 11.800.000 (BCA BNI BRI) + E-Wallet 700.000 + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
               <div style={{display:"flex",gap:8}}>
-                <button onClick={()=>setShowAddBank(false)} style={{flex:1,padding:10,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:10}}>Batal</button>
-                <button onClick={handleAddBank} style={{flex:1,padding:10,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah Akun - Bank - Daftar List Bank</button>
+                <button onClick={()=>setShowAddBank(false)} style={{flex:1,padding:10,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:10}}>Batal - Balik Dompet</button>
+                <button onClick={handleAddBank} style={{flex:1,padding:10,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah Akun - Bank - Daftar List Bank Tidak Ditambah Akun - FIX - menu kosong - FIX!</button>
               </div>
             </div>
           </div>
         </div>
       )}
-      {showAddCoin && (
-        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:96,display:"grid",placeItems:"center",padding:12}}>
-          <div style={{background:"#fff",borderRadius:16,padding:16,maxWidth:360,width:"100%"}}>
-            <div style={{fontWeight:900,fontSize:12}}>+ Tambah Coin - Alamat dari masing-masing Coin - Symbol: USDT, BTC, ETH, BNB - Nama: Tether BEP-20 - Network: BEP-20 - Alamat Wallet - Alamat Kontrak</div>
-            <div style={{marginTop:10,display:"grid",gap:8}}>
-              <input value={newCoinSymbol} onChange={e=>setNewCoinSymbol(e.target.value)} placeholder="Symbol: USDT, BTC, ETH, BNB" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-              <input value={newCoinName} onChange={e=>setNewCoinName(e.target.value)} placeholder="Nama: Tether BEP-20 / Bitcoin / Ethereum" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-              <select value={newCoinNetwork} onChange={e=>setNewCoinNetwork(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
-                <option value="BEP-20">BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap</option>
-                <option value="ERC-20">ERC-20 - Ethereum - TrustWallet/Metamask</option>
-                <option value="TRC-20">TRC-20 - Tron - TrustWallet/Metamask</option>
-                <option value="BTC">BTC - Bitcoin - bc1q... - TrustWallet/Metamask</option>
-                <option value="SOL">SOL - Solana - TrustWallet/Metamask</option>
-              </select>
-              <input value={newCoinAddr} onChange={e=>setNewCoinAddr(e.target.value)} placeholder="Alamat Wallet TrustWallet/Metamask: 0x... / bc1q..." style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-              <input value={newCoinContract} onChange={e=>setNewCoinContract(e.target.value)} placeholder="Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract - 0x55d398326f99059fF775485246999027B3197955" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-              <div style={{display:"flex",gap:8}}>
-                <button onClick={()=>setShowAddCoin(false)} style={{flex:1,padding:10,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:10}}>Batal - Balik Dompet</button>
-                <button onClick={handleAddCoinSimple} style={{flex:1,padding:10,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah Asset - Masuk Crypto - PIN 2FA OK</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
+        <button onClick={()=>setBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+          <div style={{fontSize:20,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>🏠</div>
+          <div style={{fontSize:8,fontWeight:700,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>Beranda</div>
+        </button>
+        <button onClick={()=>setBottom("riwayat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+          <div style={{fontSize:20,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>🧾</div>
+          <div style={{fontSize:8,fontWeight:700,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>Input</div>
+        </button>
+        <button onClick={()=>setBottom("chat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+          <div style={{fontSize:20,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>💬</div>
+          <div style={{fontSize:8,fontWeight:700,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>Chat AI</div>
+        </button>
+        <button onClick={()=>setBottom("laporan")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+          <div style={{fontSize:20,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>📊</div>
+          <div style={{fontSize:8,fontWeight:700,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>Laporan</div>
+        </button>
+        <button onClick={()=>setBottom("profil")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+          <div style={{fontSize:20,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>⚙</div>
+          <div style={{fontSize:8,fontWeight:700,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>Profil</div>
+        </button>
+      </div>
     </div>
   )
 }

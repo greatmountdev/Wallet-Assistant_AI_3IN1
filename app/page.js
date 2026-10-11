@@ -238,7 +238,13 @@ export default function Page(){
     return (
       <div style={{minHeight:"100vh",background:"rgba(0,0,0,.6)",display:"grid",placeItems:"center",padding:16,position:"fixed",inset:0,zIndex:100}}>
         <div style={{maxWidth:400,width:"100%",background:"#fff",borderRadius:20,padding:16,maxHeight:"95vh",overflowY:"auto"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h3 style={{margin:0,fontSize:14}}>Izin REAL - Drive, Sheet, META AI/Gemini, Kamera/File - Bukan Dummy</h3><button onClick={()=>setShowPermissionModal(false)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"1px solid #e2e8f0"}}>X</button></div>
+          
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
+            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
+          </div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h3 style={{margin:0,fontSize:14}}>Izin REAL - Drive, Sheet, META AI/Gemini, Kamera/File - Bukan Dummy</h3><button onClick={()=>setShowPermissionModal(false)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"1px solid #e2e8f0"}}>X</button></div>
           <div style={{marginTop:10,display:"flex",flexDirection:"column",gap:10}}>
             <div style={{background:"#f0f9ff",borderRadius:12,padding:10,border:"1px solid #bae6fd"}}>
               <div style={{fontWeight:800,fontSize:11}}>Google Drive untuk Penyimpanan - REAL Integrasi</div>
@@ -292,6 +298,48 @@ export default function Page(){
   const isCrypto = cryptoMode==="crypto";
   return (
     <div style={{minHeight:"100vh",background:isCrypto?"#fff":"#f8fafc",paddingBottom:80,maxWidth:420,margin:"0 auto",position:"relative"}}>
+      
+      {showMenu && (
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.5)",zIndex:90,display:"flex"}}>
+          <div style={{width:280,background:"#fff",height:"100%",overflowY:"auto",padding:12}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{fontWeight:900,fontSize:12}}>Jendela Burger Grup Bank - 6 Grup FULL</div>
+              <button onClick={()=>setShowMenu(false)} style={{width:28,height:28,borderRadius:8,background:"#f1f5f9",border:"none"}}>✕</button>
+            </div>
+            <div style={{marginTop:12,display:"grid",gap:8}}>
+              <div style={{fontWeight:800,fontSize:10}}>TabunganList BCA BNI BRI + e-wallet + norek show/hide + warna - E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
+              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
+                <div style={{fontSize:9,fontWeight:700}}>Tabungan BCA</div><div style={{fontSize:8,color:"#64748b"}}>BCA - 1234567890 - Rp 7.500.000 - show/hide + warna - BCA BNI BRI + norek show/hide + warna</div>
+              </div>
+              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
+                <div style={{fontSize:9,fontWeight:700}}>Tabungan BNI</div><div style={{fontSize:8,color:"#64748b"}}>BNI - 0987654321 - Rp 2.500.000 - show/hide + warna</div>
+              </div>
+              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
+                <div style={{fontSize:9,fontWeight:700}}>Tabungan BRI</div><div style={{fontSize:8,color:"#64748b"}}>BRI - 1122334455 - Rp 1.500.000 - show/hide + warna</div>
+              </div>
+              <div style={{fontWeight:800,fontSize:10,marginTop:8}}>E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
+              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
+                <div style={{fontSize:9,fontWeight:700}}>GoPay</div><div style={{fontSize:8,color:"#64748b"}}>GoPay - 0812**** - Rp 375.000 - norek + warna</div>
+              </div>
+              <div style={{background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
+                <div style={{fontSize:9,fontWeight:700}}>OVO</div><div style={{fontSize:8,color:"#64748b"}}>OVO - 0812**** - Rp 125.000 - norek + warna</div>
+              </div>
+              <div style={{fontWeight:800,fontSize:10,marginTop:8}}>Tunai Dompet Hanya 1 tab + warna - Rp 1.205.000 - Dana Darurat Wajib pisah - Cicilan Custom platform FIF Kredivo Akulaku + tgl jatuh tempo - 6 Grup FULL!</div>
+              <div style={{background:"#fef3c7",borderRadius:8,padding:8,border:"1px solid #fde68a"}}>
+                <div style={{fontSize:9,fontWeight:700}}>Tunai Dompet - Hanya 1 tab + warna</div><div style={{fontSize:8,color:"#92400e"}}>Rp 1.205.000 - SALAH SATU sumber</div>
+              </div>
+              <div style={{background:"#fef3c7",borderRadius:8,padding:8,border:"1px solid #fde68a"}}>
+                <div style={{fontSize:9,fontWeight:700}}>Dana Darurat - Wajib pisah</div><div style={{fontSize:8,color:"#92400e"}}>Rp 2.000.000 - Wajib pisah, gak campur tabungan</div>
+              </div>
+              <div style={{background:"#fee2e2",borderRadius:8,padding:8,border:"1px solid #fecaca"}}>
+                <div style={{fontSize:9,fontWeight:700}}>Cicilan - FIF Kredivo Akulaku</div><div style={{fontSize:8,color:"#991b1b"}}>Rp 2.000.000 - Jatuh tempo 20/25 Okt - Bayar pakai SALAH SATU Tabungan/E-Wallet/Saku/Darurat</div>
+              </div>
+            </div>
+          </div>
+          <div style={{flex:1}} onClick={()=>setShowMenu(false)}></div>
+        </div>
+      )}
+
       {showCryptoSeedPopup && (
         <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.7)",zIndex:100,display:"grid",placeItems:"center",padding:12}}>
           <div style={{background:"#fff",borderRadius:20,padding:16,maxWidth:360,width:"100%"}}>
@@ -314,7 +362,13 @@ export default function Page(){
       {!isCrypto && bottom==="beranda" && (
         <div>
           <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
+            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
+          </div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div><div style={{fontSize:9,opacity:0.6}}>Dompet AI Universal - 6 Grup FULL - Rp 18.405.000</div><div style={{fontWeight:900,fontSize:13,marginTop:2}}>Total Rp {wallets.reduce((a,b)=>a+(b.balance||0),0).toLocaleString("id-ID")}</div></div>
               <div style={{width:36,height:36,borderRadius:12,background:"#1e293b",display:"grid",placeItems:"center"}}>👤</div>
             </div>
@@ -349,61 +403,50 @@ export default function Page(){
           <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
             <div style={{fontWeight:800,fontSize:11}}>Setting - Hanya Settingan Saja - Jangan tampilkan keterangan bawah</div>
             <div style={{marginTop:10,display:"grid",gap:10}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Dark/Day - ID - FULL</div><div style={{fontSize:8,color:"#64748b"}}>Lebih nyaman malam hari</div></div><div style={{width:40,height:22,borderRadius:11,background:"#e2e8f0"}}></div></div>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Notifikasi - Cicilan jatuh tempo</div><div style={{fontSize:8,color:"#64748b"}}>FIF Kredivo 20/25 Okt</div></div><div style={{width:40,height:22,borderRadius:11,background:"#0ea5e9"}}></div></div>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Font - Tegas Manula 19px Bold 900</div><div style={{fontSize:8,color:"#64748b"}}>Standar, Elegan, SANTAI</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>Tegas Manula 19px</option></select></div>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Bahasa - 6 Bahasa</div><div style={{fontSize:8,color:"#64748b"}}>ID - ALL UI ID</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>ID Indonesia</option><option>US English</option></select></div>
+              
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
+            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
+          </div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Dark/Day - ID - FULL</div><div style={{fontSize:8,color:"#64748b"}}>Lebih nyaman malam hari</div></div><div style={{width:40,height:22,borderRadius:11,background:"#e2e8f0"}}></div></div>
+              
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
+            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
+          </div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Notifikasi - Cicilan jatuh tempo</div><div style={{fontSize:8,color:"#64748b"}}>FIF Kredivo 20/25 Okt</div></div><div style={{width:40,height:22,borderRadius:11,background:"#0ea5e9"}}></div></div>
+              
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
+            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
+          </div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Font - Tegas Manula 19px Bold 900</div><div style={{fontSize:8,color:"#64748b"}}>Standar, Elegan, SANTAI</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>Tegas Manula 19px</option></select></div>
+              
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
+            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
+          </div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Bahasa - 6 Bahasa</div><div style={{fontSize:8,color:"#64748b"}}>ID - ALL UI ID</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>ID Indonesia</option><option>US English</option></select></div>
             </div>
           </div>
         </div>
       )}
-      
-      {!isCrypto && bottom==="riwayat" && (
-        <div style={{padding:12}}>
-          <div style={{fontWeight:900,fontSize:14}}>📜 Riwayat - Transaksi - Foto Struk/Bon - Kamera + Galeri + Drive + Sheet</div>
-          <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-            <div style={{fontSize:10,fontWeight:700}}>Input Foto Struk/Bon/Barang - Kamera + Galeri + Drive + Sheet izin + Foto tampil di riwayat + Pilih sumber SALAH SATU + Tujuan + Algoritma FIX - FULL</div>
-            <div style={{marginTop:8,display:"grid",gap:8}}>
-              <div style={{display:"flex",gap:8,padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10}}>🛒 Belanja - Indomaret - Rp 150.000 - BCA</div></div>
-              <div style={{display:"flex",gap:8,padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10}}>💳 Cicilan - FIF - Rp 2.000.000 - BNI - Jatuh tempo 20/25 Okt</div></div>
-              <div style={{display:"flex",gap:8,padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10}}>💰 Pemasukan - Gaji - Rp 5.000.000 - BCA</div></div>
-            </div>
-          </div>
-        </div>
-      )}
-      {!isCrypto && bottom==="chat" && (
-        <div style={{padding:12}}>
-          <div style={{fontWeight:900,fontSize:14}}>💬 Chat AI - Meta / Gemini - ALL UI ID - V39 FIX 404 WORKING</div>
-          <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-            <div style={{display:"flex",gap:8,marginBottom:10}}>
-              <button style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:9,fontWeight:800}}>Meta AI - Llama 3</button>
-              <button style={{flex:1,padding:8,borderRadius:8,background:"#f8fafc",color:"#64748b",border:"1px solid #e2e8f0",fontSize:9,fontWeight:800}}>Gemini - Google</button>
-            </div>
-            <div style={{background:"#f8fafc",borderRadius:8,padding:10}}>
-              <div style={{fontSize:9,color:"#64748b"}}>Chat AI Meta - Tanya dompet: Berapa total tabungan? Cicilan jatuh tempo kapan? - V39 FIX 404 WORKING</div>
-              <div style={{marginTop:8,background:"#fff",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}><div style={{fontSize:10}}>🤖 Meta AI: Total tabungan BCA BNI BRI Rp 11.500.000 - E-Wallet Rp 700.000 - Tunai Rp 1.205.000 - Darurat Rp 2.000.000 - Cicilan Rp 2.000.000 - Cash Flow SALAH SATU sumber - FULL CHECKLIST!</div></div>
-            </div>
-          </div>
-        </div>
-      )}
-      {!isCrypto && bottom==="laporan" && (
-        <div style={{padding:12}}>
-          <div style={{fontWeight:900,fontSize:14}}>📊 Laporan - 6 Grup FULL - ID - ALL UI ID - V39 FIX 404 WORKING</div>
-          <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-            <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Cash Flow Total</div><div style={{fontSize:12,fontWeight:900}}>Rp 18.405.000</div><div style={{fontSize:7,color:"#64748b"}}>SALAH SATU kepotong - BCA BNI BRI + norek show/hide + warna</div></div>
-            <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Tabungan</div><div style={{fontSize:12,fontWeight:900}}>Rp 11.500.000</div><div style={{fontSize:7,color:"#64748b"}}>BCA BNI BRI + e-wallet + norek show/hide</div></div>
-            <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>E-Wallet</div><div style={{fontSize:12,fontWeight:900}}>Rp 700.000</div><div style={{fontSize:7,color:"#64748b"}}>GoPay OVO DANA LinkAja ShopeePay</div></div>
-            <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Cicilan</div><div style={{fontSize:12,fontWeight:900}}>Rp 2.000.000</div><div style={{fontSize:7,color:"#64748b"}}>FIF Kredivo - Jatuh tempo 20/25 Okt</div></div>
-          </div>
-        </div>
-      )}
-
       {isCrypto && (
         <div style={{background:"#fff",minHeight:"100vh"}}>
           {cryptoBottom==="beranda" && !selectedCoin && (
             <div>
               <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <button onClick={()=>setShowMenu(!showMenu)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
+            <div style={{fontSize:9,opacity:0.6,color:"#fff"}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu</div>
+            <div style={{width:36,height:36,borderRadius:10,background:"#1e293b",display:"grid",placeItems:"center",color:"#fff"}}>👤</div>
+          </div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - Satu List Coin - $4,270.00</div>
                   <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>Dompet</button>
                 </div>

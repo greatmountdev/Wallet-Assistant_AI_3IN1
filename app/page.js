@@ -128,7 +128,6 @@ export default function Page(){
 
   const [cryptoBottom,setCryptoBottom]=useState("beranda");
   const [selectedCoin,setSelectedCoin]=useState(null);
-  const [bottom,setBottom]=useState("beranda");
 
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
   const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")

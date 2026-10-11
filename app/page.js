@@ -60,24 +60,26 @@ const TABUNGAN_BANKS=[
   {name:"BTN", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Permata", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"Danamon", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Maybank Indonesia", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"BCA Syariah", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Jago", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
-  {name:"Chase Bank", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Bank of America", country:"USA", curr:"USD", flag:"🇺🇸"},
+  {name:"Chase", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Bank of America", country:"USA", curr:"USD", flag:"🇺🇸"},
   {name:"Wells Fargo", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Citibank", country:"USA", curr:"USD", flag:"🇺🇸"},
   {name:"HSBC UK", country:"UK", curr:"GBP", flag:"🇬🇧"}, {name:"Barclays", country:"UK", curr:"GBP", flag:"🇬🇧"},
   {name:"Deutsche Bank", country:"Germany", curr:"EUR", flag:"🇩🇪"}, {name:"BNP Paribas", country:"France", curr:"EUR", flag:"🇫🇷"},
-  {name:"DBS Bank", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"OCBC Bank", country:"Singapore", curr:"SGD", flag:"🇸🇬"},
+  {name:"DBS", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"OCBC", country:"Singapore", curr:"SGD", flag:"🇸🇬"},
   {name:"UOB", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"Maybank Malaysia", country:"Malaysia", curr:"MYR", flag:"🇲🇾"},
   {name:"MUFG", country:"Japan", curr:"JPY", flag:"🇯🇵"}, {name:"Mizuho", country:"Japan", curr:"JPY", flag:"🇯🇵"},
-  {name:"ICBC", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Commonwealth Bank", country:"Australia", curr:"AUD", flag:"🇦🇺"},
+  {name:"ICBC", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Commonwealth", country:"Australia", curr:"AUD", flag:"🇦🇺"},
   {name:"RBC", country:"Canada", curr:"CAD", flag:"🇨🇦"}, {name:"Emirates NBD", country:"UAE", curr:"AED", flag:"🇦🇪"},
-  {name:"Revolut", country:"UK", curr:"GBP", flag:"🇬🇧"}, {name:"Wise", country:"UK", curr:"GBP", flag:"🇬🇧"},
-  {name:"ICBC China", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Bank of China", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"China Construction Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Alipay Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"WeChat Pay Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Custom Bank Lokal/Global + Mata Uang Global", country:"Global", curr:"IDR", flag:"🌍"},
+  {name:"Revolut", country:"Global", curr:"EUR", flag:"🌍"}, {name:"Wise", country:"Global", curr:"USD", flag:"🌍"},
+  {name:"ICBC China", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Bank of China", country:"China", curr:"CNY", flag:"🇨🇳"},
+  {name:"China Construction Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Alipay Bank", country:"China", curr:"CNY", flag:"🇨🇳"},
+  {name:"WeChat Pay Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Custom Bank Lokal/Global", country:"Global", curr:"IDR", flag:"🌍"},
 ]
 const EWALLET_BANKS=[
   {name:"GoPay", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"OVO", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"DANA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"LinkAja", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"ShopeePay", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"i.saku", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
-  {name:"Sakuku", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"DOKU Wallet", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
-  {name:"Paytren", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"TrueMoney", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
+  {name:"Sakuku", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"DOKU", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
+  {name:"Paytren", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"TrueMoney", country:"Thailand", curr:"THB", flag:"🇹🇭"},
   {name:"Jenius Pay", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Flip", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"PayPal", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Venmo", country:"USA", curr:"USD", flag:"🇺🇸"},
   {name:"Cash App", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Apple Pay", country:"USA", curr:"USD", flag:"🇺🇸"},
@@ -85,7 +87,7 @@ const EWALLET_BANKS=[
   {name:"Alipay", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"WeChat Pay", country:"China", curr:"CNY", flag:"🇨🇳"},
   {name:"GrabPay", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"GCash", country:"Philippines", curr:"PHP", flag:"🇵🇭"},
   {name:"Paytm", country:"India", curr:"INR", flag:"🇮🇳"}, {name:"PhonePe", country:"India", curr:"INR", flag:"🇮🇳"},
-  {name:"Custom E-Wallet Lokal/Global + Custom - Banyak Opsi", country:"Global", curr:"IDR", flag:"🌍"},
+  {name:"Custom E-Wallet Lokal/Global", country:"Global", curr:"IDR", flag:"🌍"}, {name:"Custom - Banyak Opsi", country:"Global", curr:"IDR", flag:"🌍"},
 ]
 
 const BANKS=[
@@ -518,27 +520,28 @@ export default function Page(){
         </div>
       )}
       
+      
       {!isCrypto && (
-        <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"8px 0 16px 0",zIndex:80}}>
-          <button onClick={()=>setBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 10px"}}>
-            <div style={{width:28,height:28,borderRadius:10,background:bottom==="beranda"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:16}}>🏠</div>
-            <div style={{fontSize:8,fontWeight:bottom==="beranda"?800:400}}>Beranda</div>
+        <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
+          <button onClick={()=>setBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+            <div style={{fontSize:20,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>🏠</div>
+            <div style={{fontSize:8,fontWeight:700,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>Beranda</div>
           </button>
-          <button onClick={()=>setBottom("riwayat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 10px"}}>
-            <div style={{width:28,height:28,borderRadius:10,background:bottom==="riwayat"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:16}}>📜</div>
-            <div style={{fontSize:8,fontWeight:bottom==="riwayat"?800:400}}>Riwayat</div>
+          <button onClick={()=>setBottom("riwayat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+            <div style={{fontSize:20,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>🧾</div>
+            <div style={{fontSize:8,fontWeight:700,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>Input</div>
           </button>
-          <button onClick={()=>setBottom("chat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 10px"}}>
-            <div style={{width:28,height:28,borderRadius:10,background:bottom==="chat"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:16}}>💬</div>
-            <div style={{fontSize:8,fontWeight:bottom==="chat"?800:400}}>Chat AI</div>
+          <button onClick={()=>setBottom("chat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+            <div style={{fontSize:20,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>💬</div>
+            <div style={{fontSize:8,fontWeight:700,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>Chat AI</div>
           </button>
-          <button onClick={()=>setBottom("laporan")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 10px"}}>
-            <div style={{width:28,height:28,borderRadius:10,background:bottom==="laporan"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:16}}>📊</div>
-            <div style={{fontSize:8,fontWeight:bottom==="laporan"?800:400}}>Laporan</div>
+          <button onClick={()=>setBottom("laporan")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+            <div style={{fontSize:20,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>📊</div>
+            <div style={{fontSize:8,fontWeight:700,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>Laporan</div>
           </button>
-          <button onClick={()=>setBottom("profil")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 10px"}}>
-            <div style={{width:28,height:28,borderRadius:10,background:bottom==="profil"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:16}}>👤</div>
-            <div style={{fontSize:8,fontWeight:bottom==="profil"?800:400}}>Profil</div>
+          <button onClick={()=>setBottom("profil")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
+            <div style={{fontSize:20,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>⚙</div>
+            <div style={{fontSize:8,fontWeight:700,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>Profil</div>
           </button>
         </div>
       )}

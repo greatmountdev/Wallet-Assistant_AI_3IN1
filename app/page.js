@@ -140,18 +140,16 @@ export default function Page(){
   const [isListening,setIsListening]=useState(false)
   const [laporanTab,setLaporanTab]=useState("grafik")
   const [wallets,setWallets]=useState([
-    {id:"1",name:"Tabungan BCA",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
-    {id:"2",name:"Tabungan BNI",type:"tabungan",group:"tabungan",color:"#2563eb",bank:"BNI",norek:"0987654321",balance:2500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
-    {id:"3",name:"Tabungan BRI",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BRI",norek:"1122334455",balance:1500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
-    {id:"4",name:"GoPay",type:"ewallet",group:"ewallet",color:"#10b981",bank:"GoPay",norek:"081234567890",balance:375000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"",dueDate:""},
-    {id:"5",name:"OVO",type:"ewallet",group:"ewallet",color:"#8b5cf6",bank:"OVO",norek:"081234567891",balance:125000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"",dueDate:""},
-    {id:"6",name:"DANA",type:"ewallet",group:"ewallet",color:"#06b6d4",bank:"DANA",norek:"081234567892",balance:200000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"",dueDate:""},
-    {id:"7",name:"Tunai Dompet",type:"cash",group:"tunai",color:"#06b6d4",bank:"Cash",norek:"-",balance:1205000,currency:"IDR",flag:"🇮🇩",icon:"👛",platform:"",dueDate:""},
-    {id:"8",name:"Dana Darurat Wajib Pisah",type:"darurat",group:"darurat",color:"#f59e0b",bank:"BSI",norek:"9988776655",balance:5000000,currency:"IDR",flag:"🇮🇩",icon:"🚨",platform:"",dueDate:""},
-    {id:"9",name:"Cicilan Motor",type:"cicilan",group:"cicilan",color:"#ef4444",bank:"FIF",norek:"-",balance:1200000,currency:"IDR",flag:"🇮🇩",icon:"🏍️",platform:"FIF",dueDate:"2026-10-20"},
-    {id:"10",name:"Cicilan HP",type:"cicilan",group:"cicilan",color:"#8b5cf6",bank:"Kredivo",norek:"-",balance:800000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"Kredivo",dueDate:"2026-10-25"},
-    {id:"11",name:"Pengeluaran",type:"pengeluaran",group:"pengeluaran",color:"#f97316",bank:"-",norek:"-",balance:0,currency:"IDR",flag:"🌍",icon:"💸",platform:"",dueDate:""},
-  ])
+      {id:"1", name:"Tabungan BCA", bank:"BCA", group:"tabungan", balance:7500000, norek:"1234567890", warna:"#0ea5e9"},
+      {id:"2", name:"Tabungan BNI", bank:"BNI", group:"tabungan", balance:2500000, norek:"0987654321", warna:"#10b981"},
+      {id:"3", name:"Tabungan BRI", bank:"BRI", group:"tabungan", balance:1800000, norek:"1122334455", warna:"#06b6d4"},
+      {id:"4", name:"GoPay", bank:"GoPay", group:"ewallet", balance:375000, norek:"0812****", warna:"#0ea5e9"},
+      {id:"5", name:"OVO", bank:"OVO", group:"ewallet", balance:125000, norek:"0812****", warna:"#8b5cf6"},
+      {id:"6", name:"DANA", bank:"DANA", group:"ewallet", balance:200000, norek:"0812****", warna:"#0ea5e9"},
+      {id:"7", name:"Tunai Dompet", bank:"Tunai", group:"tunai", balance:1205000, norek:"-", warna:"#f59e0b"},
+      {id:"8", name:"Dana Darurat", bank:"Darurat", group:"darurat", balance:5000000, norek:"-", warna:"#ef4444"},
+      {id:"9", name:"Cicilan FIF", bank:"FIF", group:"cicilan", balance:2000000, norek:"-", warna:"#f97316"},
+    ])
   const [txs,setTxs]=useState([
     {id:"1",title:"Kopi dan makan siang",amount:45000,fromWalletId:"7",fromGroup:"tunai",toGroup:"pengeluaran",jenis:"keluar",kategori:"Makanan",date:"3 Okt 2026",foto:"struk.jpg",source:"Tunai Dompet -> Pengeluaran",curr:"IDR",note:"FIX: Belanja 45k - SALAH SATU: Tunai Dompet - Bukan semua 4 grup kepotong! Sisa Tunai Rp 1.160.000 - Tabungan, E-Wallet, Darurat TETAP! 🙌"},
     {id:"2",title:"Isi saldo GoPay dari BCA",amount:75000,fromWalletId:"1",toWalletId:"4",fromGroup:"tabungan",toGroup:"ewallet",jenis:"pindah",kategori:"Top-up",date:"3 Okt 2026",foto:null,source:"Tabungan BCA -> GoPay",curr:"IDR",note:"Pindah: BCA -75k, GoPay +75k - Hanya 2 akun berubah, bukan semua!"},
@@ -452,21 +450,42 @@ export default function Page(){
                   <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - Satu List Coin - $4,270.00</div>
                   <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>Dompet</button>
                 </div>
-                <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • {bscScanTimer}</div></div>
+                <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅ - {btcPrice} • BSCScan {bscScanTimer}</div></div>
               </div>
               <div style={{padding:12}}>
                 <div style={{fontWeight:800,fontSize:11}}>Beranda Daftar Coin - Satu aja list coin</div>
+                                <div style={{background:"#0f172a",borderRadius:12,padding:10,marginBottom:10,color:"#fff"}}>
+                  <div style={{fontWeight:900,fontSize:10}}>Crypto Wallet - TrustWallet / Metamask - Dalem: BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅</div>
+                  <div style={{fontSize:8,opacity:0.7,marginTop:4}}>Asset Crypto - Alamat dari masing-masing Coin (tergantung jaringan) → Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset - Alamat kontrak kirim/terima/swap</div>
+                  <div style={{display:"flex",gap:6,marginTop:8}}>
+                    <div style={{background:"#1e293b",borderRadius:8,padding:6,flex:1}}><div style={{fontSize:7,opacity:0.6}}>BTC Live</div><div style={{fontSize:10,fontWeight:900,color:"#f7931a"}}>Rp 1.047.156.508</div></div>
+                    <div style={{background:"#1e293b",borderRadius:8,padding:6,flex:1}}><div style={{fontSize:7,opacity:0.6}}>BSCScan</div><div style={{fontSize:10,fontWeight:900,color:"#f59e0b"}}>13:39 - 15 Menit Timer</div></div>
+                    <div style={{background:"#1e293b",borderRadius:8,padding:6,flex:1}}><div style={{fontSize:7,opacity:0.6}}>Seed + 2FA</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>Seed OK + 2FA ✅</div></div>
+                  </div>
+                </div>
                 {[
-                  {symbol:"BTC", name:"Bitcoin", network:"BTC", bal:"0.0025 BTC", usd:"$125", icon:"₿", color:"#f7931a", addr:"bc1q...s8x4j3n5m9q7", contract:""},
-                  {symbol:"USDT", name:"Tether BEP-20", network:"BEP-20", bal:"500 USDT", usd:"$500", icon:"💲", color:"#26a17b", addr:"0x55d...7f6eB", contract:"0x55d398326f99059fF775485246999027B3197955"},
-                  {symbol:"BNB", name:"BNB", network:"BEP-20", bal:"1.2 BNB", usd:"$720", icon:"🔶", color:"#f3ba2f", addr:"0x1a2...3b4c", contract:""},
+                  {symbol:"BTC", name:"Bitcoin - BTC - bc1qxy2k...s8x4j3n5m9q7 + Balance 0.0025 BTC ≈ $1250 + Alamat Wallet (BTC) - TrustWallet/Metamask - Copy sebagai asset + Copy", network:"BTC - SegWit - bc1qxy2k...s8x4j3n5m9q7", bal:"0.0025 BTC ≈ $1250", usd:"$1250 - 0.0025 BTC", icon:"₿", color:"#f7931a", addr:"bc1qxy2kgy6v8u3j5m9q7s8x4j3n5m9q7s8x4j3n5m9q7s8x4j3n5m9", contract:"", explorer:"https://www.blockchain.com/explorer/addresses/btc/"},
+                  {symbol:"ETH", name:"Ethereum - ERC-20 - 0xAbC...1234 + Balance 0.5 ETH ≈ $1800", network:"ERC-20 - Ethereum - 0xAbC...1234", bal:"0.5 ETH ≈ $1800", usd:"$1800 - 0.5 ETH", icon:"Ξ", color:"#627eea", addr:"0xAbC123dEf456aBc789DeF0123456789AbCdEf12", contract:"", explorer:"https://etherscan.io/address/"},
+                  {symbol:"USDT", name:"Tether BEP-20 - BEP-20 - 0x55d...7f6eB + Alamat Kontrak - BEP-20 - Kirim/Terima/Swap → 0x55d398326f99059fF775485246999027B3197955 (USDT BEP-20 contract) + Copy", network:"BEP-20 - BSC - 0x55d...7f6eB", bal:"500 USDT ≈ $500", usd:"$500 - BEP-20", icon:"💲", color:"#26a17b", addr:"0x55d398326f99059fF775485246999027B3197955", contract:"0x55d398326f99059fF775485246999027B3197955", explorer:"https://bscscan.com/address/"},
+                  {symbol:"USDT", name:"Tether ERC-20 - ERC-20 - 0xdAC...a7d0 → 0xdAC17F958D2ee523a2206206994597C13D831ec7 (USDT ERC-20 contract)", network:"ERC-20 - Ethereum - 0xdAC...a7d0", bal:"500 USDT ≈ $500", usd:"$500 - ERC-20", icon:"💲", color:"#26a17b", addr:"0xdAC17F958D2ee523a2206206994597C13D831ec7", contract:"0xdAC17F958D2ee523a2206206994597C13D831ec7", explorer:"https://etherscan.io/address/"},
+                  {symbol:"BNB", name:"BNB Smart Chain - BEP-20 - 0x1a2...3b4c + Balance 1.2 BNB ≈ $720", network:"BEP-20 - BSC - 0x1a2...3b4c", bal:"1.2 BNB ≈ $720", usd:"$720 - 1.2 BNB", icon:"🔶", color:"#f3ba2f", addr:"0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b", contract:"", explorer:"https://bscscan.com/address/"},
                 ].map(a=>(
-                  <div key={a.symbol+a.network} onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc",cursor:"pointer"}}>
-                    <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
-                    <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>{a.symbol} - {a.name}</div><div style={{fontSize:8,color:"#64748b"}}>{a.network} • {a.addr}</div></div>
-                    <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:12}}>{a.bal}</div><div style={{fontSize:8,color:"#64748b"}}>{a.usd}</div></div>
+                  <div key={a.symbol+a.network+a.addr} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9",marginTop:8}}>
+                    <div onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",cursor:"pointer"}}>
+                      <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
+                      <div style={{flex:1}}><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b",marginTop:2}}>Alamat: {a.addr} + Alamat Kontrak: {a.contract||"-"} - {a.network}</div></div>
+                      <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:11}}>{a.bal}</div><div style={{fontSize:7,color:"#64748b"}}>{a.usd}</div></div>
+                    </div>
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginTop:8}}>
+                      <button style={{padding:6,borderRadius:6,background:"#fee2e2",border:"none",fontSize:8,fontWeight:700}}>Kirim - {a.symbol} BEP-20/ERC-20</button>
+                      <button style={{padding:6,borderRadius:6,background:"#dcfce7",border:"none",fontSize:8,fontWeight:700}}>Terima - {a.addr.slice(0,6)}... QR - Copy</button>
+                      <button style={{padding:6,borderRadius:6,background:"#dbeafe",border:"none",fontSize:8,fontWeight:700}}>Swap - Pancake/Uniswap - {a.contract?a.contract.slice(0,6)+"...":""}</button>
+                      <button onClick={()=>window.open(a.explorer+(a.contract||a.addr),"_blank")} style={{padding:6,borderRadius:6,background:"#f1f5f9",border:"none",fontSize:8,fontWeight:700}}>BSCScan - {a.explorer.includes("bscscan")?"BSCScan 13:39":"Etherscan"} - 15m timer</button>
+                    </div>
                   </div>
                 ))}
+                <button onClick={()=>{ const sym=prompt("Symbol: USDT, BTC, ETH, BNB"); const nama=prompt("Nama: Tether BEP-20"); const net=prompt("Network: BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap / ERC-20 / TRC-20 / BTC / SOL"); const addr=prompt("Alamat Wallet TrustWallet/Metamask: 0x... / bc1q..."); const contract=prompt("Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract"); if(sym&&addr){ alert("Tambah Asset: "+sym+" - "+addr+" - "+(contract||"No Contract")+" - TrustWallet/Metamask - Copy sebagai asset - Alamat kontrak kirim/terima/swap - + Tambah Asset"); } }} style={{width:"100%",marginTop:12,padding:10,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:10}}>+ Tambah Coin → popup Tambah Coin - Alamat dari masing-masing Coin → Symbol: USDT, BTC, ETH, BNB + Nama: Tether BEP-20 + Network: BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap / ERC-20 / TRC-20 / BTC / SOL + Alamat Wallet TrustWallet/Metamask: 0x... / bc1q... + Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract → + Tambah Asset</button>
+}
               </div>
             </div>
           )}
@@ -548,4 +567,4 @@ export default function Page(){
 
     </div>
   )
-}
+

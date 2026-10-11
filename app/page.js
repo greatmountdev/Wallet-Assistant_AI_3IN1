@@ -124,11 +124,42 @@ export default function Page(){
   const [cryptoPIN,setCryptoPIN]=useState("");
   const [btcPrice,setBtcPrice]=useState("Rp 1.050.000.000");
   const [bscScanTimer,setBscScanTimer]=useState("15:00");
+  
+  const handleAddBank = ()=>{
+    if(!newBankNorek){ alert("Isi norek!"); return; }
+    const newId = String(Date.now());
+    setWallets([...wallets, {id:newId, name:newBankName+" - "+newBankNorek, bank:newBankName, group:newBankGroup, balance:parseInt(newBankBalance)||0, norek:newBankNorek, warna:"#0ea5e9"}]);
+    setShowAddBank(false);
+    setNewBankNorek("");
+    setNewBankBalance(0);
+  };
+  const handleAddCoinSimple = ()=>{
+    if(!newCoinSymbol||!newCoinAddr){ alert("Isi Symbol dan Alamat Wallet!"); return; }
+    alert("Tambah Asset: "+newCoinSymbol+" - "+newCoinName+" - "+newCoinNetwork+" - "+newCoinAddr+" - "+(newCoinContract||"No Contract")+" - TrustWallet/Metamask - Copy sebagai asset - Berhasil!");
+    setShowAddCoin(false);
+    setNewCoinSymbol("");
+    setNewCoinName("");
+    setNewCoinAddr("");
+    setNewCoinContract("");
+  };
+
   const handleCryptoTabClick = (t)=>{ if(t==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
   const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed!"); return; } if(!crypto2FAChecked){ alert("Centang 2FA!"); return; } if(cryptoPIN.length!==6){ alert("PIN 6 digit!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
   useEffect(()=>{ const a=setInterval(()=>{ setBscScanTimer(p=>{ const x=p.split(":"); let m=parseInt(x[0]||"15"); let s=parseInt(x[1]||"00"); let tt=m*60+s-1; if(tt<=0) tt=900; return String(Math.floor(tt/60)).padStart(2,"0")+":"+String(tt%60).padStart(2,"0"); }); },1000); const b=setInterval(()=>{ const v=1050000000+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+v.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(a); clearInterval(b); }; },[]);
 
   const [cryptoBottom,setCryptoBottom]=useState("beranda");
+  const [showAddBank,setShowAddBank]=useState(false);
+  const [newBankName,setNewBankName]=useState("BCA");
+  const [newBankNorek,setNewBankNorek]=useState("");
+  const [newBankBalance,setNewBankBalance]=useState(0);
+  const [newBankGroup,setNewBankGroup]=useState("tabungan");
+  const [showAddCoin,setShowAddCoin]=useState(false);
+  const [newCoinSymbol,setNewCoinSymbol]=useState("");
+  const [newCoinName,setNewCoinName]=useState("");
+  const [newCoinNetwork,setNewCoinNetwork]=useState("BEP-20");
+  const [newCoinAddr,setNewCoinAddr]=useState("");
+  const [newCoinContract,setNewCoinContract]=useState("");
+
   const [selectedCoin,setSelectedCoin]=useState(null);
 
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
@@ -450,42 +481,21 @@ export default function Page(){
                   <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - Satu List Coin - $4,270.00</div>
                   <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>Dompet</button>
                 </div>
-                <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅ - {btcPrice} • BSCScan {bscScanTimer}</div></div>
+                <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • {bscScanTimer}</div></div>
               </div>
               <div style={{padding:12}}>
                 <div style={{fontWeight:800,fontSize:11}}>Beranda Daftar Coin - Satu aja list coin</div>
-                                <div style={{background:"#0f172a",borderRadius:12,padding:10,marginBottom:10,color:"#fff"}}>
-                  <div style={{fontWeight:900,fontSize:10}}>Crypto Wallet - TrustWallet / Metamask - Dalem: BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅</div>
-                  <div style={{fontSize:8,opacity:0.7,marginTop:4}}>Asset Crypto - Alamat dari masing-masing Coin (tergantung jaringan) → Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset - Alamat kontrak kirim/terima/swap</div>
-                  <div style={{display:"flex",gap:6,marginTop:8}}>
-                    <div style={{background:"#1e293b",borderRadius:8,padding:6,flex:1}}><div style={{fontSize:7,opacity:0.6}}>BTC Live</div><div style={{fontSize:10,fontWeight:900,color:"#f7931a"}}>Rp 1.047.156.508</div></div>
-                    <div style={{background:"#1e293b",borderRadius:8,padding:6,flex:1}}><div style={{fontSize:7,opacity:0.6}}>BSCScan</div><div style={{fontSize:10,fontWeight:900,color:"#f59e0b"}}>13:39 - 15 Menit Timer</div></div>
-                    <div style={{background:"#1e293b",borderRadius:8,padding:6,flex:1}}><div style={{fontSize:7,opacity:0.6}}>Seed + 2FA</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>Seed OK + 2FA ✅</div></div>
-                  </div>
-                </div>
                 {[
-                  {symbol:"BTC", name:"Bitcoin - BTC - bc1qxy2k...s8x4j3n5m9q7 + Balance 0.0025 BTC ≈ $1250 + Alamat Wallet (BTC) - TrustWallet/Metamask - Copy sebagai asset + Copy", network:"BTC - SegWit - bc1qxy2k...s8x4j3n5m9q7", bal:"0.0025 BTC ≈ $1250", usd:"$1250 - 0.0025 BTC", icon:"₿", color:"#f7931a", addr:"bc1qxy2kgy6v8u3j5m9q7s8x4j3n5m9q7s8x4j3n5m9q7s8x4j3n5m9", contract:"", explorer:"https://www.blockchain.com/explorer/addresses/btc/"},
-                  {symbol:"ETH", name:"Ethereum - ERC-20 - 0xAbC...1234 + Balance 0.5 ETH ≈ $1800", network:"ERC-20 - Ethereum - 0xAbC...1234", bal:"0.5 ETH ≈ $1800", usd:"$1800 - 0.5 ETH", icon:"Ξ", color:"#627eea", addr:"0xAbC123dEf456aBc789DeF0123456789AbCdEf12", contract:"", explorer:"https://etherscan.io/address/"},
-                  {symbol:"USDT", name:"Tether BEP-20 - BEP-20 - 0x55d...7f6eB + Alamat Kontrak - BEP-20 - Kirim/Terima/Swap → 0x55d398326f99059fF775485246999027B3197955 (USDT BEP-20 contract) + Copy", network:"BEP-20 - BSC - 0x55d...7f6eB", bal:"500 USDT ≈ $500", usd:"$500 - BEP-20", icon:"💲", color:"#26a17b", addr:"0x55d398326f99059fF775485246999027B3197955", contract:"0x55d398326f99059fF775485246999027B3197955", explorer:"https://bscscan.com/address/"},
-                  {symbol:"USDT", name:"Tether ERC-20 - ERC-20 - 0xdAC...a7d0 → 0xdAC17F958D2ee523a2206206994597C13D831ec7 (USDT ERC-20 contract)", network:"ERC-20 - Ethereum - 0xdAC...a7d0", bal:"500 USDT ≈ $500", usd:"$500 - ERC-20", icon:"💲", color:"#26a17b", addr:"0xdAC17F958D2ee523a2206206994597C13D831ec7", contract:"0xdAC17F958D2ee523a2206206994597C13D831ec7", explorer:"https://etherscan.io/address/"},
-                  {symbol:"BNB", name:"BNB Smart Chain - BEP-20 - 0x1a2...3b4c + Balance 1.2 BNB ≈ $720", network:"BEP-20 - BSC - 0x1a2...3b4c", bal:"1.2 BNB ≈ $720", usd:"$720 - 1.2 BNB", icon:"🔶", color:"#f3ba2f", addr:"0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b", contract:"", explorer:"https://bscscan.com/address/"},
+                  {symbol:"BTC", name:"Bitcoin", network:"BTC", bal:"0.0025 BTC", usd:"$125", icon:"₿", color:"#f7931a", addr:"bc1q...s8x4j3n5m9q7", contract:""},
+                  {symbol:"USDT", name:"Tether BEP-20", network:"BEP-20", bal:"500 USDT", usd:"$500", icon:"💲", color:"#26a17b", addr:"0x55d...7f6eB", contract:"0x55d398326f99059fF775485246999027B3197955"},
+                  {symbol:"BNB", name:"BNB", network:"BEP-20", bal:"1.2 BNB", usd:"$720", icon:"🔶", color:"#f3ba2f", addr:"0x1a2...3b4c", contract:""},
                 ].map(a=>(
-                  <div key={a.symbol+a.network+a.addr} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9",marginTop:8}}>
-                    <div onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",cursor:"pointer"}}>
-                      <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
-                      <div style={{flex:1}}><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b",marginTop:2}}>Alamat: {a.addr} + Alamat Kontrak: {a.contract||"-"} - {a.network}</div></div>
-                      <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:11}}>{a.bal}</div><div style={{fontSize:7,color:"#64748b"}}>{a.usd}</div></div>
-                    </div>
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginTop:8}}>
-                      <button style={{padding:6,borderRadius:6,background:"#fee2e2",border:"none",fontSize:8,fontWeight:700}}>Kirim - {a.symbol} BEP-20/ERC-20</button>
-                      <button style={{padding:6,borderRadius:6,background:"#dcfce7",border:"none",fontSize:8,fontWeight:700}}>Terima - {a.addr.slice(0,6)}... QR - Copy</button>
-                      <button style={{padding:6,borderRadius:6,background:"#dbeafe",border:"none",fontSize:8,fontWeight:700}}>Swap - Pancake/Uniswap - {a.contract?a.contract.slice(0,6)+"...":""}</button>
-                      <button onClick={()=>window.open(a.explorer+(a.contract||a.addr),"_blank")} style={{padding:6,borderRadius:6,background:"#f1f5f9",border:"none",fontSize:8,fontWeight:700}}>BSCScan - {a.explorer.includes("bscscan")?"BSCScan 13:39":"Etherscan"} - 15m timer</button>
-                    </div>
+                  <div key={a.symbol+a.network} onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",padding:"12px 0",borderBottom:"1px solid #f8fafc",cursor:"pointer"}}>
+                    <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
+                    <div style={{flex:1}}><div style={{fontWeight:800,fontSize:12}}>{a.symbol} - {a.name}</div><div style={{fontSize:8,color:"#64748b"}}>{a.network} • {a.addr}</div></div>
+                    <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:12}}>{a.bal}</div><div style={{fontSize:8,color:"#64748b"}}>{a.usd}</div></div>
                   </div>
                 ))}
-                <button onClick={()=>{ const sym=prompt("Symbol: USDT, BTC, ETH, BNB"); const nama=prompt("Nama: Tether BEP-20"); const net=prompt("Network: BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap / ERC-20 / TRC-20 / BTC / SOL"); const addr=prompt("Alamat Wallet TrustWallet/Metamask: 0x... / bc1q..."); const contract=prompt("Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract"); if(sym&&addr){ alert("Tambah Asset: "+sym+" - "+addr+" - "+(contract||"No Contract")+" - TrustWallet/Metamask - Copy sebagai asset - Alamat kontrak kirim/terima/swap - + Tambah Asset"); } }} style={{width:"100%",marginTop:12,padding:10,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:10}}>+ Tambah Coin → popup Tambah Coin - Alamat dari masing-masing Coin → Symbol: USDT, BTC, ETH, BNB + Nama: Tether BEP-20 + Network: BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap / ERC-20 / TRC-20 / BTC / SOL + Alamat Wallet TrustWallet/Metamask: 0x... / bc1q... + Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract → + Tambah Asset</button>
-}
               </div>
             </div>
           )}
@@ -565,6 +575,58 @@ export default function Page(){
         </div>
       )}
 
+
+      {showAddBank && (
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:95,display:"grid",placeItems:"center",padding:12}}>
+          <div style={{background:"#fff",borderRadius:16,padding:16,maxWidth:360,width:"100%"}}>
+            <div style={{fontWeight:900,fontSize:12}}>Tambah Akun Bank - 30+ Bank - Daftar List Bank Tidak Ditambah Akun - FIX</div>
+            <div style={{marginTop:10,display:"grid",gap:8}}>
+              <select value={newBankName} onChange={e=>setNewBankName(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
+                {TABUNGAN_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - {b.country} - {b.curr} - {b.name} - Custom Bank Lokal/Global - Mata Uang Global</option>)}
+                {EWALLET_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - E-Wallet - {b.country} - {b.curr} - Custom E-Wallet Lokal/Global - Banyak Opsi</option>)}
+              </select>
+              <select value={newBankGroup} onChange={e=>setNewBankGroup(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
+                <option value="tabungan">Tabungan - Rp 11.800.000 (BCA BNI BRI) - SALAH SATU sumber</option>
+                <option value="ewallet">E-Wallet - Rp 700.000 (GoPay OVO DANA) - SALAH SATU sumber</option>
+                <option value="tunai">Tunai - Rp 1.205.000 - Hanya 1 tab + warna - SALAH SATU sumber</option>
+                <option value="darurat">Darurat - Rp 5.000.000 - Wajib pisah - gak campur tabungan</option>
+                <option value="cicilan">Cicilan - Rp 2.000.000 - FIF Kredivo Akulaku - tgl jatuh tempo - Bayar pakai SALAH SATU</option>
+              </select>
+              <input value={newBankNorek} onChange={e=>setNewBankNorek(e.target.value)} placeholder="Norek - 1234567890 / 0812**** - show/hide + warna" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <input value={newBankBalance} onChange={e=>setNewBankBalance(e.target.value)} type="number" placeholder="Balance - Rp - SALAH SATU sumber" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <div style={{display:"flex",gap:8}}>
+                <button onClick={()=>setShowAddBank(false)} style={{flex:1,padding:10,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:10}}>Batal</button>
+                <button onClick={handleAddBank} style={{flex:1,padding:10,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah Akun - Bank - Daftar List Bank</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showAddCoin && (
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:96,display:"grid",placeItems:"center",padding:12}}>
+          <div style={{background:"#fff",borderRadius:16,padding:16,maxWidth:360,width:"100%"}}>
+            <div style={{fontWeight:900,fontSize:12}}>+ Tambah Coin - Alamat dari masing-masing Coin - Symbol: USDT, BTC, ETH, BNB - Nama: Tether BEP-20 - Network: BEP-20 - Alamat Wallet - Alamat Kontrak</div>
+            <div style={{marginTop:10,display:"grid",gap:8}}>
+              <input value={newCoinSymbol} onChange={e=>setNewCoinSymbol(e.target.value)} placeholder="Symbol: USDT, BTC, ETH, BNB" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <input value={newCoinName} onChange={e=>setNewCoinName(e.target.value)} placeholder="Nama: Tether BEP-20 / Bitcoin / Ethereum" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <select value={newCoinNetwork} onChange={e=>setNewCoinNetwork(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
+                <option value="BEP-20">BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap</option>
+                <option value="ERC-20">ERC-20 - Ethereum - TrustWallet/Metamask</option>
+                <option value="TRC-20">TRC-20 - Tron - TrustWallet/Metamask</option>
+                <option value="BTC">BTC - Bitcoin - bc1q... - TrustWallet/Metamask</option>
+                <option value="SOL">SOL - Solana - TrustWallet/Metamask</option>
+              </select>
+              <input value={newCoinAddr} onChange={e=>setNewCoinAddr(e.target.value)} placeholder="Alamat Wallet TrustWallet/Metamask: 0x... / bc1q..." style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <input value={newCoinContract} onChange={e=>setNewCoinContract(e.target.value)} placeholder="Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract - 0x55d398326f99059fF775485246999027B3197955" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
+              <div style={{display:"flex",gap:8}}>
+                <button onClick={()=>setShowAddCoin(false)} style={{flex:1,padding:10,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:10}}>Batal - Balik Dompet</button>
+                <button onClick={handleAddCoinSimple} style={{flex:1,padding:10,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah Asset - Masuk Crypto - PIN 2FA OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
-
+}

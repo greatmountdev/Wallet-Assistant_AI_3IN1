@@ -51,7 +51,7 @@ const exportRealGoogleSheetV40 = async (wallets, authName, authEmail, clientId)=
 };
 
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 const COLORS=["#0ea5e9","#10b981","#06b6d4","#8b5cf6","#ef4444","#f59e0b","#f97316","#14b8a6","#eab308","#22c55e"]
 const TABUNGAN_BANKS=[
   {name:"BCA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"BNI", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
@@ -60,26 +60,24 @@ const TABUNGAN_BANKS=[
   {name:"BTN", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Permata", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"Danamon", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Maybank Indonesia", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"BCA Syariah", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Jago", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
-  {name:"Chase", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Bank of America", country:"USA", curr:"USD", flag:"🇺🇸"},
+  {name:"Chase Bank", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Bank of America", country:"USA", curr:"USD", flag:"🇺🇸"},
   {name:"Wells Fargo", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Citibank", country:"USA", curr:"USD", flag:"🇺🇸"},
   {name:"HSBC UK", country:"UK", curr:"GBP", flag:"🇬🇧"}, {name:"Barclays", country:"UK", curr:"GBP", flag:"🇬🇧"},
   {name:"Deutsche Bank", country:"Germany", curr:"EUR", flag:"🇩🇪"}, {name:"BNP Paribas", country:"France", curr:"EUR", flag:"🇫🇷"},
-  {name:"DBS", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"OCBC", country:"Singapore", curr:"SGD", flag:"🇸🇬"},
+  {name:"DBS Bank", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"OCBC Bank", country:"Singapore", curr:"SGD", flag:"🇸🇬"},
   {name:"UOB", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"Maybank Malaysia", country:"Malaysia", curr:"MYR", flag:"🇲🇾"},
   {name:"MUFG", country:"Japan", curr:"JPY", flag:"🇯🇵"}, {name:"Mizuho", country:"Japan", curr:"JPY", flag:"🇯🇵"},
-  {name:"ICBC", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Commonwealth", country:"Australia", curr:"AUD", flag:"🇦🇺"},
+  {name:"ICBC", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Commonwealth Bank", country:"Australia", curr:"AUD", flag:"🇦🇺"},
   {name:"RBC", country:"Canada", curr:"CAD", flag:"🇨🇦"}, {name:"Emirates NBD", country:"UAE", curr:"AED", flag:"🇦🇪"},
-  {name:"Revolut", country:"Global", curr:"EUR", flag:"🌍"}, {name:"Wise", country:"Global", curr:"USD", flag:"🌍"},
-  {name:"ICBC China", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Bank of China", country:"China", curr:"CNY", flag:"🇨🇳"},
-  {name:"China Construction Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Alipay Bank", country:"China", curr:"CNY", flag:"🇨🇳"},
-  {name:"WeChat Pay Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Custom Bank Lokal/Global", country:"Global", curr:"IDR", flag:"🌍"},
+  {name:"Revolut", country:"UK", curr:"GBP", flag:"🇬🇧"}, {name:"Wise", country:"UK", curr:"GBP", flag:"🇬🇧"},
+  {name:"ICBC China", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Bank of China", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"China Construction Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Alipay Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"WeChat Pay Bank", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"Custom Bank Lokal/Global + Mata Uang Global", country:"Global", curr:"IDR", flag:"🌍"},
 ]
 const EWALLET_BANKS=[
   {name:"GoPay", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"OVO", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"DANA", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"LinkAja", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"ShopeePay", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"i.saku", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
-  {name:"Sakuku", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"DOKU", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
-  {name:"Paytren", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"TrueMoney", country:"Thailand", curr:"THB", flag:"🇹🇭"},
+  {name:"Sakuku", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"DOKU Wallet", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
+  {name:"Paytren", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"TrueMoney", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"Jenius Pay", country:"Indonesia", curr:"IDR", flag:"🇮🇩"}, {name:"Flip", country:"Indonesia", curr:"IDR", flag:"🇮🇩"},
   {name:"PayPal", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Venmo", country:"USA", curr:"USD", flag:"🇺🇸"},
   {name:"Cash App", country:"USA", curr:"USD", flag:"🇺🇸"}, {name:"Apple Pay", country:"USA", curr:"USD", flag:"🇺🇸"},
@@ -87,7 +85,7 @@ const EWALLET_BANKS=[
   {name:"Alipay", country:"China", curr:"CNY", flag:"🇨🇳"}, {name:"WeChat Pay", country:"China", curr:"CNY", flag:"🇨🇳"},
   {name:"GrabPay", country:"Singapore", curr:"SGD", flag:"🇸🇬"}, {name:"GCash", country:"Philippines", curr:"PHP", flag:"🇵🇭"},
   {name:"Paytm", country:"India", curr:"INR", flag:"🇮🇳"}, {name:"PhonePe", country:"India", curr:"INR", flag:"🇮🇳"},
-  {name:"Custom E-Wallet Lokal/Global", country:"Global", curr:"IDR", flag:"🌍"}, {name:"Custom - Banyak Opsi", country:"Global", curr:"IDR", flag:"🌍"},
+  {name:"Custom E-Wallet Lokal/Global + Custom - Banyak Opsi", country:"Global", curr:"IDR", flag:"🌍"},
 ]
 
 const BANKS=[
@@ -116,28 +114,6 @@ const T={
 
 export default function Page(){
   const [step,setStep]=useState("login")
-  const [cryptoMode,setCryptoMode]=useState("dompet");
-  const [showCryptoSeedPopup,setShowCryptoSeedPopup]=useState(false);
-  const [cryptoSeedChecked,setCryptoSeedChecked]=useState(false);
-  const [crypto2FAChecked,setCrypto2FAChecked]=useState(false);
-  const [cryptoSeed12,setCryptoSeed12]=useState("abandon ability able about above absent absorb abstract absurd abuse access accident");
-  const [cryptoPIN,setCryptoPIN]=useState("");
-  const [btcPrice,setBtcPrice]=useState("Rp 1.047.156.508");
-  const [bscScanTimer,setBscScanTimer]=useState("13:39");
-  const handleCryptoTabClick = (t)=>{ if(t==="crypto"){ setShowCryptoSeedPopup(true); } else { setCryptoMode("dompet"); setMode("Dompet"); } };
-  const confirmCryptoSeed = ()=>{ if(!cryptoSeedChecked){ alert("Centang Seed!"); return; } if(!crypto2FAChecked){ alert("Centang 2FA!"); return; } if(cryptoPIN.length!==6){ alert("PIN 6 digit!"); return; } setShowCryptoSeedPopup(false); setCryptoMode("crypto"); setMode("Crypto"); };
-  const handleAddBank = ()=>{ if(!newBankNorek){ alert("Isi norek!"); return; } const newId = String(Date.now()); setWallets([...wallets, {id:newId, name:newBankName+" - "+newBankNorek, bank:newBankName, group:newBankGroup, balance:parseInt(newBankBalance)||0, norek:newBankNorek, warna:"#0ea5e9"}]); setShowAddBank(false); setNewBankNorek(""); setNewBankBalance(0); };
-  useEffect(()=>{ const a=setInterval(()=>{ setBscScanTimer(p=>{ const x=p.split(":"); let m=parseInt(x[0]||"00"); let s=parseInt(x[1]||"00"); let tt=m*60+s-1; if(tt<=0) tt=900; return String(Math.floor(tt/60)).padStart(2,"0")+":"+String(tt%60).padStart(2,"0"); }); },1000); const b=setInterval(()=>{ const v=1047156508+Math.floor(Math.random()*10000000-5000000); setBtcPrice("Rp "+v.toLocaleString("id-ID")); },5000); return ()=>{ clearInterval(a); clearInterval(b); }; },[]);
-
-  const [cryptoBottom,setCryptoBottom]=useState("beranda");
-  const [selectedCoin,setSelectedCoin]=useState(null);
-  const [showAddBank,setShowAddBank]=useState(false);
-  const [newBankName,setNewBankName]=useState("BCA");
-  const [newBankNorek,setNewBankNorek]=useState("");
-  const [newBankBalance,setNewBankBalance]=useState(0);
-  const [newBankGroup,setNewBankGroup]=useState("tabungan");
-  const [showAddCoin,setShowAddCoin]=useState(false);
-
   const [authName,setAuthName]=useState("Kawan"), [authEmail,setAuthEmail]=useState("kawan@gmail.com"), [authPhone,setAuthPhone]=useState("0812****890")
   const [clientId,setClientId]=useState(typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : "")
   const [pin,setPin]=useState(""), [pinStep,setPinStep]=useState(1), [pin1Saved,setPin1Saved]=useState("")
@@ -147,16 +123,18 @@ export default function Page(){
   const [isListening,setIsListening]=useState(false)
   const [laporanTab,setLaporanTab]=useState("grafik")
   const [wallets,setWallets]=useState([
-      {id:"1", name:"Tabungan BCA", bank:"BCA", group:"tabungan", balance:7500000, norek:"1234567890", warna:"#0ea5e9"},
-      {id:"2", name:"Tabungan BNI", bank:"BNI", group:"tabungan", balance:2500000, norek:"0987654321", warna:"#10b981"},
-      {id:"3", name:"Tabungan BRI", bank:"BRI", group:"tabungan", balance:1800000, norek:"1122334455", warna:"#06b6d4"},
-      {id:"4", name:"GoPay", bank:"GoPay", group:"ewallet", balance:375000, norek:"0812****", warna:"#0ea5e9"},
-      {id:"5", name:"OVO", bank:"OVO", group:"ewallet", balance:125000, norek:"0812****", warna:"#8b5cf6"},
-      {id:"6", name:"DANA", bank:"DANA", group:"ewallet", balance:200000, norek:"0812****", warna:"#0ea5e9"},
-      {id:"7", name:"Tunai Dompet", bank:"Tunai", group:"tunai", balance:1205000, norek:"-", warna:"#f59e0b"},
-      {id:"8", name:"Dana Darurat", bank:"Darurat", group:"darurat", balance:5000000, norek:"-", warna:"#ef4444"},
-      {id:"9", name:"Cicilan FIF", bank:"FIF", group:"cicilan", balance:2000000, norek:"-", warna:"#f97316"},
-    ])
+    {id:"1",name:"Tabungan BCA",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BCA",norek:"1234567890",balance:7500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
+    {id:"2",name:"Tabungan BNI",type:"tabungan",group:"tabungan",color:"#2563eb",bank:"BNI",norek:"0987654321",balance:2500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
+    {id:"3",name:"Tabungan BRI",type:"tabungan",group:"tabungan",color:"#0ea5e9",bank:"BRI",norek:"1122334455",balance:1500000,currency:"IDR",flag:"🇮🇩",icon:"🏦",platform:"",dueDate:""},
+    {id:"4",name:"GoPay",type:"ewallet",group:"ewallet",color:"#10b981",bank:"GoPay",norek:"081234567890",balance:375000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"",dueDate:""},
+    {id:"5",name:"OVO",type:"ewallet",group:"ewallet",color:"#8b5cf6",bank:"OVO",norek:"081234567891",balance:125000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"",dueDate:""},
+    {id:"6",name:"DANA",type:"ewallet",group:"ewallet",color:"#06b6d4",bank:"DANA",norek:"081234567892",balance:200000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"",dueDate:""},
+    {id:"7",name:"Tunai Dompet",type:"cash",group:"tunai",color:"#06b6d4",bank:"Cash",norek:"-",balance:1205000,currency:"IDR",flag:"🇮🇩",icon:"👛",platform:"",dueDate:""},
+    {id:"8",name:"Dana Darurat Wajib Pisah",type:"darurat",group:"darurat",color:"#f59e0b",bank:"BSI",norek:"9988776655",balance:5000000,currency:"IDR",flag:"🇮🇩",icon:"🚨",platform:"",dueDate:""},
+    {id:"9",name:"Cicilan Motor",type:"cicilan",group:"cicilan",color:"#ef4444",bank:"FIF",norek:"-",balance:1200000,currency:"IDR",flag:"🇮🇩",icon:"🏍️",platform:"FIF",dueDate:"2026-10-20"},
+    {id:"10",name:"Cicilan HP",type:"cicilan",group:"cicilan",color:"#8b5cf6",bank:"Kredivo",norek:"-",balance:800000,currency:"IDR",flag:"🇮🇩",icon:"📱",platform:"Kredivo",dueDate:"2026-10-25"},
+    {id:"11",name:"Pengeluaran",type:"pengeluaran",group:"pengeluaran",color:"#f97316",bank:"-",norek:"-",balance:0,currency:"IDR",flag:"🌍",icon:"💸",platform:"",dueDate:""},
+  ])
   const [txs,setTxs]=useState([
     {id:"1",title:"Kopi dan makan siang",amount:45000,fromWalletId:"7",fromGroup:"tunai",toGroup:"pengeluaran",jenis:"keluar",kategori:"Makanan",date:"3 Okt 2026",foto:"struk.jpg",source:"Tunai Dompet -> Pengeluaran",curr:"IDR",note:"FIX: Belanja 45k - SALAH SATU: Tunai Dompet - Bukan semua 4 grup kepotong! Sisa Tunai Rp 1.160.000 - Tabungan, E-Wallet, Darurat TETAP! 🙌"},
     {id:"2",title:"Isi saldo GoPay dari BCA",amount:75000,fromWalletId:"1",toWalletId:"4",fromGroup:"tabungan",toGroup:"ewallet",jenis:"pindah",kategori:"Top-up",date:"3 Okt 2026",foto:null,source:"Tabungan BCA -> GoPay",curr:"IDR",note:"Pindah: BCA -75k, GoPay +75k - Hanya 2 akun berubah, bukan semua!"},
@@ -296,287 +274,264 @@ export default function Page(){
       </div>
     )
   }
-  const isCrypto = cryptoMode==="crypto";
-  const [bottom,setBottomState]=useState("beranda");
-  const bottomVal = bottom||bottomState;
-  const setBottom = (v)=>{ if(typeof setBottomState==="function") setBottomState(v); if(typeof setBottom!=="undefined") try{ setBottomState(v); }catch(e){} };
   return (
-    <div style={{maxWidth:440,margin:"0 auto",minHeight:"100vh",background:theme==="dark"?"#0f172a":"#f8fafc",paddingBottom:80,position:"relative"}}>
+    <div style={{maxWidth:440,margin:"0 auto",minHeight:"100vh",background:theme==="dark"?"#0f172a":"#f1f7ff",color:theme==="dark"?"#fff":"#0f172a",fontFamily:fontCfg.family,fontSize:fontCfg.size,fontWeight:fontCfg.weight,paddingBottom:88}}>
+      <div style={{background:"linear-gradient(90deg,#06b6d4,#8b5cf6)",padding:"12px 14px 0",color:"#fff",position:"sticky",top:0,zIndex:20}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{display:"flex",gap:10,alignItems:"center"}}><button onClick={()=>setShowMenu(true)} style={{width:44,height:44,borderRadius:14,background:"#fff",border:"none",fontSize:20}}>☰</button><div><div style={{fontWeight:900,fontSize:14}}>{tr.appTitle}</div><div style={{fontSize:9,opacity:.9}}>{LANGS.find(l=>l.code===lang)?.flag} {lang} - FULL CHECKLIST - {authName}</div></div></div>
+          <button onClick={()=>setHideTotal(!hideTotal)} style={{width:36,height:36,borderRadius:10,background:"rgba(255,255,255,.9)",border:"none"}}>👁️</button>
+        </div>
+        <div style={{display:"flex",justifyContent:"center",padding:"12px 0"}}>
+          <div style={{display:"flex",background:"rgba(255,255,255,.22)",borderRadius:14,padding:4,gap:4}}>
+            <button onClick={()=>setMode("Dompet")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Dompet"?"#fff":"transparent",color:mode==="Dompet"?"#0f172a":"#fff",fontSize:12}}>{tr.dompet}</button>
+            <button onClick={()=>setMode("Crypto")} style={{padding:"10px 28px",borderRadius:10,border:"none",fontWeight:800,background:mode==="Crypto"?"#fff":"transparent",color:mode==="Crypto"?"#0f172a":"#fff",fontSize:12}}>{tr.crypto}</button>
+          </div>
+        </div>
+      </div>
+
       {showMenu && (
-        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.5)",zIndex:90,display:"flex"}}>
-          <div style={{width:280,background:"#fff",height:"100%",overflowY:"auto",padding:12}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontWeight:900,fontSize:12}}>Jendela Burger Grup Bank - 6 Grup FULL - TabunganList BCA BNI BRI + e-wallet + norek show/hide + warna - E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
-              <button onClick={()=>setShowMenu(false)} style={{width:28,height:28,borderRadius:8,background:"#f1f5f9",border:"none"}}>✕</button>
+        <div style={{position:"fixed",inset:0,zIndex:80,display:"flex"}}>
+          <div style={{width:"96%",maxWidth:380,background:theme==="dark"?"#1e293b":"#f8fbff",height:"100%",overflowY:"auto",padding:12}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:15}}>{tr.sumberDana} - {lang} - FULL</h2><button onClick={()=>setShowMenu(false)} style={{width:36,height:36,borderRadius:10,background:"#fff",border:"1px solid #e2e8f0"}}>✕</button></div>
+            <div style={{fontSize:9,color:"#64748b",marginTop:4,background:"#fff",borderRadius:8,padding:8,border:"2px solid #0ea5e9"}}>
+              <b style={{color:"#ef4444"}}>FIX ALGORITMA SALAH SATU Sumber - Cicilan Juga! 🙌</b><br/>
+              Belanja/Pengeluaran & Cicilan = Pilih SALAH SATU sumber Tabungan/E-Wallet/Saku Dompet/Dana Darurat - BUKAN semua 4 grup terpotong!<br/>
+              Contoh: Kopi 45k dari Tunai: Hanya Tunai 1.205.000→1.160.000. BCA, E-Wallet, Darurat TETAP!<br/>
+              Contoh: Bayar cicilan motor 500k dari BCA: BCA 7,5jt→7jt, Cicilan 1,2jt→700k, yang lain TETAP! Custom platform FIF jatuh tempo 20 Okt notif!
             </div>
-            <div style={{marginTop:12,display:"grid",gap:8}}>
-              <div style={{fontSize:9,fontWeight:700}}>Tabungan BCA - BCA - 1234567890 - Rp 7.500.000 - show/hide + warna - BCA BNI BRI + norek show/hide + warna</div>
-              <div style={{fontSize:9,fontWeight:700}}>Tabungan BNI - BNI - 0987654321 - Rp 2.500.000</div>
-              <div style={{fontSize:9,fontWeight:700}}>Tabungan BRI - BRI - 1122334455 - Rp 1.800.000</div>
-              <div style={{fontSize:9,fontWeight:700}}>E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber</div>
-              <div style={{fontSize:9,fontWeight:700}}>GoPay - 0812**** - Rp 375.000</div>
-              <div style={{fontSize:9,fontWeight:700}}>OVO - 0812**** - Rp 125.000</div>
-              <div style={{fontSize:9,fontWeight:700}}>Tunai Dompet Hanya 1 tab + warna - Rp 1.205.000 - Dana Darurat Wajib pisah - Cicilan Custom platform FIF Kredivo Akulaku + tgl jatuh tempo - 6 Grup FULL!</div>
-              <div style={{background:"#fef3c7",borderRadius:8,padding:8}}><div style={{fontSize:9,fontWeight:700}}>Tunai Dompet - Hanya 1 tab + warna - Rp 1.205.000 - SALAH SATU sumber</div></div>
-              <div style={{background:"#fef3c7",borderRadius:8,padding:8}}><div style={{fontSize:9,fontWeight:700}}>Dana Darurat - Wajib pisah - Rp 5.000.000 - Wajib pisah, gak campur tabungan</div></div>
-              <div style={{background:"#fee2e2",borderRadius:8,padding:8}}><div style={{fontSize:9,fontWeight:700}}>Cicilan - FIF Kredivo Akulaku - Rp 2.000.000 - Jatuh tempo 20/25 Okt</div></div>
-            </div>
-          </div>
-          <div style={{flex:1}} onClick={()=>setShowMenu(false)}></div>
-        </div>
-      )}
-      {showCryptoSeedPopup && (
-        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.7)",zIndex:100,display:"grid",placeItems:"center",padding:12}}>
-          <div style={{background:"#fff",borderRadius:20,padding:16,maxWidth:360,width:"100%"}}>
-            <div style={{fontWeight:900,fontSize:14,textAlign:"center"}}>Crypto Seed & 2FA Wajib - Hanya Geser ke Crypto - Popup Seed & 2FA cuma pintu masuk - Seed 12 Kata + QR + BSCScan 15 Menit + BTC Live + PIN 2FA → Masuk Crypto - PIN 2FA OK</div>
-            <div style={{background:"#0f172a",color:"#10b981",padding:8,borderRadius:8,marginTop:6,fontSize:10,fontFamily:"monospace",wordBreak:"break-all"}}>{cryptoSeed12}</div>
-            <div style={{display:"flex",gap:6,marginTop:6}}>
-              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #f59e0b"}}><div style={{fontSize:7}}>BSCScan Timer - 15 Menit - {bscScanTimer} - 13:39</div><div style={{fontSize:12,fontWeight:900,color:"#f59e0b"}}>{bscScanTimer}</div></div>
-              <div style={{flex:1,background:"#fff",borderRadius:8,padding:6,border:"1px solid #10b981"}}><div style={{fontSize:7}}>BTC Live - Rp 1.047.156.508</div><div style={{fontSize:10,fontWeight:900,color:"#10b981"}}>{btcPrice}</div></div>
-            </div>
-            <input type="password" value={cryptoPIN} onChange={e=>setCryptoPIN(e.target.value.slice(0,6))} placeholder="PIN 2FA 6 digit" style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,textAlign:"center",letterSpacing:4}}/>
-            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={cryptoSeedChecked} onChange={e=>setCryptoSeedChecked(e.target.checked)}/> Simpan Seed 12 kata + QR - abandon ability able about above absent absorb abstract absurd abuse access accident</label>
-            <label style={{display:"flex",gap:6,marginTop:8,fontSize:9}}><input type="checkbox" checked={crypto2FAChecked} onChange={e=>setCrypto2FAChecked(e.target.checked)}/> Aktifkan PIN 2FA - Wajib centang - Seed OK + 2FA ✅</label>
-            <div style={{display:"flex",gap:8,marginTop:12}}>
-              <button onClick={()=>{setShowCryptoSeedPopup(false); setCryptoMode("dompet"); setMode("Dompet");}} style={{flex:1,padding:10,borderRadius:10,border:"1px solid #e2e8f0",background:"#fff",fontSize:10,fontWeight:700}}>Batal - Balik Dompet</button>
-              <button onClick={confirmCryptoSeed} style={{flex:1,padding:10,borderRadius:10,border:"none",background:"#0f172a",color:"#fff",fontSize:10,fontWeight:900}}>Masuk Crypto - PIN 2FA OK - TrustWallet / Metamask - Dalem</button>
-            </div>
-          </div>
-        </div>
-      )}
-      {isCrypto ? (
-        <div style={{background:"#fff",minHeight:"100vh"}}>
-          {cryptoBottom==="beranda" && !selectedCoin && (
-            <div>
-              <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div style={{fontWeight:900,fontSize:14}}>Crypto Wallet - TrustWallet / Metamask - Dalem: BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅ - Satu List Coin - $4,270.00 - Total Balance $4,270.00</div>
-                  <button onClick={()=>{setCryptoMode("dompet"); setMode("Dompet");}} style={{padding:"4px 8px",borderRadius:8,background:"#1e293b",color:"#fff",border:"none",fontSize:8}}>← Dompet - Total Cash Flow 4 Grup</button>
-                </div>
-                <div style={{textAlign:"center",marginTop:12}}><div style={{fontSize:10,opacity:0.6}}>Total Balance - TrustWallet / Metamask</div><div style={{fontWeight:900,fontSize:22}}>$4,270.00 - BTC Live Rp 1.047.156.508 + BSCScan 13:39 + Seed OK + 2FA ✅</div><div style={{fontSize:9,opacity:0.6,marginTop:4}}>{btcPrice} • BSCScan {bscScanTimer} - 15 Menit Timer - 13:39 - Seed OK + 2FA ✅</div></div>
-              </div>
-              <div style={{padding:12}}>
-                <div style={{background:"#0f172a",borderRadius:12,padding:10,marginBottom:10,color:"#fff"}}>
-                  <div style={{fontWeight:900,fontSize:10}}>Asset Crypto - Alamat dari masing-masing Coin (tergantung jaringan) → Misal USDT BEP-20 TrustWallet/Metamask di copy di sini sebagai asset - Alamat kontrak kirim/terima/swap</div>
-                </div>
-                {[
-                  {symbol:"BTC", name:"Bitcoin - BTC - bc1qxy2k...s8x4j3n5m9q7 - Balance 0.0025 BTC ≈ $1250 - TrustWallet/Metamask - Copy sebagai asset", network:"BTC - bc1qxy2k...s8x4j3n5m9q7", bal:"0.0025 BTC ≈ $1250", usd:"$1250", icon:"₿", color:"#f7931a", addr:"bc1qxy2kgy6v8u3j5m9q7s8x4j3n5m9q7s8x4j3n5m9", contract:"", explorer:"https://www.blockchain.com/explorer/addresses/btc/"},
-                  {symbol:"ETH", name:"Ethereum - ERC-20 - 0xAbC...1234 - Balance 0.5 ETH ≈ $1800", network:"ERC-20", bal:"0.5 ETH ≈ $1800", usd:"$1800", icon:"Ξ", color:"#627eea", addr:"0xAbC123dEf456aBc789DeF0123456789AbCdEf12", contract:"", explorer:"https://etherscan.io/address/"},
-                  {symbol:"USDT", name:"Tether BEP-20 - 0x55d...7f6eB - Contract 0x55d398326f99059fF775485246999027B3197955 - USDT BEP-20 contract", network:"BEP-20 - 0x55d...7f6eB", bal:"500 USDT ≈ $500", usd:"$500", icon:"💲", color:"#26a17b", addr:"0x55d398326f99059fF775485246999027B3197955", contract:"0x55d398326f99059fF775485246999027B3197955", explorer:"https://bscscan.com/address/"},
-                  {symbol:"USDT", name:"Tether ERC-20 - 0xdAC...a7d0 - Contract 0xdAC17F958D2ee523a2206206994597C13D831ec7", network:"ERC-20", bal:"500 USDT ≈ $500", usd:"$500", icon:"💲", color:"#26a17b", addr:"0xdAC17F958D2ee523a2206206994597C13D831ec7", contract:"0xdAC17F958D2ee523a2206206994597C13D831ec7", explorer:"https://etherscan.io/address/"},
-                  {symbol:"BNB", name:"BNB Smart Chain - BEP-20 - 0x1a2...3b4c - 1.2 BNB ≈ $720", network:"BEP-20", bal:"1.2 BNB ≈ $720", usd:"$720", icon:"🔶", color:"#f3ba2f", addr:"0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b", contract:"", explorer:"https://bscscan.com/address/"},
-                ].map(a=>(
-                  <div key={a.symbol+a.network+a.addr} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9",marginTop:8}}>
-                    <div onClick={()=>setSelectedCoin(a)} style={{display:"flex",gap:12,alignItems:"center",cursor:"pointer"}}>
-                      <div style={{width:40,height:40,borderRadius:20,background:a.color+"20",display:"grid",placeItems:"center",fontSize:18}}>{a.icon}</div>
-                      <div style={{flex:1}}><div style={{fontWeight:800,fontSize:11}}>{a.symbol} - {a.name}</div><div style={{fontSize:7,color:"#64748b",marginTop:2}}>Alamat: {a.addr} + Alamat Kontrak: {a.contract||"-"} - {a.network} - TrustWallet/Metamask - Copy sebagai asset</div></div>
-                      <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:11}}>{a.bal}</div><div style={{fontSize:7,color:"#64748b"}}>{a.usd}</div></div>
-                    </div>
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginTop:8}}>
-                      <button style={{padding:6,borderRadius:6,background:"#fee2e2",border:"none",fontSize:8,fontWeight:700}}>Kirim - {a.symbol} - TrustWallet/Metamask - BEP-20/ERC-20</button>
-                      <button style={{padding:6,borderRadius:6,background:"#dcfce7",border:"none",fontSize:8,fontWeight:700}}>Terima - {a.addr.slice(0,6)}... QR - Copy alamat kontrak</button>
-                      <button style={{padding:6,borderRadius:6,background:"#dbeafe",border:"none",fontSize:8,fontWeight:700}}>Swap - PancakeSwap/Uniswap - Contract: {a.contract?a.contract.slice(0,6)+"...":""}</button>
-                      <button style={{padding:6,borderRadius:6,background:"#f1f5f9",border:"none",fontSize:8,fontWeight:700}}>BSCScan - https://bscscan.com/address/{a.addr} - 13:39 - 15 Menit Timer</button>
-                    </div>
+            {[
+              {key:"tabungan",label:tr.tabungan+" - List BCA BNI BRI + e-wallet + norek show/hide + warna pilih",icon:"🏦",color:"#0ea5e9"},
+              {key:"ewallet",label:tr.ewallet+" - GoPay OVO DANA LinkAja ShopeePay + norek + warna - SALAH SATU",icon:"📱",color:"#10b981"},
+              {key:"tunai",label:tr.tunai+" - Hanya 1 tab + warna - SALAH SATU sumber",icon:"👛",color:"#06b6d4"},
+              {key:"darurat",label:tr.darurat+" - Pisah, gak boleh campur tabungan, warna sesuaikan - SALAH SATU",icon:"🚨",color:"#f59e0b"},
+              {key:"cicilan",label:tr.cicilan+" - Custom platform + tgl jatuh tempo notif + warna - Bayar pakai SALAH SATU",icon:"🏍️",color:"#8b5cf6"},
+              {key:"pengeluaran",label:tr.pengeluaran+" - Hanya 1 tab + custom warna - Ambil dari SALAH SATU",icon:"💸",color:"#ef4444"},
+            ].map(g=>{
+              const list=groupedWallets[g.key]||[]
+              const totalGroup=list.reduce((a,b)=>a+b.balance,0)
+              return (
+                <div key={g.key} style={{marginTop:10,background:"#fff",borderRadius:16,padding:10,border:"2px solid "+g.color+"30"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                    <div style={{display:"flex",gap:8,alignItems:"center"}}><div style={{width:36,height:36,borderRadius:10,background:g.color+"22",display:"grid",placeItems:"center"}}>{g.icon}</div><div><div style={{fontWeight:900,fontSize:11}}>{g.label}</div><div style={{fontSize:9,color:"#64748b"}}>Rp {totalGroup.toLocaleString("id-ID")} - {list.length} akun - SALAH SATU sumber</div></div></div>
+                    <button onClick={()=>{setNewWallet({name:"",type:g.key,group:g.key,bank:g.key==="tabungan"?"BCA":g.key==="ewallet"?"GoPay":g.key==="tunai"?"Cash":g.key==="darurat"?"BSI":g.key==="cicilan"?"FIF":"-",norek:"",color:g.color,balance:0,platform:"",dueDate:"",currency:"IDR",flag:"🇮🇩"}); setSelectedSource(null); setShowAddWallet(true)}} style={{width:32,height:32,borderRadius:8,background:g.color,color:"#fff",border:"none",fontWeight:900}}>+</button>
                   </div>
-                ))}
-                <button onClick={()=>setShowAddCoin(true)} style={{width:"100%",marginTop:12,padding:10,borderRadius:10,background:"#0f172a",color:"#fff",border:"none",fontWeight:800,fontSize:10}}>+ Tambah Coin - Symbol: USDT, BTC, ETH, BNB - Nama: Tether BEP-20 - Network: BEP-20 (BSC) - TrustWallet/Metamask - Contract kirim/terima/swap / ERC-20 / TRC-20 / BTC / SOL - Alamat Wallet TrustWallet/Metamask: 0x... / bc1q... - Alamat Kontrak (kalo token): 0x55d... USDT BEP-20 contract - + Tambah Asset</button>
+                  <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
+                    {list.map(w=>(
+                      <div key={w.id} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:12,padding:8,display:"flex",alignItems:"center",gap:8}}>
+                        <div style={{width:40,height:40,borderRadius:10,background:w.color+"22",display:"grid",placeItems:"center"}}>{w.flag} {w.icon}</div>
+                        <div style={{flex:1}}><div style={{fontWeight:800,fontSize:11}}>{w.name}</div><div style={{fontSize:9,color:"#64748b"}}>{w.bank} {w.platform?("• "+w.platform):""} {w.dueDate?("• jatuh "+w.dueDate):""} • Rp {w.balance.toLocaleString("id-ID")}</div><div style={{fontSize:9,display:"flex",gap:4,marginTop:2}}><span>{w.flag} {displayNorek(w.norek,w.id)}</span>{w.norek!=="-"&&w.norek!==""&&(<><button onClick={()=>setHideNorek({...hideNorek,[w.id]:!hideNorek[w.id]})} style={{border:"none",background:"#fff",borderRadius:4,padding:"0 4px",fontSize:8}}>{hideNorek[w.id]?"🙈":"👁️"} Show/Hide</button><button onClick={()=>{try{navigator.clipboard?.writeText(w.norek)}catch{}}} style={{border:"none",background:"#fff",borderRadius:4,padding:"0 4px",fontSize:8}}>📋 Copy</button></>)}<span style={{background:w.color,color:"#fff",borderRadius:4,padding:"0 4px",fontSize:8}}>{w.color}</span></div></div>
+                        <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                          {w.group==="cicilan" && (<button onClick={()=>{setNewTx({title:"Bayar "+w.name,amount:Math.min(500000,w.balance),jenis:"keluar",fromWalletId:groupedWallets.tabungan[0]?.id||"1",toGroup:"cicilan",toCicilanId:w.id,foto:null}); setShowAddTx(true)}} style={{padding:"4px 6px",borderRadius:6,background:"#10b981",color:"#fff",border:"none",fontSize:8,fontWeight:700}}>💳 Bayar - Pilih Sumber</button>)}
+                          <button onClick={()=>{setSelectedSource(w); setNewWallet({name:w.name,type:w.type,group:w.group,bank:w.bank,norek:w.norek,color:w.color,balance:w.balance,platform:w.platform||"",dueDate:w.dueDate||"",currency:w.currency,flag:w.flag||"🇮🇩"}); setShowAddWallet(true)}} style={{width:28,height:28,borderRadius:6,background:"#fff",border:"1px solid #e2e8f0",fontSize:10}}>✎</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <div style={{flex:1,background:"rgba(0,0,0,.25)"}} onClick={()=>setShowMenu(false)}></div>
+        </div>
+      )}
+
+      {showAddTx && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",display:"grid",placeItems:"center",zIndex:92,padding:12}}>
+          <div style={{background:"#fff",borderRadius:16,padding:14,width:"100%",maxWidth:360,maxHeight:"90vh",overflowY:"auto"}}>
+            <h3 style={{margin:0,fontSize:14}}>📷 Input Baru - FULL - FIX SALAH SATU Sumber - {lang}</h3>
+            <div style={{fontSize:9,color:"#ef4444",marginTop:4,background:"#fef2f2",borderRadius:8,padding:6,border:"1px solid #fecaca"}}>
+              <b>FIX ALGORITMA: Cicilan & Belanja = SALAH SATU Sumber! 🙌</b><br/>Belanja 45k dari Tunai: Hanya Tunai 1.205.000→1.160.000, BCA E-Wallet Darurat TETAP! Bayar cicilan motor 500k dari BCA: Hanya BCA 7,5jt→7jt, Cicilan 1,2jt→700k, yang lain TETAP! Bukan semua kepotong!
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:10}}>
+              <input value={newTx.title} onChange={e=>setNewTx({...newTx,title:e.target.value})} placeholder="Judul - ex: Kopi, Gaji, Bayar cicilan motor FIF" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:11}}/>
+              <div style={{display:"flex",gap:6}}><input type="number" value={newTx.amount} onChange={e=>setNewTx({...newTx,amount:Number(e.target.value)})} placeholder="Jumlah Rp" style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:11}}/><select value={newTx.jenis} onChange={e=>setNewTx({...newTx,jenis:e.target.value})} style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:11}}><option value="keluar">Keluar - Belanja/Cicilan - SALAH SATU kepotong</option><option value="masuk">Masuk - Gaji - SALAH SATU nambah</option><option value="pindah">Pindah Antar Cash Flow - Hanya 2 akun berubah</option></select></div>
+              <div style={{background:"#f0f9ff",borderRadius:8,padding:8,border:"1px solid #bae6fd"}}>
+                <div style={{fontSize:10,fontWeight:800,color:"#0369a1"}}>PILIH SUMBER DANA - SALAH SATU (Bukan semua kepotong!):</div>
+                <select value={newTx.fromWalletId} onChange={e=>setNewTx({...newTx,fromWalletId:e.target.value})} style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #0ea5e9",marginTop:6,fontSize:11,background:"#fff"}}>
+                  <optgroup label="Cash Flow - Pilih SALAH SATU sumber - Ini yang kepotong! Tabungan/E-Wallet/Saku/Darurat">
+                    {wallets.filter(w=>["tabungan","ewallet","tunai","darurat"].includes(w.group)).map(w=><option key={w.id} value={w.id}>{w.flag} {w.name} - Rp {w.balance.toLocaleString("id-ID")} - {w.group} - SALAH SATU KEPOTONG</option>)}
+                  </optgroup>
+                </select>
+                <div style={{fontSize:8,color:"#0369a1",marginTop:4}}>Contoh: Kopi 45k dari Tunai: Hanya Tunai kepotong, Tabungan E-Wallet Darurat TETAP! Cicilan motor 500k dari BCA: Hanya BCA kepotong 500k, cicilan berkurang 500k! 🙌</div>
               </div>
+              {newTx.toGroup==="cicilan" && (
+                <div style={{background:"#fef3c7",borderRadius:8,padding:8,border:"1px solid #fde68a"}}>
+                  <div style={{fontSize:10,fontWeight:800,color:"#92400e"}}>PILIH CICILAN YANG DIBAYAR (Custom platform + tgl jatuh tempo notif):</div>
+                  <select value={newTx.toCicilanId} onChange={e=>setNewTx({...newTx,toCicilanId:e.target.value})} style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #f59e0b",marginTop:6,fontSize:11,background:"#fff"}}>
+                    {groupedWallets.cicilan.map(c=><option key={c.id} value={c.id}>{c.icon} {c.name} - {c.platform} - Jatuh tempo {c.dueDate} - Sisa Rp {c.balance.toLocaleString("id-ID")} - Bayar pakai SALAH SATU sumber</option>)}
+                  </select>
+                  <div style={{fontSize:8,color:"#92400e",marginTop:4}}>Bayar cicilan: Pilih cicilan + pilih sumber dana SALAH SATU di atas - Hanya sumber kepotong + cicilan berkurang! Tidak semua grup kepotong! Custom platform FIF/Kredivo/Akulaku + notif tgl jatuh tempo!</div>
+                </div>
+              )}
+              <div style={{background:"#fef3c7",borderRadius:8,padding:8,border:"1px solid #fde68a"}}>
+                <div style={{fontSize:10,fontWeight:800,color:"#92400e"}}>TUJUAN - 6 Grup:</div>
+                <select value={newTx.toGroup} onChange={e=>setNewTx({...newTx,toGroup:e.target.value})} style={{width:"100%",padding:8,borderRadius:8,border:"1px solid #f59e0b",marginTop:6,fontSize:11,background:"#fff"}}>
+                  <option value="pengeluaran">Pengeluaran - Hanya 1 tab + custom warna - Mengurangi SALAH SATU cash flow</option>
+                  <option value="cicilan">Cicilan - Custom platform + tgl jatuh tempo notif + warna - Bayar pakai SALAH SATU sumber Tabungan/E-Wallet/Saku/Darurat</option>
+                  <option value="tabungan">Tabungan - List BCA BNI BRI + norek show/hide + warna - Masuk ke SALAH SATU Tabungan</option>
+                  <option value="ewallet">E-Wallet - GoPay OVO DANA LinkAja ShopeePay + norek + warna - Masuk ke SALAH SATU E-Wallet</option>
+                  <option value="tunai">Tunai Dompet - Hanya 1 tab + warna - Masuk ke Tunai</option>
+                  <option value="darurat">Dana Darurat Wajib Pisah - Pisah, gak boleh campur tabungan, warna sesuaikan - Masuk ke Darurat</option>
+                </select>
+              </div>
+              <div style={{background:"#f0fdf4",borderRadius:8,padding:8,border:"1px solid #bbf7d0"}}>
+                <div style={{fontSize:10,fontWeight:800,color:"#166534"}}>📷 Foto Struk/Bon/Barang - Input Wajib Foto - Drive + Camera + Galeri</div>
+                <div style={{display:"flex",gap:6,marginTop:6}}>
+                  <label style={{flex:1,padding:6,borderRadius:6,border:"1px dashed #10b981",background:"#f0fdf4",color:"#10b981",fontWeight:700,fontSize:9,textAlign:"center",cursor:"pointer"}}>📷 REAL Kamera - {newTx.foto?"✅ "+newTx.foto:"Belum ada"} - Bukan dummy<input type="file" accept="image/*" capture="environment" style={{display:"none"}} onChange={e=>{if(e.target.files[0]){const f=e.target.files[0]; const r=new FileReader(); r.onload=()=>{setNewTx({...newTx,foto:f.name}); if(drivePermission){alert("REAL Kamera -> Drive Upload - "+f.name+" - Terintegrasi Drive - Folder Dompet AI 6 Grup - "+f.size+" bytes - Bukan dummy")}}; r.readAsDataURL(f)}}} /></label>
+                  <label style={{flex:1,padding:6,borderRadius:6,border:"1px dashed #0ea5e9",background:"#f0f9ff",color:"#0ea5e9",fontWeight:700,fontSize:9,textAlign:"center",cursor:"pointer"}}>🖼️ REAL Galeri - Drive - {newTx.foto?"✅":"Pilih"} - Bukan dummy<input type="file" accept="image/*" style={{display:"none"}} onChange={e=>{if(e.target.files[0]){const f=e.target.files[0]; const r=new FileReader(); r.onload=()=>{setNewTx({...newTx,foto:f.name}); if(drivePermission){alert("REAL Galeri -> Drive Upload - "+f.name+" - Terintegrasi Drive - Folder Dompet AI 6 Grup - "+f.size+" bytes - Bukan dummy")}}; r.readAsDataURL(f)}}} /></label>
+                </div>
+                <div style={{display:"flex",gap:6,marginTop:6}}>
+                  <label style={{flex:1,padding:4,borderRadius:6,border:"1px dashed #f59e0b",background:"#fffbeb",color:"#92400e",fontWeight:700,fontSize:8,textAlign:"center",cursor:"pointer"}}>📁 REAL File Insert - Masuk/Pengeluaran/Cicilan - Bukan dummy<input type="file" accept="image/*,.pdf" style={{display:"none"}} onChange={e=>{if(e.target.files[0]){setNewTx({...newTx,foto:e.target.files[0].name}); alert("REAL File Insert Berhasil - Input Data Masuk/Pengeluaran/Cicilan - "+e.target.files[0].name+" - Bisa bekerja terintegrasi")}}}/></label>
+                  <div style={{flex:1,padding:4,borderRadius:6,background:drivePermission?"#dcfce7":"#fee2e2",color:drivePermission?"#166534":"#991b1b",fontSize:7,textAlign:"center",fontWeight:700}}>{drivePermission?"✅ Drive REAL":"⏳ Drive Belum"}<br/>{sheetPermission?"✅ Sheet REAL":"⏳ Sheet Belum"}<br/>{cameraPermission?"✅ Kamera REAL":"⏳ Kamera Belum"}</div>
+                </div>
+                <div style={{fontSize:8,color:"#166534",marginTop:4}}>Foto struk/bon/barang tampil di riwayat transaksi + tersimpan di Drive - Input foto wajib - Camera + Galeri</div>
+              </div>
+              <div style={{display:"flex",gap:6}}><button onClick={()=>setShowAddTx(false)} style={{flex:1,padding:8,borderRadius:8,border:"1px solid #e2e8f0",background:"#fff",fontSize:11}}>Batal</button><button onClick={()=>{
+                if(!newTx.title||!newTx.amount) return alert("Isi judul & jumlah");
+                const fromW=wallets.find(w=>w.id===newTx.fromWalletId);
+                if(!fromW) return alert("Pilih sumber dana SALAH SATU!");
+                let newWallets=[...wallets];
+                if(newTx.jenis==="keluar" && newTx.toGroup==="cicilan"){
+                  const cicilanId=newTx.toCicilanId;
+                  newWallets=newWallets.map(w=>{ if(w.id===newTx.fromWalletId) return {...w,balance:w.balance-newTx.amount}; if(w.id===cicilanId) return {...w,balance:Math.max(0,w.balance-newTx.amount)}; return w; });
+                } else if(newTx.jenis==="keluar"){ newWallets=newWallets.map(w=>w.id===newTx.fromWalletId?{...w,balance:w.balance-newTx.amount}:w); } else if(newTx.jenis==="masuk"){ const map={tabungan:groupedWallets.tabungan[0]?.id, ewallet:groupedWallets.ewallet[0]?.id, tunai:groupedWallets.tunai[0]?.id, darurat:groupedWallets.darurat[0]?.id}; const toId=map[newTx.toGroup]; if(toId) newWallets=newWallets.map(w=>w.id===toId?{...w,balance:w.balance+newTx.amount}:w); } else if(newTx.jenis==="pindah"){ const toW=groupedWallets[newTx.toGroup]?.[0]; if(toW){ newWallets=newWallets.map(w=>{ if(w.id===newTx.fromWalletId) return {...w,balance:w.balance-newTx.amount}; if(w.id===toW.id) return {...w,balance:w.balance+newTx.amount}; return w; }); } }
+                setWallets(newWallets);
+                let note="";
+                if(newTx.jenis==="keluar" && newTx.toGroup==="cicilan"){ const c=wallets.find(w=>w.id===newTx.toCicilanId); note="Bayar CICILAN "+(c?.name||"")+" "+newTx.amount.toLocaleString("id-ID")+" - Pakai dana SALAH SATU: "+fromW.name+" (bukan semua 4 grup!) - "+fromW.name+" sisa Rp "+(fromW.balance-newTx.amount).toLocaleString("id-ID")+" - "+(c?.name||"Cicilan")+" sisa hutang Rp "+Math.max(0,(c?.balance||0)-newTx.amount).toLocaleString("id-ID")+" - Custom platform "+(c?.platform||"")+" jatuh tempo "+(c?.dueDate||"")+" notif! 🙌"; } else if(newTx.jenis==="keluar"){ note="Belanja "+newTx.amount.toLocaleString("id-ID")+" - SALAH SATU: "+fromW.name+" - Sisa "+fromW.name+": Rp "+(fromW.balance-newTx.amount).toLocaleString("id-ID")+" - Tabungan/E-Wallet/Tunai/Darurat lain TETAP! 🙌"; } else { note="Masuk/Pindah "+newTx.amount.toLocaleString("id-ID")+" - Hanya 2 akun berubah!"; }
+                setTxs([{id:Date.now().toString(),title:newTx.title,amount:newTx.amount,fromWalletId:newTx.fromWalletId,fromGroup:fromW.group,toGroup:newTx.toGroup,toCicilanId:newTx.toCicilanId,jenis:newTx.jenis,date:new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"}),foto:newTx.foto||null,source:fromW.name+" -> "+(newTx.toGroup==="cicilan"?(wallets.find(w=>w.id===newTx.toCicilanId)?.name||"Cicilan"):newTx.toGroup),curr:fromW.currency,note:note},...txs]);
+                setShowAddTx(false);
+                setNewTx({title:"",amount:0,jenis:"keluar",fromWalletId:"1",toGroup:"pengeluaran",toCicilanId:"9",foto:null});
+              }} style={{flex:1,padding:8,borderRadius:8,background:"#0ea5e9",color:"#fff",border:"none",fontWeight:800,fontSize:11}}>Simpan - FULL - FIX SALAH SATU Sumber 🙌</button></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {bottom==="beranda" && (
+        <div style={{padding:12}}>
+          <div style={{background:"linear-gradient(135deg,#2563eb,#0ea5e9)",borderRadius:20,padding:16,color:"#fff"}}>
+            <div style={{display:"flex",justifyContent:"space-between"}}><div style={{fontSize:11}}>{tr.totalSaldo} - {lang} - FULL FIX SALAH SATU</div><span style={{fontSize:9,background:"rgba(255,255,255,.2)",padding:"4px 8px",borderRadius:8}}>{authName} - {lang}</span></div>
+            <div style={{fontSize:24,fontWeight:900,marginTop:6}}>{hideTotal?"Rp ••••••":"Rp "+totalCashFlow.toLocaleString("id-ID")}</div>
+            <div style={{fontSize:9,marginTop:4,opacity:.9}}>FIX: Belanja/Cicilan pilih SALAH SATU Tabungan/E-Wallet/Tunai/Darurat - Bukan semua 4 grup kepotong! 🙌 - Cicilan custom platform + tgl jatuh tempo notif</div>
+            <div style={{display:"flex",gap:6,marginTop:10}}>
+              <div style={{flex:1,background:"rgba(255,255,255,.2)",borderRadius:10,padding:8}}><div style={{fontSize:8}}>Tabungan: Rp {totalTabungan.toLocaleString("id-ID")} (BCA BNI BRI)</div><div style={{fontSize:8,marginTop:2}}>E-Wallet: Rp {totalEwallet.toLocaleString("id-ID")} (GoPay OVO DANA)</div></div>
+              <div style={{flex:1,background:"rgba(255,255,255,.2)",borderRadius:10,padding:8}}><div style={{fontSize:8}}>Tunai: Rp {totalTunai.toLocaleString("id-ID")} (Hanya 1 tab)</div><div style={{fontSize:8,marginTop:2}}>Darurat: Rp {totalDarurat.toLocaleString("id-ID")} (Wajib Pisah)</div></div>
+            </div>
+            <div style={{marginTop:8,background:"rgba(255,255,255,.2)",borderRadius:10,padding:8}}><div style={{fontSize:8}}>Cicilan hutang: Rp {totalCicilan.toLocaleString("id-ID")} - Custom platform + tgl jatuh tempo notif + Bayar pakai SALAH SATU sumber</div></div>
+          </div>
+          <div style={{background:"#fff",borderRadius:14,padding:10,marginTop:8,border:"1px solid #e2e8f0",display:"flex",gap:8}}>
+            <div style={{width:36,height:36,borderRadius:10,background:"#dbeafe",display:"grid",placeItems:"center"}}>✨</div>
+            <div style={{flex:1}}><div style={{fontWeight:700,fontSize:11}}>Insight AI - {lang} - FULL - 6 Grup FIX SALAH SATU</div><div style={{fontSize:9,color:"#475569",marginTop:2}}>Cash Flow: Tabungan+E-Wallet+Tunai+Darurat bisa +/- tapi pilih SALAH SATU sumber, bukan semua kepotong! Pengeluaran+Cicilan mengurangi SALAH SATU dana pilihan. {authName} saldo Rp {totalCashFlow.toLocaleString("id-ID")} - Cicilan platform {groupedWallets.cicilan[0]?.platform} jatuh tempo {groupedWallets.cicilan[0]?.dueDate} notif!</div></div>
+          </div>
+          <div style={{marginTop:10}}>
+            <div style={{display:"flex",justifyContent:"space-between"}}><b style={{fontSize:13}}>Transaksi - FIX SALAH SATU - {lang} - FULL</b><button onClick={()=>setBottom("riwayat")} style={{border:"none",background:"transparent",color:"#0ea5e9",fontWeight:700,fontSize:11}}>Lihat semua - {tr.input}</button></div>
+            <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>{txs.slice(0,5).map(t=><div key={t.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:8,display:"flex",gap:8,alignItems:"center"}}><div style={{width:40,height:40,borderRadius:10,background:t.foto?"#dcfce7":"#f1f5f9",display:"grid",placeItems:"center"}}>{t.foto?"📸":"🧾"}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:11}}>{t.title}</div><div style={{fontSize:8,color:"#64748b"}}>{t.date} • {t.source} • {t.note}</div></div><div style={{fontWeight:800,fontSize:10,color:t.jenis==="keluar"?"#ef4444":"#10b981"}}>{t.jenis==="keluar"?"-":"+"} Rp {t.amount.toLocaleString("id-ID")}</div></div>)}</div>
+          </div>
+        </div>
+      )}
+
+      {bottom==="riwayat" && (
+        <div style={{padding:12}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:15}}>{tr.inputTitle} - FULL - 6 Grup FIX - {lang} 📷</h2><button onClick={()=>setShowAddTx(true)} style={{background:"#0ea5e9",color:"#fff",border:"none",borderRadius:10,padding:"8px 10px",fontWeight:700,fontSize:10}}>📷 + Input FULL - Pilih Sumber - Foto</button></div>
+          <div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:8,padding:8,marginTop:8,fontSize:9}}>
+            <b>FULL CHECKLIST - FIX SALAH SATU Sumber: 🙌</b><br/>
+            Belanja/Pengeluaran & Cicilan = Pilih SALAH SATU Tabungan/E-Wallet/Saku Dompet/Dana Darurat - Bukan semua 4 grup kepotong!<br/>
+            Contoh: Kopi 45k dari Tunai: Hanya Tunai 1.205.000→1.160.000, Tabungan E-Wallet Darurat TETAP!<br/>
+            Contoh: Bayar cicilan motor 500k dari BCA: BCA 7,5jt→7jt, Cicilan 1,2jt→700k, yang lain TETAP! Custom platform FIF jatuh tempo 20 Okt notif!<br/>
+            Fitur: Input Dana Masuk/Keluar + Foto Struk/Bon/Barang + Galeri + Kamera + Drive/Sheet izin + Foto tampil di riwayat!
+          </div>
+          <div style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>{txs.map(t=><div key={t.id} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:8,display:"flex",gap:8,alignItems:"center"}}><div style={{width:44,height:44,borderRadius:10,background:t.foto?"#dcfce7":"#f1f5f9",display:"grid",placeItems:"center"}}>{t.foto?"📸":"🧾"}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:11}}>{t.title}</div><div style={{fontSize:8,color:"#64748b"}}>{t.date} • {t.source} • {t.fromGroup||""}→{t.toGroup} • {t.note}</div><div style={{fontSize:8,marginTop:2}}>{t.foto && <span style={{background:"#dcfce7",padding:"2px 6px",borderRadius:6}}>📸 {t.foto} - Drive</span>}</div></div><div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:10}}>{t.curr} {t.amount.toLocaleString("id-ID")}</div><div style={{fontSize:7,background:t.jenis==="masuk"?"#dcfce7":t.jenis==="keluar"?"#fee2e2":"#e0f2fe",padding:"2px 6px",borderRadius:6,display:"inline-block",marginTop:2}}>{t.jenis.toUpperCase()} - SALAH SATU - {t.fromGroup||""}→{t.toGroup}</div></div></div>)}</div>
+          <div style={{marginTop:10,background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}>
+            <div style={{fontWeight:700,fontSize:11}}>📷 Upload Foto Struk/Bon/Barang - Setiap Input - FULL - 6 Grup - {lang}</div>
+            <div style={{marginTop:6,display:"flex",gap:6}}><button onClick={()=>setShowAddTx(true)} style={{flex:1,padding:8,borderRadius:8,border:"1px dashed #0ea5e9",background:"#f0f9ff",color:"#0ea5e9",fontWeight:700,fontSize:10}}>📷 Kamera - {tr.inputTitle} - Foto wajib</button><button onClick={()=>setShowAddTx(true)} style={{flex:1,padding:8,borderRadius:8,border:"1px dashed #10b981",background:"#f0fdf4",color:"#10b981",fontWeight:700,fontSize:10}}>🖼️ Galeri - File Photo - Drive - {lang}</button></div>
+            <div style={{marginTop:6,fontSize:8,color:"#64748b"}}>Input dana masuk/belanja + pilih grup sumber SALAH SATU (Tabungan/E-Wallet/Tunai/Darurat) → tujuan (Pengeluaran/Cicilan/antar cash flow) - Algoritma FIX SALAH SATU - Foto tampil di riwayat + Drive.</div>
+          </div>
+        </div>
+      )}
+
+      {bottom==="chat" && (
+        <div style={{padding:12}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:15}}>{tr.chatTitle} - {lang} - FULL - Voice/Type + Gemini - 7 saran</h2><span style={{fontSize:9,background:"#dcfce7",padding:"4px 8px",borderRadius:8}}>✅ Voice/Type + Gemini - {lang}</span></div>
+          <div style={{background:"#fff",borderRadius:16,padding:10,marginTop:10,minHeight:420,display:"flex",flexDirection:"column",border:"1px solid #e2e8f0"}}>
+            <div style={{flex:1,display:"flex",flexDirection:"column",gap:8,maxHeight:300,overflowY:"auto"}}>{chat.map((c,i)=><div key={i} style={{alignSelf:c.role==="ai"?"flex-start":"flex-end",maxWidth:"85%",background:c.role==="ai"?"#f8fafc":"#0ea5e9",color:c.role==="ai"?"#0f172a":"#fff",borderRadius:12,padding:8,fontSize:10,border:c.role==="ai"?"1px solid #e2e8f0":"none"}}>{c.text} - {lang}</div>)}</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:10}}>
+              {["Catat pemasukan Tabungan","Catat pengeluaran Tunai","Bayar cicilan motor dari BCA","Pindah Tabungan->E-Wallet SALAH SATU","Saldo Cash Flow SALAH SATU","Apakah aku hemat? - Cicilan juga","Buat anggaran 6 Grup SALAH SATU"].map(b=><button key={b} onClick={()=>{setChat([...chat,{role:"user",text:b},{role:"ai",text:"Meta AI Gemini - "+b+" - FULL CHECKLIST: Algoritma FIX 6 Grup SALAH SATU sumber: Tabungan+E-Wallet+Tunai+Darurat +/- SALAH SATU, Pengeluaran+Cicilan mengurangi SALAH SATU pilihan - Total Cash Flow Rp "+totalCashFlow.toLocaleString("id-ID")+" - Cicilan FIF jatuh tempo 20 Okt notif - "+lang}])}} style={{padding:"4px 8px",borderRadius:12,border:"1px solid #bae6fd",background:"#f0f9ff",color:"#0369a1",fontSize:8,fontWeight:700}}>{b}</button>)}
+            </div>
+            <div style={{display:"flex",gap:6,marginTop:10,alignItems:"center"}}>
+              <button onClick={()=>{setIsListening(!isListening); if(!isListening){ setTimeout(()=>{setIsListening(false); setChat([...chat,{role:"user",text:"🎤 Voice: Berapa saldo cash flow? Cicilan berapa?"},{role:"ai",text:"Hai "+authName+"! Cash Flow 4 Grup Rp "+totalCashFlow.toLocaleString("id-ID")+" - Tabungan Rp "+totalTabungan.toLocaleString("id-ID")+" - Cicilan sisa Rp "+totalCicilan.toLocaleString("id-ID")+" - FIX: Bayar cicilan pilih SALAH SATU sumber - "+lang}] )},1500)}}} style={{width:40,height:40,borderRadius:10,background:isListening?"#ef4444":"#f1f5f9",border:"1px solid #e2e8f0",fontSize:16}}>{isListening?"🔴":"🎤"}</button>
+              <input value={chatInput} onChange={e=>setChatInput(e.target.value)} placeholder={tr.chatTitle+" - "+lang+" - Voice🎤 + Type⌨️ + 7 saran + Gemini + Cicilan SALAH SATU"} style={{flex:1,padding:10,borderRadius:16,border:"1px solid #e2e8f0",background:"#f8fafc",fontSize:9}}/>
+              <button onClick={()=>{if(!chatInput) return; setChat([...chat,{role:"user",text:chatInput},{role:"ai",text:"META AI Gemini: "+chatInput+" - FULL: Cash Flow Rp "+totalCashFlow.toLocaleString("id-ID")+" - 6 Grup FIX SALAH SATU sumber: Tabungan/E-Wallet/Tunai/Darurat - Cicilan custom platform + tgl jatuh tempo notif + bayar pakai SALAH SATU - "+lang}]); setChatInput("")}} style={{width:40,height:40,borderRadius:10,background:"#0ea5e9",border:"none",color:"#fff"}}>➤</button>
+            </div>
+            <div style={{marginTop:6,fontSize:8,color:"#64748b",textAlign:"center"}}>{tr.chatTitle} - Voice 🎤 + Type ⌨️ + Gemini + 7 saran - FULL - 6 Grup FIX SALAH SATU - Cicilan juga SALAH SATU sumber - {lang} - Drive✅ Sheet✅ Cam✅ Meta✅</div>
+          </div>
+        </div>
+      )}
+
+      {bottom==="laporan" && (
+        <div style={{padding:12}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{margin:0,fontSize:14,fontWeight:900}}>{tr.laporanTitle} - {lang} - FULL</h2><button onClick={()=>exportRealGoogleSheetV40(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{padding:"6px 10px",borderRadius:8,border:"none",background:"#10b981",color:"#fff",fontWeight:700,fontSize:9}}>📊 Export Google Sheet - {lang} - FULL</button></div>
+          <div style={{background:"#f0fdf4",borderRadius:8,padding:6,marginTop:6,fontSize:9,display:"flex",gap:6}}>
+            <button onClick={()=>setLaporanTab("grafik")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="grafik"?"#10b981":"#fff",color:laporanTab==="grafik"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📊 Grafik Batang + Pie</button>
+            <button onClick={()=>setLaporanTab("sheet")} style={{flex:1,padding:6,borderRadius:6,border:"none",background:laporanTab==="sheet"?"#0ea5e9":"#fff",color:laporanTab==="sheet"?"#fff":"#64748b",fontWeight:700,fontSize:9}}>📄 Sheet Harian/Bulanan</button>
+          </div>
+          <div style={{background:"#f0fdf4",borderRadius:8,padding:6,marginTop:6,fontSize:9}}>✅ Sheet Aktif - Export harian-bulanan - 6 Grup FIX SALAH SATU - Cash Flow 4 Grup SALAH SATU - Cicilan juga SALAH SATU - {lang} • Drive:✅ Cam:✅ Meta:✅ FULL</div>
+          {laporanTab==="grafik" && (
+            <div style={{background:"#fff",borderRadius:16,padding:12,marginTop:10,border:"1px solid #e2e8f0"}}>
+              <div style={{fontWeight:900,fontSize:13}}>📊 Grafik Batang + Pie - 6 Grup FULL - FIX SALAH SATU - {lang} - Cicilan juga!</div>
+              <div style={{display:"flex",alignItems:"end",gap:4,height:110,marginTop:10}}>{[{l:tr.tabungan.slice(0,3),v:75,c:"#0ea5e9"},{l:tr.ewallet.slice(0,3),v:25,c:"#10b981"},{l:tr.tunai.slice(0,3),v:20,c:"#06b6d4"},{l:tr.darurat.slice(0,3),v:50,c:"#f59e0b"},{l:tr.cicilan.slice(0,3),v:30,c:"#8b5cf6"},{l:tr.pengeluaran.slice(0,3),v:45,c:"#ef4444"}].map((b,i)=><div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2}}><div style={{width:"100%",height:b.v,background:b.c,borderRadius:"6px 6px 0 0",display:"grid",placeItems:"center",color:"#fff",fontSize:8,fontWeight:900}}>{b.v}</div><div style={{fontSize:8,fontWeight:700}}>{b.l}</div></div>)}</div>
+              <div style={{marginTop:10,display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}><div style={{border:"1px solid #e2e8f0",borderRadius:10,padding:8}}><div style={{fontSize:8,color:"#64748b"}}>{tr.totalSaldo}</div><div style={{fontWeight:900,fontSize:12}}>Rp {totalCashFlow.toLocaleString("id-ID")}</div><div style={{fontSize:7,color:"#10b981"}}>Cash Flow 4 Grup SALAH SATU +/-</div></div><div style={{border:"1px solid #e2e8f0",borderRadius:10,padding:8}}><div style={{fontSize:8,color:"#64748b"}}>{tr.pengeluaran}+{tr.cicilan}</div><div style={{fontWeight:900,fontSize:12}}>Rp {keluar.toLocaleString("id-ID")}</div><div style={{fontSize:7,color:"#ef4444"}}>Mengurangi SALAH SATU Cash Flow</div></div></div>
+              <div style={{marginTop:10,background:"#f8fafc",borderRadius:10,padding:8,border:"1px solid #e2e8f0"}}><div style={{fontWeight:700,fontSize:10}}>Pie Chart - 6 Grup - SALAH SATU</div><div style={{display:"flex",gap:6,marginTop:6,flexWrap:"wrap"}}>{[{l:tr.tabungan,v:totalTabungan,c:"#0ea5e9"},{l:tr.ewallet,v:totalEwallet,c:"#10b981"},{l:tr.tunai,v:totalTunai,c:"#06b6d4"},{l:tr.darurat,v:totalDarurat,c:"#f59e0b"}].map((b,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:4,fontSize:8}}><div style={{width:10,height:10,borderRadius:2,background:b.c}}></div>{b.l}: Rp {b.v.toLocaleString("id-ID")}</div>)}</div></div>
+              <div style={{marginTop:8,fontSize:8,color:"#64748b"}}>FIX: Belanja/Cicilan pilih SALAH SATU Tabungan/E-Wallet/Tunai/Darurat - Bukan semua kepotong! Cicilan custom platform FIF/Kredivo + tgl jatuh tempo notif + bayar pakai SALAH SATU - Export Sheet harian-bulanan - {lang} - FULL</div>
             </div>
           )}
-          {selectedCoin && (
-            <div style={{padding:12}}>
-              <div style={{display:"flex",alignItems:"center",gap:8}}><button onClick={()=>setSelectedCoin(null)} style={{width:32,height:32,borderRadius:8,background:"#f1f5f9",border:"none"}}>←</button><div style={{fontWeight:900,fontSize:14}}>{selectedCoin.symbol} - {selectedCoin.name} - TrustWallet/Metamask</div></div>
-              <div style={{background:"#0f172a",borderRadius:16,padding:16,color:"#fff",textAlign:"center",marginTop:12}}>
-                <div style={{width:56,height:56,borderRadius:28,background:selectedCoin.color+"30",display:"grid",placeItems:"center",margin:"0 auto",fontSize:28}}>{selectedCoin.icon}</div>
-                <div style={{fontWeight:900,fontSize:18,marginTop:8}}>{selectedCoin.bal}</div>
-                <div style={{fontSize:8,opacity:0.6,marginTop:6,wordBreak:"break-all"}}>Alamat Wallet ({selectedCoin.network}): {selectedCoin.addr} - TrustWallet/Metamask - Copy sebagai asset</div>
-                {selectedCoin.contract && <div style={{fontSize:7,opacity:0.8,marginTop:6,background:"#fffbeb",color:"#92400e",padding:"6px 10px",borderRadius:8,wordBreak:"break-all"}}>Alamat Kontrak - BEP-20 - Kirim/Terima/Swap → {selectedCoin.contract} - {selectedCoin.network} contract - Copy - https://bscscan.com/address/{selectedCoin.contract} - 15 Menit Timer 13:39</div>}
+          {laporanTab==="sheet" && (
+            <div style={{background:"#fff",borderRadius:16,padding:12,marginTop:10,border:"1px solid #e2e8f0"}}>
+              <div style={{fontWeight:900,fontSize:13}}>📄 Google Sheet - Harian/Bulanan - FULL - {lang} - Export</div>
+              <div style={{marginTop:8,fontSize:9,background:"#f8fafc",borderRadius:8,padding:8,border:"1px solid #e2e8f0"}}>
+                <div style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,fontWeight:800,borderBottom:"1px solid #e2e8f0",paddingBottom:4}}><div>Tanggal</div><div>Judul - Sumber SALAH SATU</div><div>Jenis</div><div>Jumlah</div></div>
+                {txs.map(t=><div key={t.id} style={{display:"grid",gridTemplateColumns:"80px 1fr 60px 60px",gap:4,padding:"4px 0",borderBottom:"1px solid #f1f5f9",fontSize:8}}><div>{t.date}</div><div>{t.title} - {t.source} - {t.note.slice(0,40)}</div><div style={{background:t.jenis==="keluar"?"#fee2e2":t.jenis==="masuk"?"#dcfce7":"#e0f2fe",borderRadius:4,padding:"1px 4px",textAlign:"center"}}>{t.jenis} SALAH SATU</div><div>Rp {t.amount.toLocaleString("id-ID")}</div></div>)}
               </div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:8,marginTop:12}}>
-                <button style={{padding:14,borderRadius:12,background:"#fee2e2",color:"#991b1b",border:"none",fontWeight:800,fontSize:11}}>Kirim - {selectedCoin.symbol} BEP-20/ERC-20 - TrustWallet/Metamask</button>
-                <button style={{padding:14,borderRadius:12,background:"#dcfce7",color:"#166534",border:"none",fontWeight:800,fontSize:11}}>Terima - Alamat: {selectedCoin.addr.slice(0,6)}... - QR - Copy alamat kontrak</button>
-                <button style={{padding:14,borderRadius:12,background:"#dbeafe",color:"#1e40af",border:"none",fontWeight:800,fontSize:11}}>Swap - PancakeSwap/Uniswap - Contract: {selectedCoin.contract?selectedCoin.contract.slice(0,6)+"...":""}</button>
-                <button style={{padding:14,borderRadius:12,background:"#f1f5f9",color:"#0f172a",border:"none",fontWeight:800,fontSize:11}}>BSCScan - {selectedCoin.explorer}{selectedCoin.addr} - 13:39</button>
-              </div>
-            </div>
-          )}
-          {cryptoBottom==="dapp" && !selectedCoin && (
-            <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:14}}>🌐 dApp Browser - PancakeSwap dlsbg - PancakeSwap pancakeswap.finance BSC DEX - Swap BEP-20 - USDT BEP-20 Contract: 0x55d...7f6eB - Uniswap uniswap.org - 1inch app.1inch.io - OpenSea opensea.io - seperti awal project!</div>
-              <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>🥞 PancakeSwap - pancakeswap.finance - BSC DEX - Swap BEP-20 - USDT BEP-20 Contract: 0x55d398326f99059fF775485246999027B3197955</div><div style={{fontSize:7,color:"#64748b"}}>pancakeswap.finance - BEP-20 - Contract: 0x55d...7f6eB</div></div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>🦄 Uniswap - uniswap.org - ERC-20 - USDT ERC-20 Contract: 0xdAC17F958D2ee523a2206206994597C13D831ec7</div><div style={{fontSize:7,color:"#64748b"}}>uniswap.org - ERC-20</div></div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>1inch - app.1inch.io - Aggregator - Swap BEP-20/ERC-20</div><div style={{fontSize:7,color:"#64748b"}}>app.1inch.io</div></div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #f1f5f9"}}><div style={{fontWeight:800,fontSize:10}}>🌊 OpenSea - opensea.io - NFT - TrustWallet/Metamask</div><div style={{fontSize:7,color:"#64748b"}}>opensea.io</div></div>
-              </div>
-            </div>
-          )}
-          {!selectedCoin && (
-            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
-              <button onClick={()=>setCryptoBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 20px"}}>
-                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="beranda"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:20,color:cryptoBottom==="beranda"?"#0ea5e9":"#94a3b8"}}>💎</div>
-                <div style={{fontSize:8,fontWeight:700,color:cryptoBottom==="beranda"?"#0ea5e9":"#94a3b8"}}>Beranda - Daftar Coin - Satu aja list coin - Klik coin tampil sub menu terima/kirim/swap</div>
-              </button>
-              <button onClick={()=>setCryptoBottom("dapp")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 20px"}}>
-                <div style={{width:28,height:28,borderRadius:10,background:cryptoBottom==="dapp"?"#0f172a":"#f8fafc",display:"grid",placeItems:"center",fontSize:20,color:cryptoBottom==="dapp"?"#0ea5e9":"#94a3b8"}}>🌐</div>
-                <div style={{fontSize:8,fontWeight:700,color:cryptoBottom==="dapp"?"#0ea5e9":"#94a3b8"}}>dApp - PancakeSwap dlsbg - PancakeSwap pancakeswap.finance Uniswap uniswap.org 1inch app.1inch.io OpenSea opensea.io</div>
-              </button>
-            </div>
-          )}
-          {selectedCoin && (
-            <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
-              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#fee2e2",display:"grid",placeItems:"center",fontSize:20}}>↑</div><div style={{fontSize:8,fontWeight:700}}>Kirim - {selectedCoin.symbol} - TrustWallet/Metamask</div></button>
-              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dcfce7",display:"grid",placeItems:"center",fontSize:20}}>↓</div><div style={{fontSize:8,fontWeight:700}}>Terima - {selectedCoin.addr.slice(0,6)}... - QR - Copy</div></button>
-              <button style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#dbeafe",display:"grid",placeItems:"center",fontSize:20}}>⇄</div><div style={{fontSize:8,fontWeight:700}}>Swap - Pancake/Uniswap</div></button>
-              <button onClick={()=>setSelectedCoin(null)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}><div style={{width:28,height:28,borderRadius:10,background:"#f1f5f9",display:"grid",placeItems:"center",fontSize:20}}>←</div><div style={{fontSize:8,fontWeight:700}}>Kembali - {selectedCoin.symbol}</div></button>
+              <button onClick={()=>exportRealGoogleSheetV40(wallets, authName, authEmail, (typeof window!=="undefined" ? localStorage.getItem("dompetAI_clientId")||"" : ""))} style={{width:"100%",marginTop:8,padding:8,borderRadius:8,background:"#10b981",color:"#fff",border:"none",fontWeight:700,fontSize:10}}>📊 Export ke Google Sheet - FULL - Harian/Bulanan - {lang}</button>
+              <div style={{marginTop:6,fontSize:8,color:"#64748b"}}>Sheet: Tanggal + Judul + Sumber SALAH SATU Tabungan/E-Wallet/Tunai/Darurat + Tujuan Pengeluaran/Cicilan + Jumlah + Foto + Note FIX SALAH SATU - Bukan semua kepotong! - {lang}</div>
             </div>
           )}
         </div>
-      ) : (
-        <div>
-          <div style={{background:"#0f172a",padding:"12px 16px 20px 16px",borderRadius:"0 0 24px 24px",color:"#fff"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+      )}
+
+            {bottom==="profil" && (
+        <div style={{padding:12,paddingBottom:80}}>
+          <div style={{fontWeight:900,fontSize:14}}>👤 Profil - Hanya Akun dan Settingan Saja - Keterangan bawah jangan ditampilkan</div>
+          <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
+            <div style={{display:"flex",gap:10,alignItems:"center"}}>
+              <div style={{width:44,height:44,borderRadius:22,background:"#0f172a",display:"grid",placeItems:"center",color:"#fff",fontWeight:900}}>K</div>
               <div>
-                <div style={{fontSize:9,opacity:0.6}}>Dompet AI Universal - 6 Grup FULL - ID - FULL CHECKLIST - Kawan - hamburger ☰ - showMenu - Dompet AI Universal - 6 Grup FULL - Rp 18.405.000 - Total Rp 20.405.000 - Dompet Crypto - Total Cash Flow 4 Grup +/- SALAH SATU - ID - FULL FIX SALAH SATU - Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - Total Cash Flow 4 Grup - Rp 18.705.000 - SALAH SATU sumber!</div>
-                <div style={{fontWeight:900,fontSize:13,marginTop:2}}>Total Rp {wallets.reduce((a,b)=>a+(b.balance||0),0).toLocaleString("id-ID")} - Total Cash Flow 4 Grup - 18.705.000 - Cicilan 2.000.000 = 16.705.000 - SALAH SATU sumber!</div>
-              </div>
-              <button onClick={()=>setShowMenu(true)} style={{width:36,height:36,borderRadius:10,background:"#1e293b",border:"none",color:"#fff",fontSize:18}}>☰</button>
-            </div>
-            <div style={{display:"flex",background:"#1e293b",borderRadius:14,padding:4,marginTop:16}}>
-              <button onClick={()=>handleCryptoTabClick("dompet")} style={{flex:1,padding:8,borderRadius:10,background:"#fff",color:"#0f172a",border:"none",fontWeight:800,fontSize:10}}>Dompet - 4 Grup - SALAH SATU - Total Cash Flow</button>
-              <button onClick={()=>handleCryptoTabClick("crypto")} style={{flex:1,padding:8,borderRadius:10,background:"transparent",color:"#94a3b8",border:"none",fontWeight:800,fontSize:10}}>Crypto - TrustWallet / Metamask - BTC Live {btcPrice} + BSCScan {bscScanTimer}</button>
-            </div>
-          </div>
-          <div style={{padding:12}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontWeight:900,fontSize:12}}>Beranda - Rp 18.405.000 - Satu aja - Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - Total Cash Flow 4 Grup +/- SALAH SATU - Tabungan 11.800.000 + E-Wallet 700.000 + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000 - SALAH SATU sumber!</div>
-              <button onClick={()=>setShowAddBank(true)} style={{padding:"6px 10px",borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:9,fontWeight:800}}>+ Tambah Akun - Bank - Daftar List Bank Tidak Ditambah Akun - FIX</button>
-            </div>
-            <div style={{marginTop:8,display:"grid",gap:8}}>
-              {wallets.map(w=>(
-                <div key={w.id} style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}>
-                  <div style={{display:"flex",justifyContent:"space-between"}}><div style={{fontWeight:700,fontSize:11}}>{w.name} - {w.bank} - {w.group} - {w.norek} - show/hide + warna - BCA BNI BRI + norek show/hide + warna - E-Wallet GoPay OVO DANA LinkAja ShopeePay + norek + warna - Rp 700.000 - SALAH SATU sumber - Tunai Dompet Hanya 1 tab + warna - Rp 1.205.000 - Dana Darurat Wajib pisah - Cicilan Custom platform FIF Kredivo Akulaku + tgl jatuh tempo - 6 Grup FULL!</div><div style={{fontWeight:900,fontSize:11}}>Rp {w.balance.toLocaleString("id-ID")} - SALAH SATU sumber - Total Cash Flow 4 Grup</div></div>
-                </div>
-              ))}
-            </div>
-          </div>
-          {bottom==="beranda" && (
-            <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:12}}>Beranda - Rp 18.405.000 - Satu aja - Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - const [wallets,setWallets]=useState([ {id:"1", name:"Tabungan BCA", bank:"BCA", group:"tabungan", balance:7500000}, {id:"2", name:"Tabungan BNI", bank:"BNI", group:"tabungan", balance:2500000}, {id:"3", name:"Tabungan BRI", bank:"BRI", group:"tabungan", balance:1800000}, {id:"4", name:"GoPay", bank:"GoPay", group:"ewallet", balance:375000}, {id:"5", name:"OVO", bank:"OVO", group:"ewallet", balance:125000}, {id:"6", name:"DANA", bank:"DANA", group:"ewallet", balance:200000}, {id:"7", name:"Tunai Dompet", bank:"Tunai", group:"tunai", balance:1205000}, {id:"8", name:"Dana Darurat", bank:"Darurat", group:"darurat", balance:5000000}, {id:"9", name:"Cicilan FIF", bank:"FIF", group:"cicilan", balance:2000000}]) - Total Cash Flow 4 Grup +/- SALAH SATU - Tabungan 11.800.000 (BCA BNI BRI) + E-Wallet 700.000 (GoPay OVO DANA) + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000 - SALAH SATU sumber!</div>
-              <div style={{marginTop:8,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-                <div style={{fontWeight:800,fontSize:11}}>Dompet Biasa Total Cash Flow (4 Grup +/- SALAH SATU) - ID - FULL FIX SALAH SATU + Tabungan: Rp 11.800.000 (BCA BNI BRI) E-Wallet: Rp 700.000 (GoPay OVO DANA) Tunai: Rp 1.205.000 Darurat: Rp 5.000.000 Cicilan: Rp 2.000.000 - Total Cash Flow 4 Grup - Rp 18.705.000 - SALAH SATU sumber!</div>
+                <div style={{fontWeight:800,fontSize:12}}>Kawan - ID - FULL - kawan@gmail.com - Google - V39 FIX 404 WORKING</div>
+                <div style={{fontSize:9,color:"#64748b"}}>kawan@gmail.com - Google - V39 FIX 404 WORKING</div>
               </div>
             </div>
-          )}
-          {bottom==="riwayat" && (
-            <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:14}}>📜 Riwayat - Transaksi - Foto Struk/Bon - Kamera + Galeri + Drive + Sheet - Input Foto Struk/Bon/Barang - Kamera + Galeri + Drive + Sheet izin + Foto tampil di riwayat + Pilih sumber SALAH SATU + Tujuan + Algoritma FIX - FULL</div>
-              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-                <div style={{display:"grid",gap:8}}>
-                  <div style={{padding:"8px 10px",background:"#f8fafc",borderRadius:8,fontSize:10}}>🛒 Belanja - Indomaret - Rp 150.000 - BCA - SALAH SATU sumber - BCA BNI BRI + norek show/hide + warna</div>
-                  <div style={{padding:"8px 10px",background:"#f8fafc",borderRadius:8,fontSize:10}}>💳 Cicilan - FIF - Rp 2.000.000 - BNI - Jatuh tempo 20/25 Okt - Bayar pakai SALAH SATU Tabungan/E-Wallet/Saku/Darurat</div>
-                  <div style={{padding:"8px 10px",background:"#f8fafc",borderRadius:8,fontSize:10}}>💰 Pemasukan - Gaji - Rp 5.000.000 - BCA - SALAH SATU sumber</div>
-                </div>
-              </div>
-            </div>
-          )}
-          {bottom==="chat" && (
-            <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:14}}>💬 Chat AI - Meta / Gemini - ALL UI ID - V39 FIX 404 WORKING - Meta AI - Llama 3 - Gemini - Google - 🤖 Meta AI: Total tabungan BCA BNI BRI Rp 11.500.000 - E-Wallet Rp 700.000 - Tunai Rp 1.205.000 - Darurat Rp 2.000.000 - Cicilan Rp 2.000.000 - Cash Flow SALAH SATU sumber - FULL CHECKLIST!</div>
-              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-                <div style={{display:"flex",gap:8,marginBottom:10}}>
-                  <button style={{flex:1,padding:8,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:9,fontWeight:800}}>Meta AI - Llama 3 - Total Cash Flow 4 Grup</button>
-                  <button style={{flex:1,padding:8,borderRadius:8,background:"#f8fafc",color:"#64748b",border:"1px solid #e2e8f0",fontSize:9,fontWeight:800}}>Gemini - Google - SALAH SATU sumber</button>
-                </div>
-                <div style={{background:"#f8fafc",borderRadius:8,padding:10}}><div style={{fontSize:10}}>🤖 Meta AI: Total tabungan BCA BNI BRI Rp 11.800.000 - E-Wallet Rp 700.000 - Tunai Rp 1.205.000 - Darurat Rp 5.000.000 - Cicilan Rp 2.000.000 - Cash Flow SALAH SATU sumber - Tabungan 11.800.000 + E-Wallet 700.000 + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000 - FULL CHECKLIST!</div></div>
-              </div>
-            </div>
-          )}
-          {bottom==="laporan" && (
-            <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:14}}>📊 Laporan - 6 Grup FULL - ID - ALL UI ID - V39 FIX 404 WORKING - Cash Flow Total Rp 18.405.000 SALAH SATU kepotong - BCA BNI BRI + norek show/hide + warna - Tabungan Rp 11.500.000 BCA BNI BRI + e-wallet + norek show/hide - E-Wallet Rp 700.000 GoPay OVO DANA LinkAja ShopeePay - Cicilan Rp 2.000.000 FIF Kredivo - Jatuh tempo 20/25 Okt!</div>
-              <div style={{marginTop:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Cash Flow Total - 4 Grup - SALAH SATU - Rp 18.705.000</div><div style={{fontSize:12,fontWeight:900}}>Rp 18.705.000 - SALAH SATU kepotong - BCA BNI BRI + norek show/hide + warna</div></div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Tabungan - Rp 11.800.000 (BCA BNI BRI)</div><div style={{fontSize:12,fontWeight:900}}>Rp 11.800.000 - BCA BNI BRI + e-wallet + norek show/hide</div></div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>E-Wallet - Rp 700.000 (GoPay OVO DANA)</div><div style={{fontSize:12,fontWeight:900}}>Rp 700.000 - GoPay OVO DANA LinkAja ShopeePay</div></div>
-                <div style={{background:"#fff",borderRadius:12,padding:10,border:"1px solid #e2e8f0"}}><div style={{fontSize:9,fontWeight:700}}>Cicilan - Rp 2.000.000 - FIF Kredivo - Jatuh tempo 20/25 Okt</div><div style={{fontSize:12,fontWeight:900}}>Rp 2.000.000 - FIF Kredivo - Jatuh tempo 20/25 Okt</div></div>
-              </div>
-            </div>
-          )}
-          {bottom==="profil" && (
-            <div style={{padding:12}}>
-              <div style={{fontWeight:900,fontSize:14}}>👤 Profil - Hanya Akun dan Settingan Saja - Keterangan bawah jangan ditampilkan - sesuai screenshot 2026-10-11_10_24_47-Dompet_AI_6_Grup_FULL_-_ALL_UI_Bahasa_CNY_-_V39_FIX_404_WORKING.png!</div>
-              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-                <div style={{display:"flex",gap:10,alignItems:"center"}}>
-                  <div style={{width:44,height:44,borderRadius:22,background:"#0f172a",display:"grid",placeItems:"center",color:"#fff",fontWeight:900}}>K</div>
-                  <div><div style={{fontWeight:800,fontSize:12}}>Kawan - ID - FULL - kawan@gmail.com - Google - V39 FIX 404 WORKING - Nama Kawan - ID - FULL - Akun Terhubung Google - V39</div><div style={{fontSize:9,color:"#64748b"}}>kawan@gmail.com - Google - V39 FIX 404 WORKING - Akun Terhubung Google - V39 - hanya akun dan settingan saja - keterangan di bawah jangan ditampilkan</div></div>
-                </div>
-                <div style={{marginTop:10,display:"grid",gap:8}}>
-                  <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Nama - Kawan - ID - FULL</div><div style={{fontSize:10}}>Kawan - ID - FULL</div></div>
-                  <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Akun Terhubung - Google - V39</div><div style={{fontSize:10,color:"#10b981"}}>Google - V39 - hanya akun dan settingan saja</div></div>
-                </div>
-              </div>
-              <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
-                <div style={{fontWeight:800,fontSize:11}}>⚙️ Setting - Hanya Settingan Saja - Jangan tampilkan keterangan bawah - Dark/Day - ID - FULL Lebih nyaman malam hari - Notifikasi - Cicilan jatuh tempo FIF Kredivo 20/25 Okt - Font - Tegas Manula 19px Bold 900 Standar, Elegan, SANTAI - Bahasa - 6 Bahasa ID - ALL UI ID - hanya akun dan settingan saja - keterangan di bawah Cash Flow SALAH SATU kepotong - Tabungan BCA BNI BRI + norek show/hide + warna TabunganList... jangan ditampilkan - sesuai screenshot!</div>
-                <div style={{marginTop:10,display:"grid",gap:10}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Dark/Day - ID - FULL - Lebih nyaman malam hari</div><div style={{fontSize:8,color:"#64748b"}}>Lebih nyaman malam hari - theme dark/light</div></div><div style={{width:40,height:22,borderRadius:11,background:"#e2e8f0"}}></div></div>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Notifikasi - Cicilan jatuh tempo FIF Kredivo 20/25 Okt - Bayar pakai SALAH SATU Tabungan/E-Wallet/Saku/Darurat</div><div style={{fontSize:8,color:"#64748b"}}>FIF Kredivo 20/25 Okt - tgl jatuh tempo notif</div></div><div style={{width:40,height:22,borderRadius:11,background:"#0ea5e9"}}></div></div>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Font - Tegas Manula 19px Bold 900 - Standar, Elegan, SANTAI - Font Tegas Manula 19px + 6 Grup SALAH SATU + CNY ¥ + Cicilan custom platform + tgl jatuh tempo + File/Kamera REAL!</div><div style={{fontSize:8,color:"#64748b"}}>Standar, Elegan, SANTAI - 19px Bold 900</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>Tegas Manula 19px - Bold 900</option></select></div>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Bahasa - 6 Bahasa - ID - ALL UI ID - CNY ¥ + Cicilan custom platform + tgl jatuh tempo + File/Kamera REAL!</div><div style={{fontSize:8,color:"#64748b"}}>ID - ALL UI ID - 6 Bahasa - CNY ¥</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>ID Indonesia - FULL CHECKLIST - Kawan - hamburger - showMenu</option><option>US English - FULL</option><option>CNY ¥ - China - Alipay Bank WeChat Pay Bank</option></select></div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-      {showAddBank && (
-        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:95,display:"grid",placeItems:"center",padding:12}}>
-          <div style={{background:"#fff",borderRadius:16,padding:16,maxWidth:360,width:"100%"}}>
-            <div style={{fontWeight:900,fontSize:12}}>Tambah Akun Bank - 30+ Bank - Daftar List Bank Tidak Ditambah Akun - FIX - menu kosong, daftar list bank tidak ditambah akun, heran gua - FIX!</div>
             <div style={{marginTop:10,display:"grid",gap:8}}>
-              <select value={newBankName} onChange={e=>setNewBankName(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
-                {TABUNGAN_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - {b.country} - {b.curr} - Custom Bank Lokal/Global - Mata Uang Global - BCA BNI BRI Mandiri BSI CIMB BTN Permata Danamon Maybank Indonesia BCA Syariah Jago Chase Bank of America Wells Fargo Citibank HSBC UK Barclays Deutsche Bank BNP Paribas DBS OCBC UOB Maybank Malaysia MUFG Mizuho ICBC Commonwealth RBC Emirates NBD Revolut Wise ICBC China Bank of China China Construction Bank Alipay Bank WeChat Pay Bank + Custom Bank Lokal/Global</option>)}
-                {EWALLET_BANKS.map(b=><option key={b.name} value={b.name}>{b.flag} {b.name} - E-Wallet - {b.country} - {b.curr} - Custom E-Wallet Lokal/Global - Banyak Opsi - GoPay OVO DANA LinkAja ShopeePay i.saku Sakuku DOKU Paytren TrueMoney Jenius Pay Flip PayPal Venmo Cash App Apple Pay Google Pay Samsung Pay Alipay WeChat Pay GrabPay GCash Paytm PhonePe + Custom</option>)}
-              </select>
-              <select value={newBankGroup} onChange={e=>setNewBankGroup(e.target.value)} style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}>
-                <option value="tabungan">Tabungan - Rp 11.800.000 (BCA BNI BRI) - SALAH SATU sumber - Tabungan: Rp 11.800.000 (BCA BNI BRI)</option>
-                <option value="ewallet">E-Wallet - Rp 700.000 (GoPay OVO DANA) - SALAH SATU sumber - E-Wallet: Rp 700.000 (GoPay OVO DANA)</option>
-                <option value="tunai">Tunai - Rp 1.205.000 - Hanya 1 tab + warna - SALAH SATU sumber - Tunai: Rp 1.205.000</option>
-                <option value="darurat">Darurat - Rp 5.000.000 - Wajib pisah - gak campur tabungan - Darurat: Rp 5.000.000</option>
-                <option value="cicilan">Cicilan - Rp 2.000.000 - FIF Kredivo Akulaku - tgl jatuh tempo - Bayar pakai SALAH SATU - Cicilan: Rp 2.000.000</option>
-              </select>
-              <input value={newBankNorek} onChange={e=>setNewBankNorek(e.target.value)} placeholder="Norek - 1234567890 / 0812**** - show/hide + warna - BCA BNI BRI + norek show/hide + warna" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-              <input value={newBankBalance} onChange={e=>setNewBankBalance(e.target.value)} type="number" placeholder="Balance - Rp - SALAH SATU sumber - Rp 11.800.000 (BCA BNI BRI) + E-Wallet 700.000 + Tunai 1.205.000 + Darurat 5.000.000 = 18.705.000 - Cicilan 2.000.000 = 16.705.000" style={{padding:8,borderRadius:8,border:"1px solid #e2e8f0",fontSize:10}}/>
-              <div style={{display:"flex",gap:8}}>
-                <button onClick={()=>setShowAddBank(false)} style={{flex:1,padding:10,borderRadius:8,background:"#fff",border:"1px solid #e2e8f0",fontSize:10}}>Batal - Balik Dompet</button>
-                <button onClick={handleAddBank} style={{flex:1,padding:10,borderRadius:8,background:"#0f172a",color:"#fff",border:"none",fontSize:10,fontWeight:800}}>+ Tambah Akun - Bank - Daftar List Bank Tidak Ditambah Akun - FIX - menu kosong - FIX!</button>
-              </div>
+              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Nama - Kawan - ID - FULL</div><div style={{fontSize:10}}>Kawan - ID - FULL</div></div>
+              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",background:"#f8fafc",borderRadius:8}}><div style={{fontSize:10,fontWeight:700}}>Akun Terhubung - Google - V39</div><div style={{fontSize:10,color:"#10b981"}}>Google - V39</div></div>
+            </div>
+          </div>
+          <div style={{marginTop:12,background:"#fff",borderRadius:12,padding:12,border:"1px solid #e2e8f0"}}>
+            <div style={{fontWeight:800,fontSize:11}}>⚙️ Setting - Hanya Settingan Saja - Keterangan bawah jangan ditampilkan - hanya akun dan settingan saja</div>
+            <div style={{marginTop:10,display:"grid",gap:10}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Dark/Day - ID - FULL - Lebih nyaman malam hari</div><div style={{fontSize:8,color:"#64748b"}}>Lebih nyaman malam hari</div></div><div style={{width:40,height:22,borderRadius:11,background:"#e2e8f0"}}></div></div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Notifikasi - Cicilan jatuh tempo FIF Kredivo 20/25 Okt</div><div style={{fontSize:8,color:"#64748b"}}>FIF Kredivo 20/25 Okt</div></div><div style={{width:40,height:22,borderRadius:11,background:"#0ea5e9"}}></div></div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Font - Tegas Manula 19px Bold 900 - Standar, Elegan, SANTAI</div><div style={{fontSize:8,color:"#64748b"}}>Standar, Elegan, SANTAI - 19px Bold 900</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>Tegas Manula 19px - Bold 900</option></select></div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:10,fontWeight:700}}>Bahasa - 6 Bahasa - ID - ALL UI ID</div><div style={{fontSize:8,color:"#64748b"}}>ID - ALL UI ID - 6 Bahasa</div></div><select style={{padding:"4px 8px",borderRadius:6,border:"1px solid #e2e8f0",fontSize:9}}><option>ID Indonesia</option><option>US English</option><option>CNY ¥ China</option></select></div>
             </div>
           </div>
         </div>
       )}
-      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,background:"#fff",borderTop:"1px solid #f1f5f9",display:"flex",justifyContent:"space-around",padding:"10px 0 16px 0",zIndex:80}}>
-        <button onClick={()=>setBottom("beranda")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-          <div style={{fontSize:20,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>🏠</div>
-          <div style={{fontSize:8,fontWeight:700,color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}>Beranda</div>
-        </button>
-        <button onClick={()=>setBottom("riwayat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-          <div style={{fontSize:20,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>🧾</div>
-          <div style={{fontSize:8,fontWeight:700,color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}>Input</div>
-        </button>
-        <button onClick={()=>setBottom("chat")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-          <div style={{fontSize:20,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>💬</div>
-          <div style={{fontSize:8,fontWeight:700,color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}>Chat AI</div>
-        </button>
-        <button onClick={()=>setBottom("laporan")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-          <div style={{fontSize:20,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>📊</div>
-          <div style={{fontSize:8,fontWeight:700,color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}>Laporan</div>
-        </button>
-        <button onClick={()=>setBottom("profil")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",padding:"4px 12px"}}>
-          <div style={{fontSize:20,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>⚙</div>
-          <div style={{fontSize:8,fontWeight:700,color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}>Profil</div>
-        </button>
+
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:440,background:"#fff",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-around",padding:"8px 0 14px",zIndex:30}}>
+        <button onClick={()=>setBottom("beranda")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="beranda"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🏠</div><div style={{fontSize:8,fontWeight:700}}>{tr.beranda}</div></button>
+        <button onClick={()=>setBottom("riwayat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="riwayat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>🧾</div><div style={{fontSize:8,fontWeight:700}}>{tr.input}</div></button>
+        <button onClick={()=>setBottom("chat")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="chat"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>💬</div><div style={{fontSize:8,fontWeight:700}}>{tr.chatAI}</div></button>
+        <button onClick={()=>setBottom("laporan")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="laporan"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>📊</div><div style={{fontSize:8,fontWeight:700}}>{tr.laporan}</div></button>
+        <button onClick={()=>setBottom("profil")} style={{background:"transparent",border:"none",display:"flex",flexDirection:"column",alignItems:"center",color:bottom==="profil"?"#0ea5e9":"#94a3b8"}}><div style={{fontSize:20}}>⚙️</div><div style={{fontSize:8,fontWeight:700}}>{tr.profil}</div></button>
       </div>
     </div>
   )

@@ -123,11 +123,11 @@ export default function Page(){
   const [isListening,setIsListening]=useState(false)
   const [laporanTab,setLaporanTab]=useState("grafik")
   
-  const [geminiApiKey,setGeminiApiKey]=useState(localStorage.getItem("geminiApiKey")||"");
+  const [geminiApiKey,setGeminiApiKey]=useState((typeof window!=="undefined"?localStorage.getItem("geminiApiKey"):"")||"");
   const [chatMessages,setChatMessages]=useState([{role:"ai", text:"Fitur FULL: Chat Voice/Type + Gemini + 7 saran, Laporan Grafik Batang+Pie+Sheet harian/bulanan + Export, Input Foto Struk/Bon/Barang Galeri+Kamera+Drive, i18n 6 bahasa ALL UI, Font Tegas Manula - ID - META AI Gemini: hei - FULL: Cash Flow Rp 18.405.000 - 6 Grup FIX SALAH SATU sumber: Tabungan/E-Wallet/Tunai/Darurat - Cicilan custom platform + tgl jatuh tempo notif + bayar pakai SALAH SATU - ID - no dummy no fake - Gemini AI Real Connection"}]);
   const [chatInput,setChatInput]=useState("");
   const [isGeminiLoading,setIsGeminiLoading]=useState(false);
-  const saveGeminiKey = (k)=>{ setGeminiApiKey(k); localStorage.setItem("geminiApiKey",k); };
+  const saveGeminiKey = (k)=>{ setGeminiApiKey(k); if(typeof window!=="undefined") localStorage.setItem("geminiApiKey",k); };
   const sendToGeminiReal = async ()=>{
     if(!chatInput.trim()) return;
     const userMsg = chatInput;
@@ -172,12 +172,8 @@ export default function Page(){
   ])
   const [newWallet,setNewWallet]=useState({name:"",type:"tabungan",group:"tabungan",bank:"BCA",norek:"",color:COLORS[0],balance:0,platform:"",dueDate:"",currency:"IDR",flag:"🇮🇩",customBankName:""})
   const [showAddWallet,setShowAddWallet]=useState(false), [selectedSource,setSelectedSource]=useState(null)
-  const [chat,setChat]=useState([
-    {role:"ai",text:"Selamat datang! V37 FULL - 6 Grup FIX: Belanja/Cicilan pilih SALAH SATU Tabungan/E-Wallet/Tunai/Darurat - Bukan semua kepotong! Cicilan jatuh tempo pilih sumber dana!"},
-    {role:"ai",text:"Fitur FULL: Chat Voice/Type + Gemini + 7 saran, Laporan Grafik Batang+Pie+Sheet harian/bulanan + Export, Input Foto Struk/Bon/Barang Galeri+Kamera+Drive, i18n 6 bahasa ALL UI, Font Tegas Manula"},
-  ])
-  const [chatInput,setChatInput]=useState("")
-  const getFontStyle=()=>{
+  
+    const getFontStyle=()=>{
     if(font==="Standar") return {family:"Inter,sans-serif", size:"14px", weight:"400"}
     if(font==="Elegan") return {family:"Georgia, serif", size:"15px", weight:"400"}
     if(font==="SANTAi") return {family:"cursive", size:"15px", weight:"600"}
